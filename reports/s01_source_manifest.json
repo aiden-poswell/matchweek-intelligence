@@ -1,0 +1,17 @@
+{
+  "extracted_at_utc": "2026-11-02T11:13:47.944955+00:00",
+  "files": [
+    {
+      "byte_count": 30316,
+      "path": "2024-25/1-premierleague.txt",
+      "sha256": "e39716b01af0c8654a9fae7b5555e6b02f506ea05239e0d0eef41936ba80e1e3"
+    },
+    {
+      "byte_count": 22800,
+      "path": "2026-27/1-premierleague.txt",
+      "sha256": "a2366ea9f7f55b8afd666e455666ba9019f9c62da8864f6bcf3adff65300b445"
+    }
+  ],
+  "pinned_commit": "9ee7a0c351805c99cc334478a9bf04b7d0432fec",
+  "source_repo": "openfootball/england"
+}

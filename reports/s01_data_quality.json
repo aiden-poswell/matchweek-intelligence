@@ -1,0 +1,67 @@
+{
+  "as_of_date": "2026-11-02",
+  "files": [
+    {
+      "as_of_date": "2026-11-02",
+      "current_season_publishable": true,
+      "detected_subformat": "matchday_v_literal",
+      "duplicate_grain_keys": [],
+      "earliest_scheduled_future_date": null,
+      "earliest_scored_date": "2024-08-16",
+      "fixture_count": 380,
+      "latest_scored_date": "2025-05-25",
+      "parsed": true,
+      "path": "2024-25/1-premierleague.txt",
+      "quarantined_line_count": 0,
+      "quarantined_lines": [],
+      "result_missing_count": 0,
+      "result_missing_dates": [],
+      "scheduled_future_count": 0,
+      "scored_count": 380,
+      "season": "2024-25",
+      "stale_result_missing_count": 0,
+      "stale_result_missing_dates": []
+    },
+    {
+      "as_of_date": "2026-11-02",
+      "current_season_publishable": false,
+      "detected_subformat": "matchday_v_literal",
+      "duplicate_grain_keys": [],
+      "earliest_scheduled_future_date": "2026-11-02",
+      "earliest_scored_date": "2026-08-21",
+      "fixture_count": 380,
+      "latest_scored_date": "2026-09-20",
+      "parsed": true,
+      "path": "2026-27/1-premierleague.txt",
+      "quarantined_line_count": 0,
+      "quarantined_lines": [],
+      "result_missing_count": 39,
+      "result_missing_dates": [
+        "2026-10-10",
+        "2026-10-11",
+        "2026-10-12",
+        "2026-10-17",
+        "2026-10-18",
+        "2026-10-19",
+        "2026-10-23",
+        "2026-10-24",
+        "2026-10-25",
+        "2026-10-31",
+        "2026-11-01"
+      ],
+      "scheduled_future_count": 291,
+      "scored_count": 50,
+      "season": "2026-27",
+      "stale_result_missing_count": 19,
+      "stale_result_missing_dates": [
+        "2026-10-10",
+        "2026-10-11",
+        "2026-10-12",
+        "2026-10-17",
+        "2026-10-18"
+      ]
+    }
+  ],
+  "pinned_commit": "9ee7a0c351805c99cc334478a9bf04b7d0432fec",
+  "source_repo": "openfootball/england"
+}
