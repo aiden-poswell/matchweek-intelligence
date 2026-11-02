@@ -1,0 +1,33 @@
+[project]
+name = "matchweek-intelligence"
+version = "0.1.0"
+description = "Transparent, source-verified football matchweek intelligence. Private early research."
+readme = "README.md"
+authors = [
+    { name = "Aiden Poswell" }
+]
+requires-python = ">=3.11"
+dependencies = [
+    "requests>=2.32.3",
+]
+
+[build-system]
+requires = ["uv_build>=0.13.1,<0.14.0"]
+build-backend = "uv_build"
+
+[dependency-groups]
+dev = [
+    "pytest>=9.1.1",
+    "ruff>=0.17.1",
+]
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]

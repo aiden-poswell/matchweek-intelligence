@@ -1,0 +1,23 @@
+# Raw source snapshots and any private investigation material — never tracked.
+data/raw/
+data/private/
+*_PRIVATE.*
+
+# Python
+__pycache__/
+*.pyc
+.pytest_cache/
+.ruff_cache/
+*.egg-info/
+.venv/
+build/
+dist/
+
+# Local/editor
+.vscode/
+.idea/
+*.log
+
+# Secrets
+.env
+.env.*
