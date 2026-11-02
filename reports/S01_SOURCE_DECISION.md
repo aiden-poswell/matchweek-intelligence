@@ -25,8 +25,10 @@ the project's data source, with two explicit conditions:
 **REJECT** `footballcsv/england` — no 2021/22 or later data exists; repository inactive since
 2023-05.
 
-**REJECT** `openfootball/football.json` for this slice — a mirror of the primary source, lags it
-by at least a day, adds no independent corroboration.
+**REJECT** `openfootball/football.json` for this slice — a derivative mirror of the primary
+source (regenerated one day apart by commit timestamp, which shows only cadence, not content
+freshness — see the S02 correction in `docs/SOURCE_RIGHTS_AND_PROVENANCE.md` section 2), adds no
+independent corroboration.
 
 **REJECT (public use)** `oladeeayo/open-matchday` — no licence file exists at all; its own
 `DISCLAIMER.md` restricts use to personal/non-commercial and names upstream providers (incl.

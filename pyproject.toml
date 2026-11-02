@@ -14,6 +14,7 @@ dependencies = [
 [project.scripts]
 mi-fetch = "matchweek_intelligence.fetch:main"
 mi-data-quality = "matchweek_intelligence.build_data_quality:main"
+mi-historical-corpus = "matchweek_intelligence.build_historical_corpus:main"
 
 [build-system]
 requires = ["uv_build>=0.13.1,<0.14.0"]

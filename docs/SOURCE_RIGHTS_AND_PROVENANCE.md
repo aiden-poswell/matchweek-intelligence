@@ -166,12 +166,21 @@ the "claim 380 verified when only 5 were inspected" failure mode the brief warne
   applies).
 - **2026/27 file:** `2026-27/en.1.json` exists. Its own commit history
   (`gh api 'repos/openfootball/football.json/commits?path=2026-27/en.1.json'`) shows the last
-  real update was **2026-09-22T09:33:49Z** — one day *later* than the primary source's last real
-  update (2026-09-21), i.e. this mirror lags the primary by at least a day and shows the same
-  staleness pattern, not fresher data. This directly confirms the brief's expectation that "a
-  mirror is not an independent corroborating source" — it is not treated as one here.
-- **Decision:** not used. It adds no freshness benefit over the primary and would only duplicate
-  the same stale-after-Matchday-5 gap.
+  real update was **2026-09-22T09:33:49Z**, one day *after* the primary source's last real update
+  (2026-09-21).
+  **Correction (S02):** a later commit timestamp on its own does not establish that the mirror's
+  *content* is more current, less current, or lagging — it only shows when a regeneration script
+  last ran. S01 originally wrote "lags the primary by at least a day," which is not something a
+  timestamp comparison alone can support without directly diffing the two files' actual fixture
+  rows; that claim is withdrawn here as a logical overreach, not restated with a different sign.
+  What the timestamp *does* establish: the mirror is **not independently more current** than the
+  primary (it was regenerated only one day apart, from the same nightly update cadence), so it
+  cannot corroborate anything the primary doesn't already show, and it remains a **derivative
+  mirror of the same upstream compilation**, not an independent source, regardless of which file's
+  commit timestamp happens to be larger.
+- **Decision:** not used. It is a derivative mirror of the primary, not an independent
+  corroborating source, and no direct content comparison was performed to justify ingesting it
+  instead of (or alongside) the primary.
 
 ## 3. Secondary/mirror — `footballcsv/england`
 
@@ -220,7 +229,7 @@ the "claim 380 verified when only 5 were inspected" failure mode the brief warne
 | Source | Rights (data) | Seasons usable | Latest verified scored date | Rows verified | Update cadence vs reality | Reproducible | Decision |
 | --- | --- | --- | --- | --- | --- | --- | --- |
 | `openfootball/england` | CC0-1.0, explicit over data | 2023/24–2026/27 (2024/25 & 2026/27 parsed this slice) | 2026-09-20 (2026/27); fully complete through 2025-05-25 (2024/25) | 380/380 (2024/25), 50/50 scored (2026/27) | Weekly commits claimed; actual last real update to the 2026/27 PL file was 6 weeks before this audit | Yes — pinned commit, content-hashed | **ACCEPT** (historical); **current-season status BLOCKED** |
-| `openfootball/football.json` | CC0-1.0 | Same seasons, JSON mirror | Lags primary by ≥1 day | Not separately counted (mirror) | Mirrors primary, no independent freshness | Yes | **REJECT as redundant** — adds no corroboration |
+| `openfootball/football.json` | CC0-1.0 | Same seasons, JSON mirror | Regenerated 1 day apart by commit timestamp (not a content-freshness claim — see §2 correction) | Not separately counted (mirror) | Mirrors primary, no independent freshness | Yes | **REJECT as redundant** — adds no corroboration |
 | `footballcsv/england` | CC0-1.0 | 1990s–2020/21 only | N/A — no 2024/25+ data exists | 0 (not applicable) | Repo inactive since 2023-05 | N/A | **REJECT** — no current-era data at all |
 | `oladeeayo/open-matchday` | **None** (no licence); disclaimer restricts to personal/non-commercial, mixed upstream terms incl. CC BY-SA | 2026/27, daily | 2026-11-02 (today) | Not separately verified (not ingested) | Genuinely fresh, matches its own claim | Not evaluated — rights gate failed first | **REJECT for public use; CONDITIONAL private cross-check only, not used in this slice's code or exports** |
 

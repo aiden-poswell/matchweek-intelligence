@@ -1,10 +1,20 @@
 {
-  "extracted_at_utc": "2026-11-02T11:13:47.944955+00:00",
+  "extracted_at_utc": "2026-11-02T12:08:16.645524+00:00",
   "files": [
+    {
+      "byte_count": 26357,
+      "path": "2023-24/1-premierleague.txt",
+      "sha256": "0bfb4a7fffe0b1bf7318955686eafeb28fc9676346ae433259e7409d69551450"
+    },
     {
       "byte_count": 30316,
       "path": "2024-25/1-premierleague.txt",
       "sha256": "e39716b01af0c8654a9fae7b5555e6b02f506ea05239e0d0eef41936ba80e1e3"
+    },
+    {
+      "byte_count": 51782,
+      "path": "2025-26/1-premierleague.txt",
+      "sha256": "38c1de56c9e9b6662c7efc1420b7e1fe00dddbb502fe72d8f759e773ba3c093b"
     },
     {
       "byte_count": 22800,

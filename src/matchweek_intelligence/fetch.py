@@ -1,10 +1,11 @@
 """Fetch allowlisted Football.TXT files from the pinned openfootball/england commit.
 
-Only the two files this slice's parser actually supports are fetched: one complete
-historical season (2024/25) and the current partial season (2026/27), both using the
-"Matchday N" / literal-"v" fixture sub-format confirmed by direct inspection in
-docs/SOURCE_RIGHTS_AND_PROVENANCE.md. The commit is pinned explicitly; there is no
-"latest"/moving-target fetch and no background refresh.
+S01 fetched two files (2024/25, 2026/27) in the "Matchday N" / literal-"v" sub-format.
+S02 extends the allowlist to the two remaining historical seasons this project's parser
+now also supports (2023/24, 2025/26), each in its own distinct real sub-format — see
+reports/S02_FORMAT_AUDIT.md and docs/SOURCE_RIGHTS_AND_PROVENANCE.md section 1b. The
+commit is pinned explicitly; there is no "latest"/moving-target fetch, no background
+refresh, and no fallback to a mirror or any other source.
 """
 
 from __future__ import annotations
@@ -23,7 +24,9 @@ PINNED_COMMIT = "9ee7a0c351805c99cc334478a9bf04b7d0432fec"
 _RAW_BASE = f"https://raw.githubusercontent.com/{SOURCE_REPO}/{PINNED_COMMIT}"
 
 ALLOWLISTED_PATHS: tuple[str, ...] = (
+    "2023-24/1-premierleague.txt",
     "2024-25/1-premierleague.txt",
+    "2025-26/1-premierleague.txt",
     "2026-27/1-premierleague.txt",
 )
 

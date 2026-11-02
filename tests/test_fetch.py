@@ -93,9 +93,10 @@ def test_manifest_records_pinned_commit_and_every_file_hash(tmp_path):
 def test_real_network_fetch_matches_the_recorded_byte_counts(tmp_path):
     files = fetch.fetch_all(raw_dir=tmp_path)
     by_path = {f.path: f.byte_count for f in files}
-    # 2024/25 is a completed, archived season at a pinned commit — exact byte count is
-    # expected to be stable. 2026/27 is a current, live-updating file at the SAME pinned
-    # commit, so it is also expected to be exactly this size as long as the pin holds;
-    # a differing size here would mean the pinned commit itself changed underneath us.
+    # All four files are fetched at the SAME pinned commit, so every byte count below is
+    # expected to be exactly stable forever; a differing size would mean the pinned
+    # commit itself changed underneath us, not that any of these seasons "updated".
+    assert by_path["2023-24/1-premierleague.txt"] == 26357
     assert by_path["2024-25/1-premierleague.txt"] == 30316
+    assert by_path["2025-26/1-premierleague.txt"] == 51782
     assert by_path["2026-27/1-premierleague.txt"] == 22800

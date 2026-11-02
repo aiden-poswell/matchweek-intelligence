@@ -51,6 +51,12 @@ def test_no_raw_source_files_or_private_markers_are_tracked():
         assert not lower.endswith(".csv"), f"raw tabular data tracked: {path}"
 
 
+# This file itself legitimately contains the literal forbidden strings below (as the
+# detector's own fixture data), so it is excluded from the two scans that use them —
+# not because it's exempt from the hygiene rule, but because it's the rule itself.
+_SELF_PATH = "tests/test_hygiene.py"
+
+
 @requires_git_repo
 def test_no_personal_local_filesystem_paths_in_tracked_text_files():
     # Author attribution (e.g. in pyproject.toml) is expected and fine; what must never
@@ -60,7 +66,7 @@ def test_no_personal_local_filesystem_paths_in_tracked_text_files():
     forbidden_fragments = ("C:\\Users\\", "/home/", "/Users/Aiden", "AppData\\Local\\Temp")
     text_suffixes = {".py", ".md", ".toml", ".json", ".txt", ".cfg", ".ini"}
     for path in tracked:
-        if Path(path).suffix not in text_suffixes:
+        if path == _SELF_PATH or Path(path).suffix not in text_suffixes:
             continue
         full_path = REPO_ROOT / path
         content = full_path.read_text(encoding="utf-8", errors="ignore")
@@ -80,7 +86,7 @@ def test_no_sibling_project_names_appear_in_tracked_files():
         "scouting-recruitment-intelligence",
     )
     for path in tracked:
-        if Path(path).suffix not in {".py", ".md", ".toml", ".json"}:
+        if path == _SELF_PATH or Path(path).suffix not in {".py", ".md", ".toml", ".json"}:
             continue
         content = (REPO_ROOT / path).read_text(encoding="utf-8", errors="ignore")
         for name in forbidden:

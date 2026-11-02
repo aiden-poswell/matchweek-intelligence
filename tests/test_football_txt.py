@@ -6,6 +6,9 @@ from datetime import date
 import pytest
 
 from matchweek_intelligence.football_txt import (
+    SUBFORMAT_MATCHDAY_SCORE_BETWEEN,
+    SUBFORMAT_MATCHDAY_V_LITERAL,
+    SUBFORMAT_REGULAR_SEASON_SCORE_BETWEEN,
     SUPPORTED_SUBFORMAT,
     UnsupportedFootballTxtFormatError,
     detect_subformat,
@@ -76,8 +79,9 @@ REAL_EXCERPT_UNPLAYED = """\
     15:00  Sunderland AFC          v Brighton & Hove Albion FC
 """
 
-# Verbatim excerpt from 2025-26/1-premierleague.txt — the real, different sub-format
-# this slice's parser must detect and reject, never guess-parse.
+# Verbatim excerpt from 2025-26/1-premierleague.txt — "Regular Season - N" header,
+# score-between-teams, with real multi-line scorer-annotation blocks (nested parens for
+# a penalty marker, and a block spanning two physical lines).
 REAL_EXCERPT_REGULAR_SEASON_SUBFORMAT = """\
 = England | Premier League 2025/26
 
@@ -88,10 +92,17 @@ REAL_EXCERPT_REGULAR_SEASON_SUBFORMAT = """\
 ▪ Regular Season - 1
 Fri Aug 15 2025
   19:00   Liverpool  4-2 (1-0)  Bournemouth
+                  (Hugo EKITIKE 37', Cody GAKPO 49', Federico Chiesa 88', MOHAMED SALAH 90+4';
+                   Antoine SEMENYO 64', 76')
+Sat Aug 16
+  12:30   Aston Villa  0-0 (0-0)  Newcastle United
+  15:00   Brighton & Hove Albion  1-1 (0-0)  Fulham
+                  (Matt ORILEY 55'(p); RODRIGO MUNIZ 90+7')
 """
 
-# Verbatim excerpt from 2023-24/1-premierleague.txt — a third real sub-format
-# ("Matchday" header, but no literal " v " separator).
+# Verbatim excerpt from 2023-24/1-premierleague.txt — "Matchday N" header, score sits
+# between the team names (no literal " v "). This file never restates the year, not
+# even at the real Dec->Jan boundary (see the rollover test below).
 REAL_EXCERPT_MATCHDAY_NO_V_SUBFORMAT = """\
 = English Premier League 2023/24
 
@@ -102,35 +113,70 @@ REAL_EXCERPT_MATCHDAY_NO_V_SUBFORMAT = """\
 ▪ Matchday 1
 Fri Aug 11
   20:00  Burnley FC               0-3 (0-2)  Manchester City FC
+Sat Aug 12
+  13:00  Arsenal FC               2-1 (2-0)  Nottingham Forest FC
+  15:00  AFC Bournemouth          1-1 (0-0)  West Ham United FC
+         Brighton & Hove Albion FC  4-1 (1-0)  Luton Town FC
+"""
+
+# Verbatim excerpt from 2023-24/1-premierleague.txt, Matchday 20 — the real Dec->Jan
+# boundary, where the year is NEVER restated anywhere in this file (unlike every other
+# file this project ingests). The Jan 2 fixture is also a real example of a bare
+# full-time-only score with no half-time parenthetical at all.
+REAL_EXCERPT_2023_24_YEAR_BOUNDARY = """\
+= English Premier League 2023/24
+
+# Date       Fri Aug 11 2023 - Sun May 19 2024 (282d)
+# Teams      20
+# Matches    380
+
+▪ Matchday 20
+Sat Dec 30
+  12:30  Luton Town FC            2-3 (0-2)  Chelsea FC
+Sun Dec 31
+  14:00  Fulham FC                2-1 (1-1)  Arsenal FC
+Mon Jan 1
+  20:00  Liverpool FC             4-2 (0-0)  Newcastle United FC
+Tue Jan 2
+  19:30  West Ham United FC       0-0  Brighton & Hove Albion FC
 """
 
 
-def test_detects_supported_subformat_from_real_excerpt():
+def test_detects_v_literal_subformat_from_real_excerpt():
     assert detect_subformat(REAL_EXCERPT_MATCHDAY_1) == SUPPORTED_SUBFORMAT
+    assert SUPPORTED_SUBFORMAT == SUBFORMAT_MATCHDAY_V_LITERAL
 
 
-def test_detects_regular_season_subformat_as_unsupported():
+def test_detects_regular_season_subformat_now_supported_in_s02():
     assert (
-        detect_subformat(REAL_EXCERPT_REGULAR_SEASON_SUBFORMAT) == "regular_season_scorer_annotated"
+        detect_subformat(REAL_EXCERPT_REGULAR_SEASON_SUBFORMAT)
+        == SUBFORMAT_REGULAR_SEASON_SCORE_BETWEEN
     )
 
 
-def test_detects_matchday_no_v_subformat_as_unsupported():
-    assert detect_subformat(REAL_EXCERPT_MATCHDAY_NO_V_SUBFORMAT) == "matchday_no_v_literal"
+def test_detects_matchday_score_between_subformat_now_supported_in_s02():
+    assert (
+        detect_subformat(REAL_EXCERPT_MATCHDAY_NO_V_SUBFORMAT) == SUBFORMAT_MATCHDAY_SCORE_BETWEEN
+    )
 
 
-def test_parse_raises_on_unsupported_subformat_rather_than_guessing():
+def test_parse_raises_on_a_genuinely_unknown_fourth_subformat_rather_than_guessing():
+    # A hypothetical fourth variant: no bullet-prefixed section headers at all. This
+    # must never be silently matched against any of the three known parsers.
+    text = """\
+= Synthetic League 2099/00
+
+# Date       Fri Aug 1 2099 - Sun May 1 2100 (282d)
+# Teams      20
+# Matches    1
+
+Round 1
+Fri Aug 1 2099
+  20:00  Home Team A : 1-0 : Away Team A
+"""
     with pytest.raises(UnsupportedFootballTxtFormatError) as exc_info:
-        parse_football_txt(
-            REAL_EXCERPT_REGULAR_SEASON_SUBFORMAT, "premier-league", "2025-26", date(2026, 11, 2)
-        )
-    assert exc_info.value.detected_subformat == "regular_season_scorer_annotated"
-
-    with pytest.raises(UnsupportedFootballTxtFormatError) as exc_info_2:
-        parse_football_txt(
-            REAL_EXCERPT_MATCHDAY_NO_V_SUBFORMAT, "premier-league", "2023-24", date(2026, 11, 2)
-        )
-    assert exc_info_2.value.detected_subformat == "matchday_no_v_literal"
+        parse_football_txt(text, "premier-league", "2099-00", date(2026, 11, 2))
+    assert exc_info.value.detected_subformat == "unknown"
 
 
 def test_parses_real_scored_fixtures_correctly():
@@ -293,3 +339,132 @@ def test_round_label_is_not_unique_and_is_carried_through_as_informational():
     round_labels = [r.raw_round_label for r in result.records]
     assert round_labels.count("Matchday 5") == 2
     assert round_labels == ["Matchday 5", "Matchday 4", "Matchday 5"]
+
+
+# --- S02: the two newly-supported "score-between-teams" sub-formats ----------------
+
+
+def test_parses_real_2023_24_score_between_fixtures_with_no_v_literal():
+    result = parse_football_txt(
+        REAL_EXCERPT_MATCHDAY_NO_V_SUBFORMAT, "premier-league", "2023-24", date(2026, 11, 2)
+    )
+    assert result.subformat == SUBFORMAT_MATCHDAY_SCORE_BETWEEN
+    assert result.quarantined == []
+    assert len(result.records) == 4
+
+    first = result.records[0]
+    assert first.match_date == date(2023, 8, 11)
+    assert first.home_team_raw == "Burnley FC"
+    assert first.away_team_raw == "Manchester City FC"
+    assert (first.home_score, first.away_score) == (0, 3)
+    assert (first.home_score_ht, first.away_score_ht) == (0, 2)
+
+    # A continuation fixture line with no leading kickoff time still attaches correctly.
+    luton_row = next(r for r in result.records if r.away_team_raw == "Luton Town FC")
+    assert luton_row.home_team_raw == "Brighton & Hove Albion FC"
+    assert (luton_row.home_score, luton_row.away_score) == (4, 1)
+
+
+def test_real_2023_24_year_never_restated_still_rolls_over_correctly():
+    result = parse_football_txt(
+        REAL_EXCERPT_2023_24_YEAR_BOUNDARY, "premier-league", "2023-24", date(2026, 11, 2)
+    )
+    assert result.quarantined == []
+    dates_by_away = {r.away_team_raw: r.match_date for r in result.records}
+    assert dates_by_away["Chelsea FC"] == date(2023, 12, 30)
+    assert dates_by_away["Arsenal FC"] == date(2023, 12, 31)
+    assert dates_by_away["Newcastle United FC"] == date(2024, 1, 1)
+    assert dates_by_away["Brighton & Hove Albion FC"] == date(2024, 1, 2)
+
+    # The Jan 2 fixture is a real bare full-time-only score (no half-time shown at all).
+    west_ham_row = next(r for r in result.records if r.home_team_raw == "West Ham United FC")
+    assert (west_ham_row.home_score, west_ham_row.away_score) == (0, 0)
+    assert west_ham_row.home_score_ht is None
+    assert west_ham_row.away_score_ht is None
+
+
+def test_parses_real_2025_26_regular_season_fixtures_and_discards_scorer_annotations():
+    result = parse_football_txt(
+        REAL_EXCERPT_REGULAR_SEASON_SUBFORMAT, "premier-league", "2025-26", date(2026, 11, 2)
+    )
+    assert result.subformat == SUBFORMAT_REGULAR_SEASON_SCORE_BETWEEN
+    assert result.quarantined == []
+    assert len(result.records) == 3
+
+    liverpool_row = result.records[0]
+    assert liverpool_row.home_team_raw == "Liverpool"
+    assert liverpool_row.away_team_raw == "Bournemouth"
+    assert (liverpool_row.home_score, liverpool_row.away_score) == (4, 2)
+    assert liverpool_row.raw_round_label == "Regular Season - 1"
+
+    # The multi-line scorer block (spanning two physical lines, nested parens on the
+    # Brighton fixture's penalty marker) never produced an extra fixture or a quarantine.
+    assert {r.home_team_raw for r in result.records} == {
+        "Liverpool",
+        "Aston Villa",
+        "Brighton & Hove Albion",
+    }
+
+
+def test_scorer_annotation_digits_never_override_the_fixture_score():
+    # Minute "90+7'" inside the scorer block must never be mistaken for, or override,
+    # the actual fixture score (1-1).
+    result = parse_football_txt(
+        REAL_EXCERPT_REGULAR_SEASON_SUBFORMAT, "premier-league", "2025-26", date(2026, 11, 2)
+    )
+    brighton_row = next(r for r in result.records if r.home_team_raw == "Brighton & Hove Albion")
+    assert (brighton_row.home_score, brighton_row.away_score) == (1, 1)
+
+
+def test_unterminated_scorer_block_is_quarantined_as_a_real_anomaly():
+    text = """\
+= Synthetic League 2025/26
+
+# Dates    Fri Aug 15 2025 - Sun May 24 2026 (282d)
+# Teams    20
+# Matches  1
+
+▪ Regular Season - 1
+Fri Aug 15 2025
+  19:00   Home Team A  1-0 (1-0)  Away Team A
+                  (Some Scorer 10'; Another Scorer 44'
+"""
+    result = parse_football_txt(text, "synthetic", "2025-26", date(2026, 11, 2))
+    assert len(result.records) == 1  # the fixture itself still parsed correctly
+    assert len(result.quarantined) == 1
+    assert result.quarantined[0].reason == "unterminated scorer-annotation block"
+
+
+def test_score_between_malformed_fixture_line_is_quarantined():
+    text = """\
+= Synthetic League 2023/24
+
+# Date       Fri Aug 11 2023 - Sun May 19 2024 (282d)
+# Teams      20
+# Matches    1
+
+▪ Matchday 1
+Fri Aug 11
+  20:00  1-0 (1-0)
+"""
+    result = parse_football_txt(text, "synthetic", "2023-24", date(2026, 11, 2))
+    assert result.records == []
+    assert len(result.quarantined) == 1
+    assert result.quarantined[0].reason == "fixture line did not parse"
+
+
+def test_score_between_fixture_line_before_any_date_header_is_quarantined():
+    text = """\
+= Synthetic League 2023/24
+
+# Date       Fri Aug 11 2023 - Sun May 19 2024 (282d)
+# Teams      20
+# Matches    1
+
+▪ Matchday 1
+  20:00  Home Team A              1-0 (1-0)  Away Team A
+"""
+    result = parse_football_txt(text, "synthetic", "2023-24", date(2026, 11, 2))
+    assert result.records == []
+    assert len(result.quarantined) == 1
+    assert "before any date header" in result.quarantined[0].reason
