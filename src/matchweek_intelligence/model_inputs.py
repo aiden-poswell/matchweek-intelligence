@@ -18,7 +18,13 @@ from datetime import date
 from pathlib import Path
 
 from matchweek_intelligence.corpus_validation import validate_date_window, validate_scores
-from matchweek_intelligence.fetch import DEFAULT_MANIFEST_PATH, DEFAULT_RAW_DIR
+from matchweek_intelligence.fetch import (
+    ALLOWLISTED_PATHS,
+    DEFAULT_MANIFEST_PATH,
+    DEFAULT_RAW_DIR,
+    PINNED_COMMIT,
+    SOURCE_REPO,
+)
 from matchweek_intelligence.football_txt import (
     SUPPORTED_SUBFORMATS,
     UnsupportedFootballTxtFormatError,
@@ -63,21 +69,69 @@ class ModelRecord:
 
 
 def _verify_manifest(manifest: dict, raw_dir: Path) -> None:
-    for entry in manifest["files"]:
-        local_path = raw_dir / entry["path"]
+    """Validate manifest structure, source identity, AND on-disk content.
+
+    The source-identity check (source_repo/pinned_commit) is a real provenance guard,
+    not a formality: a manifest with correct on-disk hashes but a WRONG source_repo or
+    pinned_commit must still be rejected, since matching hashes alone only prove the
+    cached bytes match what the manifest itself claims — not that the manifest is
+    describing the project's actual approved source. Every failure here raises
+    `ModelInputError` with a clear message, never a bare `KeyError`/`TypeError` from
+    malformed input.
+    """
+    if not isinstance(manifest, dict):
+        raise ModelInputError(f"manifest is not a JSON object: {type(manifest).__name__}")
+
+    source_repo = manifest.get("source_repo")
+    if source_repo != SOURCE_REPO:
+        raise ModelInputError(
+            f"manifest source_repo mismatch: expected {SOURCE_REPO!r}, found {source_repo!r}"
+        )
+    pinned_commit = manifest.get("pinned_commit")
+    if pinned_commit != PINNED_COMMIT:
+        raise ModelInputError(
+            f"manifest pinned_commit mismatch: expected {PINNED_COMMIT!r}, found {pinned_commit!r}"
+        )
+
+    files = manifest.get("files")
+    if not isinstance(files, list) or not files:
+        raise ModelInputError("manifest 'files' must be a non-empty list")
+
+    for entry in files:
+        if not isinstance(entry, dict):
+            raise ModelInputError(f"manifest file entry is not an object: {entry!r}")
+
+        path = entry.get("path")
+        sha256 = entry.get("sha256")
+        byte_count = entry.get("byte_count")
+
+        # Exact-match allowlist, not path manipulation: this is also the path-traversal
+        # defence — an entry whose "path" is anything other than one of the four known
+        # allowlisted relative paths (e.g. "../../secrets.txt") is rejected outright,
+        # before any filesystem access is attempted with it.
+        if not isinstance(path, str) or path not in ALLOWLISTED_PATHS:
+            raise ModelInputError(f"manifest file entry has an unrecognised path: {path!r}")
+        if not isinstance(sha256, str) or len(sha256) != 64:
+            raise ModelInputError(f"manifest entry {path!r} has a malformed sha256: {sha256!r}")
+        if not isinstance(byte_count, int) or isinstance(byte_count, bool) or byte_count <= 0:
+            raise ModelInputError(
+                f"manifest entry {path!r} has a malformed byte_count: {byte_count!r}"
+            )
+
+        local_path = raw_dir / path
         if not local_path.exists():
             raise ModelInputError(f"manifested file missing on disk: {local_path}")
         content = local_path.read_bytes()
         actual_hash = hashlib.sha256(content).hexdigest()
-        if actual_hash != entry["sha256"]:
+        if actual_hash != sha256:
             raise ModelInputError(
                 f"integrity check failed for {local_path}: "
-                f"manifest sha256={entry['sha256']}, actual={actual_hash}"
+                f"manifest sha256={sha256}, actual={actual_hash}"
             )
-        if len(content) != entry["byte_count"]:
+        if len(content) != byte_count:
             raise ModelInputError(
                 f"byte-count mismatch for {local_path}: "
-                f"manifest={entry['byte_count']}, actual={len(content)}"
+                f"manifest={byte_count}, actual={len(content)}"
             )
 
 

@@ -12,6 +12,7 @@ from pathlib import Path
 import pytest
 from conftest import FULL_SEASON_START, build_full_double_round_robin_text
 
+from matchweek_intelligence.fetch import PINNED_COMMIT, SOURCE_REPO
 from matchweek_intelligence.model_inputs import (
     ELIGIBLE_SEASONS,
     ModelInputError,
@@ -19,7 +20,7 @@ from matchweek_intelligence.model_inputs import (
 )
 
 
-def _write_manifest(raw_dir: Path, manifest_path: Path, entries: list[tuple[str, str]]) -> None:
+def _manifest_files(raw_dir: Path, entries: list[tuple[str, str]]) -> list[dict]:
     files = []
     for path, text in entries:
         content = text.encode("utf-8")
@@ -33,8 +34,19 @@ def _write_manifest(raw_dir: Path, manifest_path: Path, entries: list[tuple[str,
                 "byte_count": len(content),
             }
         )
+    return files
+
+
+def _write_manifest(
+    raw_dir: Path,
+    manifest_path: Path,
+    entries: list[tuple[str, str]],
+    source_repo: str = SOURCE_REPO,
+    pinned_commit: str = PINNED_COMMIT,
+) -> None:
+    files = _manifest_files(raw_dir, entries)
     manifest_path.write_text(
-        json.dumps({"source_repo": "x/y", "pinned_commit": "deadbeef", "files": files}),
+        json.dumps({"source_repo": source_repo, "pinned_commit": pinned_commit, "files": files}),
         encoding="utf-8",
     )
 
@@ -163,3 +175,117 @@ def test_row_order_shuffle_in_the_source_file_does_not_change_the_loaded_corpus(
         (r.match_date, r.home_team, r.away_team, r.home_score, r.away_score) for r in reordered
     ]
     assert baseline_keys == reordered_keys
+
+
+# --- S04 Stage A1: source identity lock ---------------------------------------------
+#
+# Independent review found that a manifest with CORRECT per-file hashes but a WRONG
+# source_repo or pinned_commit was accepted — matching hashes alone only prove the
+# cached bytes match what the manifest claims, not that the manifest describes this
+# project's actual approved source. These tests prove the gap is closed.
+
+
+def test_a1_rejects_a_manifest_with_valid_files_but_wrong_source_repo(tmp_path):
+    raw_dir, manifest_path = tmp_path / "raw", tmp_path / "manifest.json"
+    entries = list(_three_season_texts().items())
+    _write_manifest(raw_dir, manifest_path, entries, source_repo="some-other/repo")
+    with pytest.raises(ModelInputError, match="source_repo mismatch"):
+        load_eligible_historical_records(raw_dir=raw_dir, manifest_path=manifest_path)
+
+
+def test_a1_rejects_a_manifest_with_valid_files_but_wrong_pinned_commit(tmp_path):
+    raw_dir, manifest_path = tmp_path / "raw", tmp_path / "manifest.json"
+    entries = list(_three_season_texts().items())
+    _write_manifest(raw_dir, manifest_path, entries, pinned_commit="0" * 40)
+    with pytest.raises(ModelInputError, match="pinned_commit mismatch"):
+        load_eligible_historical_records(raw_dir=raw_dir, manifest_path=manifest_path)
+
+
+def test_a1_rejects_a_manifest_missing_source_identity_fields_entirely(tmp_path):
+    raw_dir, manifest_path = tmp_path / "raw", tmp_path / "manifest.json"
+    entries = list(_three_season_texts().items())
+    files = _manifest_files(raw_dir, entries)
+    manifest_path.write_text(json.dumps({"files": files}), encoding="utf-8")
+    with pytest.raises(ModelInputError, match="source_repo mismatch"):
+        load_eligible_historical_records(raw_dir=raw_dir, manifest_path=manifest_path)
+
+
+def test_a1_rejects_a_manifest_that_is_not_a_json_object(tmp_path):
+    raw_dir, manifest_path = tmp_path / "raw", tmp_path / "manifest.json"
+    manifest_path.write_text(json.dumps([1, 2, 3]), encoding="utf-8")
+    with pytest.raises(ModelInputError, match="not a JSON object"):
+        load_eligible_historical_records(raw_dir=raw_dir, manifest_path=manifest_path)
+
+
+def test_a1_rejects_a_manifest_whose_files_field_is_not_a_list(tmp_path):
+    raw_dir, manifest_path = tmp_path / "raw", tmp_path / "manifest.json"
+    manifest_path.write_text(
+        json.dumps({"source_repo": SOURCE_REPO, "pinned_commit": PINNED_COMMIT, "files": "oops"}),
+        encoding="utf-8",
+    )
+    with pytest.raises(ModelInputError, match="non-empty list"):
+        load_eligible_historical_records(raw_dir=raw_dir, manifest_path=manifest_path)
+
+
+def test_a1_rejects_a_malformed_file_entry_missing_required_fields(tmp_path):
+    raw_dir, manifest_path = tmp_path / "raw", tmp_path / "manifest.json"
+    manifest_path.write_text(
+        json.dumps(
+            {
+                "source_repo": SOURCE_REPO,
+                "pinned_commit": PINNED_COMMIT,
+                "files": [{"path": "2023-24/1-premierleague.txt"}],  # missing sha256/byte_count
+            }
+        ),
+        encoding="utf-8",
+    )
+    with pytest.raises(ModelInputError, match="malformed sha256"):
+        load_eligible_historical_records(raw_dir=raw_dir, manifest_path=manifest_path)
+
+
+def test_a1_rejects_a_file_entry_with_a_path_traversal_attempt(tmp_path):
+    raw_dir, manifest_path = tmp_path / "raw", tmp_path / "manifest.json"
+    manifest_path.write_text(
+        json.dumps(
+            {
+                "source_repo": SOURCE_REPO,
+                "pinned_commit": PINNED_COMMIT,
+                "files": [
+                    {
+                        "path": "../../../../etc/passwd",
+                        "sha256": "0" * 64,
+                        "byte_count": 10,
+                    }
+                ],
+            }
+        ),
+        encoding="utf-8",
+    )
+    with pytest.raises(ModelInputError, match="unrecognised path"):
+        load_eligible_historical_records(raw_dir=raw_dir, manifest_path=manifest_path)
+
+
+def test_a1_rejects_a_file_entry_with_a_non_string_path(tmp_path):
+    raw_dir, manifest_path = tmp_path / "raw", tmp_path / "manifest.json"
+    manifest_path.write_text(
+        json.dumps(
+            {
+                "source_repo": SOURCE_REPO,
+                "pinned_commit": PINNED_COMMIT,
+                "files": [{"path": 12345, "sha256": "0" * 64, "byte_count": 10}],
+            }
+        ),
+        encoding="utf-8",
+    )
+    with pytest.raises(ModelInputError, match="unrecognised path"):
+        load_eligible_historical_records(raw_dir=raw_dir, manifest_path=manifest_path)
+
+
+def test_a1_existing_valid_manifest_still_passes_unchanged(tmp_path):
+    # The positive control: a correctly-identified, correctly-hashed manifest must
+    # continue to pass exactly as before this guard was added.
+    raw_dir, manifest_path = tmp_path / "raw", tmp_path / "manifest.json"
+    entries = list(_three_season_texts().items())
+    _write_manifest(raw_dir, manifest_path, entries)  # real SOURCE_REPO/PINNED_COMMIT
+    records = load_eligible_historical_records(raw_dir=raw_dir, manifest_path=manifest_path)
+    assert len(records) == 1140

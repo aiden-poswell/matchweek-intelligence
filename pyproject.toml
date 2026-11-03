@@ -16,6 +16,8 @@ mi-fetch = "matchweek_intelligence.fetch:main"
 mi-data-quality = "matchweek_intelligence.build_data_quality:main"
 mi-historical-corpus = "matchweek_intelligence.build_historical_corpus:main"
 mi-baseline-backtest = "matchweek_intelligence.build_baseline_backtest:main"
+mi-attribution-backtest = "matchweek_intelligence.build_attribution_backtest:main"
+mi-calibration-diagnostics = "matchweek_intelligence.build_calibration_diagnostics:main"
 
 [build-system]
 requires = ["uv_build>=0.13.1,<0.14.0"]

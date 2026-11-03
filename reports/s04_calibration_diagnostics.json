@@ -1,0 +1,1322 @@
+{
+  "cold_start_subset": {
+    "expanding_league_prior": {
+      "cold_start_mean_log_loss": 1.0227171372786956,
+      "cold_start_n": 5,
+      "note": "descriptive only \u2014 N is tiny, no generalisation implied",
+      "warm_mean_log_loss": 1.0836738503897942,
+      "warm_n": 755
+    },
+    "league_only_poisson": {
+      "cold_start_mean_log_loss": 1.0221583118844129,
+      "cold_start_n": 5,
+      "note": "descriptive only \u2014 N is tiny, no generalisation implied",
+      "warm_mean_log_loss": 1.0820762445532648,
+      "warm_n": 755
+    },
+    "rolling_league_frequency": {
+      "cold_start_mean_log_loss": 1.024305833620613,
+      "cold_start_n": 5,
+      "note": "descriptive only \u2014 N is tiny, no generalisation implied",
+      "warm_mean_log_loss": 1.0947933818735591,
+      "warm_n": 755
+    },
+    "team_goal_poisson": {
+      "cold_start_mean_log_loss": 0.8207839616630132,
+      "cold_start_n": 5,
+      "note": "descriptive only \u2014 N is tiny, no generalisation implied",
+      "warm_mean_log_loss": 1.0160215349609296,
+      "warm_n": 755
+    }
+  },
+  "equal_count_bins": {
+    "expanding_league_prior": {
+      "A": [
+        {
+          "bin_index": 0,
+          "mean_predicted_pct": 31.966671563162034,
+          "n": 152,
+          "observed_rate_pct": 37.5,
+          "predicted_prob_range": [
+            0.3128834355828221,
+            0.3237051792828685
+          ]
+        },
+        {
+          "bin_index": 1,
+          "mean_predicted_pct": 32.598540393231595,
+          "n": 152,
+          "observed_rate_pct": 32.23684210526316,
+          "predicted_prob_range": [
+            0.3237051792828685,
+            0.32754342431761785
+          ]
+        },
+        {
+          "bin_index": 2,
+          "mean_predicted_pct": 32.85865405225394,
+          "n": 152,
+          "observed_rate_pct": 32.23684210526316,
+          "predicted_prob_range": [
+            0.32754342431761785,
+            0.3293795620437956
+          ]
+        },
+        {
+          "bin_index": 3,
+          "mean_predicted_pct": 33.08276697819264,
+          "n": 152,
+          "observed_rate_pct": 32.23684210526316,
+          "predicted_prob_range": [
+            0.3293795620437956,
+            0.33288590604026846
+          ]
+        },
+        {
+          "bin_index": 4,
+          "mean_predicted_pct": 33.50441665605725,
+          "n": 152,
+          "observed_rate_pct": 27.631578947368425,
+          "predicted_prob_range": [
+            0.33288590604026846,
+            0.34006211180124224
+          ]
+        }
+      ],
+      "D": [
+        {
+          "bin_index": 0,
+          "mean_predicted_pct": 22.37378023966453,
+          "n": 152,
+          "observed_rate_pct": 28.947368421052634,
+          "predicted_prob_range": [
+            0.2125,
+            0.22827346465816917
+          ]
+        },
+        {
+          "bin_index": 1,
+          "mean_predicted_pct": 22.94523247445973,
+          "n": 152,
+          "observed_rate_pct": 28.289473684210524,
+          "predicted_prob_range": [
+            0.22827346465816917,
+            0.23065476190476192
+          ]
+        },
+        {
+          "bin_index": 2,
+          "mean_predicted_pct": 23.155042337290947,
+          "n": 152,
+          "observed_rate_pct": 21.710526315789476,
+          "predicted_prob_range": [
+            0.23065476190476192,
+            0.23277467411545624
+          ]
+        },
+        {
+          "bin_index": 3,
+          "mean_predicted_pct": 23.531890178071944,
+          "n": 152,
+          "observed_rate_pct": 25.0,
+          "predicted_prob_range": [
+            0.23277467411545624,
+            0.23893805309734514
+          ]
+        },
+        {
+          "bin_index": 4,
+          "mean_predicted_pct": 24.138898432416152,
+          "n": 152,
+          "observed_rate_pct": 25.657894736842106,
+          "predicted_prob_range": [
+            0.23893805309734514,
+            0.2444836716681377
+          ]
+        }
+      ],
+      "H": [
+        {
+          "bin_index": 0,
+          "mean_predicted_pct": 43.069945871904466,
+          "n": 152,
+          "observed_rate_pct": 47.368421052631575,
+          "predicted_prob_range": [
+            0.42778288868445263,
+            0.43300653594771243
+          ]
+        },
+        {
+          "bin_index": 1,
+          "mean_predicted_pct": 43.45175402830929,
+          "n": 152,
+          "observed_rate_pct": 43.42105263157895,
+          "predicted_prob_range": [
+            0.43300653594771243,
+            0.4361111111111111
+          ]
+        },
+        {
+          "bin_index": 2,
+          "mean_predicted_pct": 43.74201096175867,
+          "n": 152,
+          "observed_rate_pct": 37.5,
+          "predicted_prob_range": [
+            0.436127744510978,
+            0.43985849056603776
+          ]
+        },
+        {
+          "bin_index": 3,
+          "mean_predicted_pct": 44.321252028548635,
+          "n": 152,
+          "observed_rate_pct": 40.78947368421053,
+          "predicted_prob_range": [
+            0.4399164054336468,
+            0.44594594594594594
+          ]
+        },
+        {
+          "bin_index": 4,
+          "mean_predicted_pct": 45.25914380467819,
+          "n": 152,
+          "observed_rate_pct": 39.473684210526315,
+          "predicted_prob_range": [
+            0.44680851063829785,
+            0.4609375
+          ]
+        }
+      ]
+    },
+    "league_only_poisson": {
+      "A": [
+        {
+          "bin_index": 0,
+          "mean_predicted_pct": 32.231442790802916,
+          "n": 152,
+          "observed_rate_pct": 33.55263157894737,
+          "predicted_prob_range": [
+            0.3178569864592304,
+            0.3263969970758695
+          ]
+        },
+        {
+          "bin_index": 1,
+          "mean_predicted_pct": 32.76986460908417,
+          "n": 152,
+          "observed_rate_pct": 31.57894736842105,
+          "predicted_prob_range": [
+            0.3263969970758695,
+            0.3285814254906586
+          ]
+        },
+        {
+          "bin_index": 2,
+          "mean_predicted_pct": 32.98526215314194,
+          "n": 152,
+          "observed_rate_pct": 28.947368421052634,
+          "predicted_prob_range": [
+            0.3285814254906586,
+            0.3309867273902741
+          ]
+        },
+        {
+          "bin_index": 3,
+          "mean_predicted_pct": 33.392654425035005,
+          "n": 152,
+          "observed_rate_pct": 35.526315789473685,
+          "predicted_prob_range": [
+            0.3309867273902741,
+            0.3358861831419644
+          ]
+        },
+        {
+          "bin_index": 4,
+          "mean_predicted_pct": 33.82521961417859,
+          "n": 152,
+          "observed_rate_pct": 32.23684210526316,
+          "predicted_prob_range": [
+            0.3358861831419644,
+            0.3422661632876309
+          ]
+        }
+      ],
+      "D": [
+        {
+          "bin_index": 0,
+          "mean_predicted_pct": 23.105407276113247,
+          "n": 152,
+          "observed_rate_pct": 28.289473684210524,
+          "predicted_prob_range": [
+            0.2280812875125622,
+            0.23228065833641984
+          ]
+        },
+        {
+          "bin_index": 1,
+          "mean_predicted_pct": 23.373773939309867,
+          "n": 152,
+          "observed_rate_pct": 21.052631578947366,
+          "predicted_prob_range": [
+            0.23228065833641984,
+            0.23545475405474006
+          ]
+        },
+        {
+          "bin_index": 2,
+          "mean_predicted_pct": 23.688911247937593,
+          "n": 152,
+          "observed_rate_pct": 24.342105263157894,
+          "predicted_prob_range": [
+            0.23545475405474006,
+            0.238353420856914
+          ]
+        },
+        {
+          "bin_index": 3,
+          "mean_predicted_pct": 23.88222812212537,
+          "n": 152,
+          "observed_rate_pct": 26.31578947368421,
+          "predicted_prob_range": [
+            0.238353420856914,
+            0.23976102383834313
+          ]
+        },
+        {
+          "bin_index": 4,
+          "mean_predicted_pct": 24.091726787887442,
+          "n": 152,
+          "observed_rate_pct": 29.605263157894733,
+          "predicted_prob_range": [
+            0.23976102383834313,
+            0.24174450990075208
+          ]
+        }
+      ],
+      "H": [
+        {
+          "bin_index": 0,
+          "mean_predicted_pct": 42.62935870395094,
+          "n": 152,
+          "observed_rate_pct": 51.973684210526315,
+          "predicted_prob_range": [
+            0.4237097167773618,
+            0.42763632267968377
+          ]
+        },
+        {
+          "bin_index": 1,
+          "mean_predicted_pct": 42.83796524902398,
+          "n": 152,
+          "observed_rate_pct": 43.42105263157895,
+          "predicted_prob_range": [
+            0.42763632267968377,
+            0.4291595301350428
+          ]
+        },
+        {
+          "bin_index": 2,
+          "mean_predicted_pct": 43.08476513203844,
+          "n": 152,
+          "observed_rate_pct": 35.526315789473685,
+          "predicted_prob_range": [
+            0.4292020153783834,
+            0.43208012406047763
+          ]
+        },
+        {
+          "bin_index": 3,
+          "mean_predicted_pct": 43.45083020651243,
+          "n": 152,
+          "observed_rate_pct": 37.5,
+          "predicted_prob_range": [
+            0.43208012406047763,
+            0.4419585643147134
+          ]
+        },
+        {
+          "bin_index": 4,
+          "mean_predicted_pct": 44.65058974285799,
+          "n": 152,
+          "observed_rate_pct": 40.131578947368425,
+          "predicted_prob_range": [
+            0.4419585643147134,
+            0.45386503324854166
+          ]
+        }
+      ]
+    },
+    "rolling_league_frequency": {
+      "A": [
+        {
+          "bin_index": 0,
+          "mean_predicted_pct": 27.563548927808963,
+          "n": 152,
+          "observed_rate_pct": 40.78947368421053,
+          "predicted_prob_range": [
+            0.24271844660194175,
+            0.2912621359223301
+          ]
+        },
+        {
+          "bin_index": 1,
+          "mean_predicted_pct": 30.521396729842685,
+          "n": 152,
+          "observed_rate_pct": 32.89473684210527,
+          "predicted_prob_range": [
+            0.2912621359223301,
+            0.3142857142857143
+          ]
+        },
+        {
+          "bin_index": 2,
+          "mean_predicted_pct": 32.19558043942269,
+          "n": 152,
+          "observed_rate_pct": 26.31578947368421,
+          "predicted_prob_range": [
+            0.3142857142857143,
+            0.3300970873786408
+          ]
+        },
+        {
+          "bin_index": 3,
+          "mean_predicted_pct": 35.142267599519684,
+          "n": 152,
+          "observed_rate_pct": 27.631578947368425,
+          "predicted_prob_range": [
+            0.3300970873786408,
+            0.36893203883495146
+          ]
+        },
+        {
+          "bin_index": 4,
+          "mean_predicted_pct": 40.26706129912343,
+          "n": 152,
+          "observed_rate_pct": 34.21052631578947,
+          "predicted_prob_range": [
+            0.36893203883495146,
+            0.45714285714285713
+          ]
+        }
+      ],
+      "D": [
+        {
+          "bin_index": 0,
+          "mean_predicted_pct": 19.418457577849736,
+          "n": 152,
+          "observed_rate_pct": 28.947368421052634,
+          "predicted_prob_range": [
+            0.16346153846153846,
+            0.20952380952380953
+          ]
+        },
+        {
+          "bin_index": 1,
+          "mean_predicted_pct": 22.27224566019441,
+          "n": 152,
+          "observed_rate_pct": 27.631578947368425,
+          "predicted_prob_range": [
+            0.20952380952380953,
+            0.2358490566037736
+          ]
+        },
+        {
+          "bin_index": 2,
+          "mean_predicted_pct": 24.883764917999564,
+          "n": 152,
+          "observed_rate_pct": 17.105263157894736,
+          "predicted_prob_range": [
+            0.2358490566037736,
+            0.2616822429906542
+          ]
+        },
+        {
+          "bin_index": 3,
+          "mean_predicted_pct": 27.513463060991565,
+          "n": 152,
+          "observed_rate_pct": 28.947368421052634,
+          "predicted_prob_range": [
+            0.2616822429906542,
+            0.28846153846153844
+          ]
+        },
+        {
+          "bin_index": 4,
+          "mean_predicted_pct": 32.32240385030252,
+          "n": 152,
+          "observed_rate_pct": 26.973684210526315,
+          "predicted_prob_range": [
+            0.28846153846153844,
+            0.3669724770642202
+          ]
+        }
+      ],
+      "H": [
+        {
+          "bin_index": 0,
+          "mean_predicted_pct": 33.89898663259604,
+          "n": 152,
+          "observed_rate_pct": 39.473684210526315,
+          "predicted_prob_range": [
+            0.3106796116504854,
+            0.3592233009708738
+          ]
+        },
+        {
+          "bin_index": 1,
+          "mean_predicted_pct": 38.475751221474624,
+          "n": 152,
+          "observed_rate_pct": 44.73684210526316,
+          "predicted_prob_range": [
+            0.3644859813084112,
+            0.4056603773584906
+          ]
+        },
+        {
+          "bin_index": 2,
+          "mean_predicted_pct": 42.23876007420754,
+          "n": 152,
+          "observed_rate_pct": 41.44736842105263,
+          "predicted_prob_range": [
+            0.4056603773584906,
+            0.4368932038834951
+          ]
+        },
+        {
+          "bin_index": 3,
+          "mean_predicted_pct": 44.58448907735011,
+          "n": 152,
+          "observed_rate_pct": 42.10526315789473,
+          "predicted_prob_range": [
+            0.4368932038834951,
+            0.46153846153846156
+          ]
+        },
+        {
+          "bin_index": 4,
+          "mean_predicted_pct": 48.7018229313164,
+          "n": 152,
+          "observed_rate_pct": 40.78947368421053,
+          "predicted_prob_range": [
+            0.46153846153846156,
+            0.5242718446601942
+          ]
+        }
+      ]
+    },
+    "team_goal_poisson": {
+      "A": [
+        {
+          "bin_index": 0,
+          "mean_predicted_pct": 13.788788675749638,
+          "n": 152,
+          "observed_rate_pct": 15.131578947368421,
+          "predicted_prob_range": [
+            0.056534642005762824,
+            0.1869948062530839
+          ]
+        },
+        {
+          "bin_index": 1,
+          "mean_predicted_pct": 23.4872602680824,
+          "n": 152,
+          "observed_rate_pct": 27.631578947368425,
+          "predicted_prob_range": [
+            0.1883135345181364,
+            0.27461885332418895
+          ]
+        },
+        {
+          "bin_index": 2,
+          "mean_predicted_pct": 30.879450217781663,
+          "n": 152,
+          "observed_rate_pct": 27.631578947368425,
+          "predicted_prob_range": [
+            0.2757610504504705,
+            0.33724391325200337
+          ]
+        },
+        {
+          "bin_index": 3,
+          "mean_predicted_pct": 38.6255133346965,
+          "n": 152,
+          "observed_rate_pct": 34.868421052631575,
+          "predicted_prob_range": [
+            0.3378349230688868,
+            0.4518107993471229
+          ]
+        },
+        {
+          "bin_index": 4,
+          "mean_predicted_pct": 57.17215810738625,
+          "n": 152,
+          "observed_rate_pct": 56.57894736842105,
+          "predicted_prob_range": [
+            0.45276864003630884,
+            0.8790513202681164
+          ]
+        }
+      ],
+      "D": [
+        {
+          "bin_index": 0,
+          "mean_predicted_pct": 17.060622851630107,
+          "n": 152,
+          "observed_rate_pct": 17.763157894736842,
+          "predicted_prob_range": [
+            0.08880054142999778,
+            0.19371544749205996
+          ]
+        },
+        {
+          "bin_index": 1,
+          "mean_predicted_pct": 20.874228444370285,
+          "n": 152,
+          "observed_rate_pct": 26.973684210526315,
+          "predicted_prob_range": [
+            0.19379070308762472,
+            0.21977555036744298
+          ]
+        },
+        {
+          "bin_index": 2,
+          "mean_predicted_pct": 22.80950690389403,
+          "n": 152,
+          "observed_rate_pct": 28.289473684210524,
+          "predicted_prob_range": [
+            0.21985432391071716,
+            0.23556389107120201
+          ]
+        },
+        {
+          "bin_index": 3,
+          "mean_predicted_pct": 24.353484019484984,
+          "n": 152,
+          "observed_rate_pct": 23.026315789473685,
+          "predicted_prob_range": [
+            0.23559946712721117,
+            0.2526600857991947
+          ]
+        },
+        {
+          "bin_index": 4,
+          "mean_predicted_pct": 26.82362959675657,
+          "n": 152,
+          "observed_rate_pct": 33.55263157894737,
+          "predicted_prob_range": [
+            0.25267304238800325,
+            0.30517618402336366
+          ]
+        }
+      ],
+      "H": [
+        {
+          "bin_index": 0,
+          "mean_predicted_pct": 21.24288175779491,
+          "n": 152,
+          "observed_rate_pct": 17.763157894736842,
+          "predicted_prob_range": [
+            0.032148138301885745,
+            0.30964532525274213
+          ]
+        },
+        {
+          "bin_index": 1,
+          "mean_predicted_pct": 36.791970887299755,
+          "n": 152,
+          "observed_rate_pct": 38.81578947368421,
+          "predicted_prob_range": [
+            0.3114061537836462,
+            0.40975545697914706
+          ]
+        },
+        {
+          "bin_index": 2,
+          "mean_predicted_pct": 44.30140506337452,
+          "n": 152,
+          "observed_rate_pct": 39.473684210526315,
+          "predicted_prob_range": [
+            0.4098995165929568,
+            0.4820245094062445
+          ]
+        },
+        {
+          "bin_index": 3,
+          "mean_predicted_pct": 53.60935763063242,
+          "n": 152,
+          "observed_rate_pct": 46.71052631578947,
+          "predicted_prob_range": [
+            0.482679861020106,
+            0.6001775293992737
+          ]
+        },
+        {
+          "bin_index": 4,
+          "mean_predicted_pct": 68.17974224106592,
+          "n": 152,
+          "observed_rate_pct": 65.78947368421053,
+          "predicted_prob_range": [
+            0.6002983884684068,
+            0.8364174666271724
+          ]
+        }
+      ]
+    }
+  },
+  "evaluation_seasons": [
+    "2024-25",
+    "2025-26"
+  ],
+  "log_loss_by_favourite_band": {
+    "expanding_league_prior": {
+      "0.33-0.45": {
+        "mean_log_loss": 1.081852613529091,
+        "n": 658
+      },
+      "0.45-0.55": {
+        "mean_log_loss": 1.0924345394955506,
+        "n": 102
+      },
+      "<0.33": {
+        "mean_log_loss": null,
+        "n": 0
+      },
+      ">0.55": {
+        "mean_log_loss": null,
+        "n": 0
+      }
+    },
+    "league_only_poisson": {
+      "0.33-0.45": {
+        "mean_log_loss": 1.0821488488842892,
+        "n": 748
+      },
+      "0.45-0.55": {
+        "mean_log_loss": 1.052584769307389,
+        "n": 12
+      },
+      "<0.33": {
+        "mean_log_loss": null,
+        "n": 0
+      },
+      ">0.55": {
+        "mean_log_loss": null,
+        "n": 0
+      }
+    },
+    "rolling_league_frequency": {
+      "0.33-0.45": {
+        "mean_log_loss": 1.0954543004040491,
+        "n": 565
+      },
+      "0.45-0.55": {
+        "mean_log_loss": 1.0910710397659098,
+        "n": 195
+      },
+      "<0.33": {
+        "mean_log_loss": null,
+        "n": 0
+      },
+      ">0.55": {
+        "mean_log_loss": null,
+        "n": 0
+      }
+    },
+    "team_goal_poisson": {
+      "0.33-0.45": {
+        "mean_log_loss": 1.0830651204878161,
+        "n": 246
+      },
+      "0.45-0.55": {
+        "mean_log_loss": 1.1035329161768406,
+        "n": 223
+      },
+      "<0.33": {
+        "mean_log_loss": null,
+        "n": 0
+      },
+      ">0.55": {
+        "mean_log_loss": 0.8889289304342912,
+        "n": 291
+      }
+    }
+  },
+  "log_loss_by_season": {
+    "expanding_league_prior": {
+      "2024-25": {
+        "mean_log_loss": 1.082313595394208,
+        "n": 380
+      },
+      "2025-26": {
+        "mean_log_loss": 1.0842320433707606,
+        "n": 380
+      }
+    },
+    "league_only_poisson": {
+      "2024-25": {
+        "mean_log_loss": 1.079878973484988,
+        "n": 380
+      },
+      "2025-26": {
+        "mean_log_loss": 1.083485121770636,
+        "n": 380
+      }
+    },
+    "rolling_league_frequency": {
+      "2024-25": {
+        "mean_log_loss": 1.0976953357136419,
+        "n": 380
+      },
+      "2025-26": {
+        "mean_log_loss": 1.0909639602933063,
+        "n": 380
+      }
+    },
+    "team_goal_poisson": {
+      "2024-25": {
+        "mean_log_loss": 0.9972051270067824,
+        "n": 380
+      },
+      "2025-26": {
+        "mean_log_loss": 1.0322690274769464,
+        "n": 380
+      }
+    }
+  },
+  "mean_vs_observed": {
+    "expanding_league_prior": {
+      "by_season": {
+        "2024-25": {
+          "A": {
+            "gap_pct_points_observed_minus_predicted": 2.001277774337651,
+            "mean_predicted_pct": 32.73556433092551,
+            "n": 380,
+            "observed_pct": 34.73684210526316
+          },
+          "D": {
+            "gap_pct_points_observed_minus_predicted": 1.498003437156961,
+            "mean_predicted_pct": 22.975680773369355,
+            "n": 380,
+            "observed_pct": 24.47368421052632
+          },
+          "H": {
+            "gap_pct_points_observed_minus_predicted": -3.4992812114946146,
+            "mean_predicted_pct": 44.28875489570514,
+            "n": 380,
+            "observed_pct": 40.78947368421053
+          }
+        },
+        "2025-26": {
+          "A": {
+            "gap_pct_points_observed_minus_predicted": -2.8688555262334714,
+            "mean_predicted_pct": 32.86885552623347,
+            "n": 380,
+            "observed_pct": 30.0
+          },
+          "D": {
+            "gap_pct_points_observed_minus_predicted": 3.8861643612396164,
+            "mean_predicted_pct": 23.482256691391964,
+            "n": 380,
+            "observed_pct": 27.368421052631582
+          },
+          "H": {
+            "gap_pct_points_observed_minus_predicted": -1.017308835006142,
+            "mean_predicted_pct": 43.648887782374565,
+            "n": 380,
+            "observed_pct": 42.63157894736842
+          }
+        }
+      },
+      "overall": {
+        "A": {
+          "gap_pct_points_observed_minus_predicted": -0.43378887594791027,
+          "mean_predicted_pct": 32.80220992857949,
+          "n": 760,
+          "observed_pct": 32.36842105263158
+        },
+        "D": {
+          "gap_pct_points_observed_minus_predicted": 2.692083899198286,
+          "mean_predicted_pct": 23.228968732380658,
+          "n": 760,
+          "observed_pct": 25.921052631578945
+        },
+        "H": {
+          "gap_pct_points_observed_minus_predicted": -2.2582950232503727,
+          "mean_predicted_pct": 43.96882133903985,
+          "n": 760,
+          "observed_pct": 41.71052631578947
+        }
+      }
+    },
+    "league_only_poisson": {
+      "by_season": {
+        "2024-25": {
+          "A": {
+            "gap_pct_points_observed_minus_predicted": 1.688438968247391,
+            "mean_predicted_pct": 33.04840313701577,
+            "n": 380,
+            "observed_pct": 34.73684210526316
+          },
+          "D": {
+            "gap_pct_points_observed_minus_predicted": 1.1619351768960757,
+            "mean_predicted_pct": 23.311749033630242,
+            "n": 380,
+            "observed_pct": 24.47368421052632
+          },
+          "H": {
+            "gap_pct_points_observed_minus_predicted": -2.8503741451434528,
+            "mean_predicted_pct": 43.639847829353975,
+            "n": 380,
+            "observed_pct": 40.78947368421053
+          }
+        },
+        "2025-26": {
+          "A": {
+            "gap_pct_points_observed_minus_predicted": -3.033374299881281,
+            "mean_predicted_pct": 33.03337429988128,
+            "n": 380,
+            "observed_pct": 30.0
+          },
+          "D": {
+            "gap_pct_points_observed_minus_predicted": 3.4233511369124114,
+            "mean_predicted_pct": 23.94506991571917,
+            "n": 380,
+            "observed_pct": 27.368421052631582
+          },
+          "H": {
+            "gap_pct_points_observed_minus_predicted": -0.3899768370311141,
+            "mean_predicted_pct": 43.02155578439953,
+            "n": 380,
+            "observed_pct": 42.63157894736842
+          }
+        }
+      },
+      "overall": {
+        "A": {
+          "gap_pct_points_observed_minus_predicted": -0.6724676658169448,
+          "mean_predicted_pct": 33.04088871844853,
+          "n": 760,
+          "observed_pct": 32.36842105263158
+        },
+        "D": {
+          "gap_pct_points_observed_minus_predicted": 2.2926431569042394,
+          "mean_predicted_pct": 23.628409474674704,
+          "n": 760,
+          "observed_pct": 25.921052631578945
+        },
+        "H": {
+          "gap_pct_points_observed_minus_predicted": -1.6201754910872779,
+          "mean_predicted_pct": 43.33070180687675,
+          "n": 760,
+          "observed_pct": 41.71052631578947
+        }
+      }
+    },
+    "rolling_league_frequency": {
+      "by_season": {
+        "2024-25": {
+          "A": {
+            "gap_pct_points_observed_minus_predicted": 0.1546252061241593,
+            "mean_predicted_pct": 34.582216899139,
+            "n": 380,
+            "observed_pct": 34.73684210526316
+          },
+          "D": {
+            "gap_pct_points_observed_minus_predicted": 0.2632190663225231,
+            "mean_predicted_pct": 24.210465144203795,
+            "n": 380,
+            "observed_pct": 24.47368421052632
+          },
+          "H": {
+            "gap_pct_points_observed_minus_predicted": -0.41784427244668243,
+            "mean_predicted_pct": 41.20731795665721,
+            "n": 380,
+            "observed_pct": 40.78947368421053
+          }
+        },
+        "2025-26": {
+          "A": {
+            "gap_pct_points_observed_minus_predicted": -1.6937250991479802,
+            "mean_predicted_pct": 31.69372509914798,
+            "n": 380,
+            "observed_pct": 30.0
+          },
+          "D": {
+            "gap_pct_points_observed_minus_predicted": 1.0147521699002515,
+            "mean_predicted_pct": 26.35366888273133,
+            "n": 380,
+            "observed_pct": 27.368421052631582
+          },
+          "H": {
+            "gap_pct_points_observed_minus_predicted": 0.6789729292477287,
+            "mean_predicted_pct": 41.95260601812069,
+            "n": 380,
+            "observed_pct": 42.63157894736842
+          }
+        }
+      },
+      "overall": {
+        "A": {
+          "gap_pct_points_observed_minus_predicted": -0.7695499465119104,
+          "mean_predicted_pct": 33.13797099914349,
+          "n": 760,
+          "observed_pct": 32.36842105263158
+        },
+        "D": {
+          "gap_pct_points_observed_minus_predicted": 0.6389856181113818,
+          "mean_predicted_pct": 25.282067013467564,
+          "n": 760,
+          "observed_pct": 25.921052631578945
+        },
+        "H": {
+          "gap_pct_points_observed_minus_predicted": 0.13056432840052867,
+          "mean_predicted_pct": 41.57996198738895,
+          "n": 760,
+          "observed_pct": 41.71052631578947
+        }
+      }
+    },
+    "team_goal_poisson": {
+      "by_season": {
+        "2024-25": {
+          "A": {
+            "gap_pct_points_observed_minus_predicted": 1.2953580766100592,
+            "mean_predicted_pct": 33.4414840286531,
+            "n": 380,
+            "observed_pct": 34.73684210526316
+          },
+          "D": {
+            "gap_pct_points_observed_minus_predicted": 2.58854724285201,
+            "mean_predicted_pct": 21.885136967674306,
+            "n": 380,
+            "observed_pct": 24.47368421052632
+          },
+          "H": {
+            "gap_pct_points_observed_minus_predicted": -3.8839053194620554,
+            "mean_predicted_pct": 44.67337900367258,
+            "n": 380,
+            "observed_pct": 40.78947368421053
+          }
+        },
+        "2025-26": {
+          "A": {
+            "gap_pct_points_observed_minus_predicted": -2.1397842128254796,
+            "mean_predicted_pct": 32.139784212825475,
+            "n": 380,
+            "observed_pct": 30.0
+          },
+          "D": {
+            "gap_pct_points_observed_minus_predicted": 4.484969293851496,
+            "mean_predicted_pct": 22.883451758780087,
+            "n": 380,
+            "observed_pct": 27.368421052631582
+          },
+          "H": {
+            "gap_pct_points_observed_minus_predicted": -2.3451850810259964,
+            "mean_predicted_pct": 44.97676402839442,
+            "n": 380,
+            "observed_pct": 42.63157894736842
+          }
+        }
+      },
+      "overall": {
+        "A": {
+          "gap_pct_points_observed_minus_predicted": -0.422213068107713,
+          "mean_predicted_pct": 32.79063412073929,
+          "n": 760,
+          "observed_pct": 32.36842105263158
+        },
+        "D": {
+          "gap_pct_points_observed_minus_predicted": 3.53675826835175,
+          "mean_predicted_pct": 22.384294363227195,
+          "n": 760,
+          "observed_pct": 25.921052631578945
+        },
+        "H": {
+          "gap_pct_points_observed_minus_predicted": -3.1145452002440233,
+          "mean_predicted_pct": 44.825071516033496,
+          "n": 760,
+          "observed_pct": 41.71052631578947
+        }
+      }
+    }
+  },
+  "models": [
+    "expanding_league_prior",
+    "rolling_league_frequency",
+    "team_goal_poisson",
+    "league_only_poisson"
+  ],
+  "n_models": 4,
+  "n_total_rows": 3040,
+  "worst_scored_fixtures": {
+    "expanding_league_prior": [
+      {
+        "actual_outcome": "D",
+        "away_score": 1,
+        "away_team": "Newcastle United",
+        "home_score": 1,
+        "home_team": "Bournemouth",
+        "log_loss": 1.5488132906176655,
+        "match_date": "2024-08-25",
+        "p_away": 0.3275,
+        "p_draw": 0.2125,
+        "p_home": 0.46,
+        "season": "2024-25"
+      },
+      {
+        "actual_outcome": "D",
+        "away_score": 1,
+        "away_team": "Brighton & Hove Albion",
+        "home_score": 1,
+        "home_team": "Arsenal",
+        "log_loss": 1.5445892656931752,
+        "match_date": "2024-08-31",
+        "p_away": 0.32754342431761785,
+        "p_draw": 0.21339950372208435,
+        "p_home": 0.45905707196029777,
+        "season": "2024-25"
+      },
+      {
+        "actual_outcome": "D",
+        "away_score": 1,
+        "away_team": "Fulham",
+        "home_score": 1,
+        "home_team": "Ipswich Town",
+        "log_loss": 1.5445892656931752,
+        "match_date": "2024-08-31",
+        "p_away": 0.32754342431761785,
+        "p_draw": 0.21339950372208435,
+        "p_home": 0.45905707196029777,
+        "season": "2024-25"
+      },
+      {
+        "actual_outcome": "D",
+        "away_score": 1,
+        "away_team": "Wolverhampton Wanderers",
+        "home_score": 1,
+        "home_team": "Nottingham Forest",
+        "log_loss": 1.5445892656931752,
+        "match_date": "2024-08-31",
+        "p_away": 0.32754342431761785,
+        "p_draw": 0.21339950372208435,
+        "p_home": 0.45905707196029777,
+        "season": "2024-25"
+      },
+      {
+        "actual_outcome": "D",
+        "away_score": 1,
+        "away_team": "Tottenham Hotspur",
+        "home_score": 1,
+        "home_team": "Leicester City",
+        "log_loss": 1.540445040947149,
+        "match_date": "2024-08-19",
+        "p_away": 0.32653061224489793,
+        "p_draw": 0.21428571428571427,
+        "p_home": 0.45918367346938777,
+        "season": "2024-25"
+      }
+    ],
+    "league_only_poisson": [
+      {
+        "actual_outcome": "D",
+        "away_score": 1,
+        "away_team": "Bournemouth",
+        "home_score": 1,
+        "home_team": "Nottingham Forest",
+        "log_loss": 1.4771911808548377,
+        "match_date": "2024-08-17",
+        "p_away": 0.3178569864592304,
+        "p_draw": 0.2282779802922278,
+        "p_home": 0.45386503324854166,
+        "season": "2024-25"
+      },
+      {
+        "actual_outcome": "D",
+        "away_score": 1,
+        "away_team": "Tottenham Hotspur",
+        "home_score": 1,
+        "home_team": "Leicester City",
+        "log_loss": 1.4722727909009008,
+        "match_date": "2024-08-19",
+        "p_away": 0.3206460087237947,
+        "p_draw": 0.22940350603553256,
+        "p_home": 0.449950485240673,
+        "season": "2024-25"
+      },
+      {
+        "actual_outcome": "D",
+        "away_score": 1,
+        "away_team": "Brighton & Hove Albion",
+        "home_score": 1,
+        "home_team": "Arsenal",
+        "log_loss": 1.4712533716095355,
+        "match_date": "2024-08-31",
+        "p_away": 0.3212060949525032,
+        "p_draw": 0.2296374836354688,
+        "p_home": 0.44915642141202805,
+        "season": "2024-25"
+      },
+      {
+        "actual_outcome": "D",
+        "away_score": 1,
+        "away_team": "Fulham",
+        "home_score": 1,
+        "home_team": "Ipswich Town",
+        "log_loss": 1.4712533716095355,
+        "match_date": "2024-08-31",
+        "p_away": 0.3212060949525032,
+        "p_draw": 0.2296374836354688,
+        "p_home": 0.44915642141202805,
+        "season": "2024-25"
+      },
+      {
+        "actual_outcome": "D",
+        "away_score": 1,
+        "away_team": "Wolverhampton Wanderers",
+        "home_score": 1,
+        "home_team": "Nottingham Forest",
+        "log_loss": 1.4712533716095355,
+        "match_date": "2024-08-31",
+        "p_away": 0.3212060949525032,
+        "p_draw": 0.2296374836354688,
+        "p_home": 0.44915642141202805,
+        "season": "2024-25"
+      }
+    ],
+    "rolling_league_frequency": [
+      {
+        "actual_outcome": "D",
+        "away_score": 0,
+        "away_team": "Chelsea",
+        "home_score": 0,
+        "home_team": "Brentford",
+        "log_loss": 1.8111775550851565,
+        "match_date": "2025-04-06",
+        "p_away": 0.41346153846153844,
+        "p_draw": 0.16346153846153846,
+        "p_home": 0.4230769230769231,
+        "season": "2024-25"
+      },
+      {
+        "actual_outcome": "D",
+        "away_score": 0,
+        "away_team": "Manchester City",
+        "home_score": 0,
+        "home_team": "Manchester United",
+        "log_loss": 1.8111775550851565,
+        "match_date": "2025-04-06",
+        "p_away": 0.41346153846153844,
+        "p_draw": 0.16346153846153846,
+        "p_home": 0.4230769230769231,
+        "season": "2024-25"
+      },
+      {
+        "actual_outcome": "D",
+        "away_score": 1,
+        "away_team": "Arsenal",
+        "home_score": 1,
+        "home_team": "Everton",
+        "log_loss": 1.7443572303334711,
+        "match_date": "2025-04-05",
+        "p_away": 0.4077669902912621,
+        "p_draw": 0.17475728155339806,
+        "p_home": 0.4174757281553398,
+        "season": "2024-25"
+      },
+      {
+        "actual_outcome": "D",
+        "away_score": 2,
+        "away_team": "Bournemouth",
+        "home_score": 2,
+        "home_team": "West Ham United",
+        "log_loss": 1.7443572303334711,
+        "match_date": "2025-04-05",
+        "p_away": 0.4077669902912621,
+        "p_draw": 0.17475728155339806,
+        "p_home": 0.4174757281553398,
+        "season": "2024-25"
+      },
+      {
+        "actual_outcome": "D",
+        "away_score": 4,
+        "away_team": "Bournemouth",
+        "home_score": 4,
+        "home_team": "Manchester United",
+        "log_loss": 1.7443572303334711,
+        "match_date": "2025-12-15",
+        "p_away": 0.32038834951456313,
+        "p_draw": 0.17475728155339806,
+        "p_home": 0.5048543689320388,
+        "season": "2025-26"
+      }
+    ],
+    "team_goal_poisson": [
+      {
+        "actual_outcome": "A",
+        "away_score": 1,
+        "away_team": "West Ham United",
+        "home_score": 0,
+        "home_team": "Arsenal",
+        "log_loss": 2.457632350641314,
+        "match_date": "2025-02-22",
+        "p_away": 0.08563747062735352,
+        "p_draw": 0.13428369966281103,
+        "p_home": 0.7800788297098358,
+        "season": "2024-25"
+      },
+      {
+        "actual_outcome": "D",
+        "away_score": 0,
+        "away_team": "Manchester City",
+        "home_score": 0,
+        "home_team": "Southampton",
+        "log_loss": 2.339369313397029,
+        "match_date": "2025-05-10",
+        "p_away": 0.858635005012202,
+        "p_draw": 0.09638840994335902,
+        "p_home": 0.044976585044438536,
+        "season": "2024-25"
+      },
+      {
+        "actual_outcome": "A",
+        "away_score": 1,
+        "away_team": "Nottingham Forest",
+        "home_score": 0,
+        "home_team": "Liverpool",
+        "log_loss": 2.3018846438648732,
+        "match_date": "2024-09-14",
+        "p_away": 0.10007006945009504,
+        "p_draw": 0.15814382057010531,
+        "p_home": 0.7417861099797994,
+        "season": "2024-25"
+      },
+      {
+        "actual_outcome": "A",
+        "away_score": 3,
+        "away_team": "Nottingham Forest",
+        "home_score": 0,
+        "home_team": "Liverpool",
+        "log_loss": 2.1410390469114096,
+        "match_date": "2025-11-22",
+        "p_away": 0.11753265760970538,
+        "p_draw": 0.16869115391546097,
+        "p_home": 0.7137761884748337,
+        "season": "2025-26"
+      },
+      {
+        "actual_outcome": "A",
+        "away_score": 2,
+        "away_team": "Sunderland",
+        "home_score": 1,
+        "home_team": "Newcastle United",
+        "log_loss": 2.1114680930573084,
+        "match_date": "2026-03-22",
+        "p_away": 0.12106010840459198,
+        "p_draw": 0.20505114605254182,
+        "p_home": 0.6738887455428654,
+        "season": "2025-26"
+      }
+    ]
+  }
+}

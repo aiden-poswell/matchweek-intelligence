@@ -171,25 +171,24 @@ def _poisson_pmf(lam: float, i: int) -> float:
     return math.exp(-lam) * lam**i / math.factorial(i)
 
 
-def team_goal_poisson(records: list[ModelRecord], home_team: str, away_team: str) -> Prediction:
-    league_home_mean, league_away_mean = _league_means(records)
-    if not (math.isfinite(league_home_mean) and league_home_mean > 0):
-        raise BaselineModelError(f"league_home_mean is not finite/positive: {league_home_mean}")
-    if not (math.isfinite(league_away_mean) and league_away_mean > 0):
-        raise BaselineModelError(f"league_away_mean is not finite/positive: {league_away_mean}")
+def _validate_lambda(name: str, lam: float) -> None:
+    if not math.isfinite(lam) or lam <= 0:
+        raise BaselineModelError(f"{name} is not finite/positive: {lam}")
 
-    home_rates = _team_rates(records, home_team, league_home_mean, league_away_mean)
-    away_rates = _team_rates(records, away_team, league_home_mean, league_away_mean)
 
-    lambda_home = home_rates.h_for * away_rates.a_conceded / league_home_mean
-    lambda_away = away_rates.a_for * home_rates.h_conceded / league_away_mean
-
-    for name, lam in (("lambda_home", lambda_home), ("lambda_away", lambda_away)):
-        if not math.isfinite(lam) or lam <= 0:
-            raise BaselineModelError(f"{name} is not finite/positive: {lam}")
+def _poisson_outcome_distribution(lambda_home: float, lambda_away: float) -> dict:
+    """The SHARED goal-grid / tail-bound / H-D-A-aggregation routine used by BOTH
+    Poisson models (`team_goal_poisson` and `league_only_poisson`). Given the two
+    independent Poisson rate parameters, returns a dict with the normalised
+    `p_home`/`p_draw`/`p_away` plus the raw `tail_mass`/`included_mass`/`max_goals`
+    diagnostics — never a second, divergent implementation of this calculation.
+    """
+    _validate_lambda("lambda_home", lambda_home)
+    _validate_lambda("lambda_away", lambda_away)
 
     max_goals = 10
-    home_terms = away_terms = []
+    home_terms: list[float] = []
+    away_terms: list[float] = []
     included_mass = tail = 0.0
     while True:
         home_terms = [_poisson_pmf(lambda_home, i) for i in range(max_goals + 1)]
@@ -219,17 +218,41 @@ def team_goal_poisson(records: list[ModelRecord], home_team: str, away_team: str
     p_away = a_mass / included_mass
     _validate_probabilities(p_home, p_draw, p_away)
 
+    return {
+        "p_home": p_home,
+        "p_draw": p_draw,
+        "p_away": p_away,
+        "lambda_home": lambda_home,
+        "lambda_away": lambda_away,
+        "tail_mass": tail,
+        "included_mass": included_mass,
+        "max_goals": max_goals,
+    }
+
+
+def team_goal_poisson(records: list[ModelRecord], home_team: str, away_team: str) -> Prediction:
+    league_home_mean, league_away_mean = _league_means(records)
+    if not (math.isfinite(league_home_mean) and league_home_mean > 0):
+        raise BaselineModelError(f"league_home_mean is not finite/positive: {league_home_mean}")
+    if not (math.isfinite(league_away_mean) and league_away_mean > 0):
+        raise BaselineModelError(f"league_away_mean is not finite/positive: {league_away_mean}")
+
+    home_rates = _team_rates(records, home_team, league_home_mean, league_away_mean)
+    away_rates = _team_rates(records, away_team, league_home_mean, league_away_mean)
+
+    lambda_home = home_rates.h_for * away_rates.a_conceded / league_home_mean
+    lambda_away = away_rates.a_for * home_rates.h_conceded / league_away_mean
+
+    dist = _poisson_outcome_distribution(lambda_home, lambda_away)
+    trace = {k: v for k, v in dist.items() if k not in ("p_home", "p_draw", "p_away")}
+
     return Prediction(
-        p_home,
-        p_draw,
-        p_away,
+        dist["p_home"],
+        dist["p_draw"],
+        dist["p_away"],
         training_n=len(records),
         diagnostics={
-            "lambda_home": lambda_home,
-            "lambda_away": lambda_away,
-            "tail_mass": tail,
-            "included_mass": included_mass,
-            "max_goals": max_goals,
+            **trace,
             "home_team_n_home": home_rates.n_home,
             "home_team_n_away": home_rates.n_away,
             "away_team_n_home": away_rates.n_home,
@@ -237,4 +260,36 @@ def team_goal_poisson(records: list[ModelRecord], home_team: str, away_team: str
             "home_team_cold_start": (home_rates.n_home + home_rates.n_away) == 0,
             "away_team_cold_start": (away_rates.n_home + away_rates.n_away) == 0,
         },
+    )
+
+
+def league_only_poisson(records: list[ModelRecord], home_team: str, away_team: str) -> Prediction:
+    """The S04 ablation: identical Poisson machinery (same goal-grid, tail-bound, k=5
+    constants where applicable, and outcome-aggregation routine) as `team_goal_poisson`,
+    but with NO team identity at all — `home_team`/`away_team` are accepted only to
+    match the common model-function signature used by the backtest orchestrator and
+    are never read. `lambda_home`/`lambda_away` are the plain league-wide home/away
+    goal means (the same `_league_means` helper and the same safe 1.5/1.5 fallback on
+    an empty training set as `team_goal_poisson` already uses) — never any
+    team-specific rate. This isolates how much of `team_goal_poisson`'s advantage over
+    the categorical baselines is attributable to the Poisson/goal-based likelihood
+    family itself, versus to using team-specific attack/defence information on top of
+    it (see docs/S04_ATTRIBUTION_AND_CALIBRATION... / reports/S04_ATTRIBUTION_AUDIT.md).
+    """
+    del home_team, away_team  # deliberately unused — this model has no team identity
+    league_home_mean, league_away_mean = _league_means(records)
+    if not (math.isfinite(league_home_mean) and league_home_mean > 0):
+        raise BaselineModelError(f"league_home_mean is not finite/positive: {league_home_mean}")
+    if not (math.isfinite(league_away_mean) and league_away_mean > 0):
+        raise BaselineModelError(f"league_away_mean is not finite/positive: {league_away_mean}")
+
+    dist = _poisson_outcome_distribution(league_home_mean, league_away_mean)
+    trace = {k: v for k, v in dist.items() if k not in ("p_home", "p_draw", "p_away")}
+
+    return Prediction(
+        dist["p_home"],
+        dist["p_draw"],
+        dist["p_away"],
+        training_n=len(records),
+        diagnostics=trace,
     )

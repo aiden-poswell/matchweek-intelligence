@@ -1,0 +1,217 @@
+{
+  "attribution_comparison": {
+    "league_only_poisson_minus_expanding_league_prior": {
+      "by_season": {
+        "2024-25": {
+          "ci95_descriptive": [
+            -0.004454426332861194,
+            -0.0002571133551176885
+          ],
+          "interpretation": "negative means left_model wins (lower log loss)",
+          "left_model": "expanding_league_prior",
+          "note": "descriptive and approximate; not a formal hypothesis test",
+          "point_diff_log_loss_right_minus_left": -0.0024346219092199473,
+          "replicates": 1000,
+          "right_model": "league_only_poisson",
+          "seed": 20250103
+        },
+        "2025-26": {
+          "ci95_descriptive": [
+            -0.0027482795214179845,
+            0.0011273206351811726
+          ],
+          "interpretation": "negative means left_model wins (lower log loss)",
+          "left_model": "expanding_league_prior",
+          "note": "descriptive and approximate; not a formal hypothesis test",
+          "point_diff_log_loss_right_minus_left": -0.0007469216001245726,
+          "replicates": 1000,
+          "right_model": "league_only_poisson",
+          "seed": 20250103
+        }
+      },
+      "overall": {
+        "ci95_descriptive": [
+          -0.002985754899986981,
+          -0.00010828376700255937
+        ],
+        "interpretation": "negative means left_model wins (lower log loss)",
+        "left_model": "expanding_league_prior",
+        "note": "descriptive and approximate; not a formal hypothesis test",
+        "point_diff_log_loss_right_minus_left": -0.001590771754672371,
+        "replicates": 1000,
+        "right_model": "league_only_poisson",
+        "seed": 20250103
+      }
+    },
+    "team_goal_poisson_minus_league_only_poisson": {
+      "by_season": {
+        "2024-25": {
+          "ci95_descriptive": [
+            -0.11956636988503333,
+            -0.04588757997269055
+          ],
+          "interpretation": "negative means left_model wins (lower log loss)",
+          "left_model": "league_only_poisson",
+          "note": "descriptive and approximate; not a formal hypothesis test",
+          "point_diff_log_loss_right_minus_left": -0.08267384647820564,
+          "replicates": 1000,
+          "right_model": "team_goal_poisson",
+          "seed": 20250103
+        },
+        "2025-26": {
+          "ci95_descriptive": [
+            -0.08746200803547055,
+            -0.013024163536019318
+          ],
+          "interpretation": "negative means left_model wins (lower log loss)",
+          "left_model": "league_only_poisson",
+          "note": "descriptive and approximate; not a formal hypothesis test",
+          "point_diff_log_loss_right_minus_left": -0.051216094293689673,
+          "replicates": 1000,
+          "right_model": "team_goal_poisson",
+          "seed": 20250103
+        }
+      },
+      "overall": {
+        "ci95_descriptive": [
+          -0.09154627736827603,
+          -0.041747753496908624
+        ],
+        "interpretation": "negative means left_model wins (lower log loss)",
+        "left_model": "league_only_poisson",
+        "note": "descriptive and approximate; not a formal hypothesis test",
+        "point_diff_log_loss_right_minus_left": -0.06694497038594749,
+        "replicates": 1000,
+        "right_model": "team_goal_poisson",
+        "seed": 20250103
+      }
+    }
+  },
+  "config": {
+    "ablation_note": "league_only_poisson shares the exact goal-grid/tail-bound/outcome-aggregation routine with team_goal_poisson (baseline_models._poisson_outcome_distribution); it differs ONLY in using plain league-wide goal means as lambda instead of team-specific shrunk rates \u2014 isolating the Poisson-likelihood-family effect from the team-identity effect",
+    "alpha_smoothing": 1.0,
+    "bootstrap": {
+      "method": "paired fixed-seed date-block bootstrap",
+      "replicates": 1000,
+      "seed": 20250103
+    },
+    "cutoff_policy": "chronology.completed_training_results_as_of(all_eligible_historical_records, d): status == 'played_with_score' AND match_date < d, strictly; same-day fixtures are always excluded as a whole batch, never partially included",
+    "league_goal_mean_fallback": 1.5,
+    "poisson_shrinkage_k": 5.0,
+    "poisson_tail_bound": 1e-10,
+    "rolling_window_target": 100,
+    "scoring_convention": {
+      "brier": "three-component sum-of-squared-errors (range [0,2])",
+      "outcome_order": [
+        "H",
+        "D",
+        "A"
+      ],
+      "rps": "cumulative at H|D boundary, divided by 2"
+    }
+  },
+  "evaluation_seasons": [
+    "2024-25",
+    "2025-26"
+  ],
+  "models": {
+    "by_season": {
+      "2024-25": {
+        "expanding_league_prior": {
+          "accuracy": 0.40789473684210525,
+          "brier": 0.6563440697456397,
+          "log_loss": 1.082313595394208,
+          "n": 380,
+          "rps": 0.23540799730241005
+        },
+        "league_only_poisson": {
+          "accuracy": 0.40789473684210525,
+          "brier": 0.6548133373157664,
+          "log_loss": 1.079878973484988,
+          "n": 380,
+          "rps": 0.23488253400787207
+        },
+        "rolling_league_frequency": {
+          "accuracy": 0.39210526315789473,
+          "brier": 0.6654544703361661,
+          "log_loss": 1.0976953357136419,
+          "n": 380,
+          "rps": 0.23852826887987663
+        },
+        "team_goal_poisson": {
+          "accuracy": 0.5236842105263158,
+          "brier": 0.5956632883395853,
+          "log_loss": 0.9972051270067824,
+          "n": 380,
+          "rps": 0.20576897802601363
+        }
+      },
+      "2025-26": {
+        "expanding_league_prior": {
+          "accuracy": 0.4263157894736842,
+          "brier": 0.6561631973576569,
+          "log_loss": 1.0842320433707606,
+          "n": 380,
+          "rps": 0.22796153660307245
+        },
+        "league_only_poisson": {
+          "accuracy": 0.4263157894736842,
+          "brier": 0.6558034546106839,
+          "log_loss": 1.083485121770636,
+          "n": 380,
+          "rps": 0.22795455428510503
+        },
+        "rolling_league_frequency": {
+          "accuracy": 0.4026315789473684,
+          "brier": 0.660699017687579,
+          "log_loss": 1.0909639602933063,
+          "n": 380,
+          "rps": 0.22995425331547584
+        },
+        "team_goal_poisson": {
+          "accuracy": 0.4789473684210526,
+          "brier": 0.6200036561964256,
+          "log_loss": 1.0322690274769464,
+          "n": 380,
+          "rps": 0.21049216855668854
+        }
+      }
+    },
+    "overall": {
+      "expanding_league_prior": {
+        "accuracy": 0.41710526315789476,
+        "brier": 0.6562536335516483,
+        "log_loss": 1.0832728193824843,
+        "n": 760,
+        "rps": 0.23168476695274123
+      },
+      "league_only_poisson": {
+        "accuracy": 0.41710526315789476,
+        "brier": 0.6553083959632252,
+        "log_loss": 1.081682047627812,
+        "n": 760,
+        "rps": 0.23141854414648855
+      },
+      "rolling_league_frequency": {
+        "accuracy": 0.3973684210526316,
+        "brier": 0.6630767440118726,
+        "log_loss": 1.094329648003474,
+        "n": 760,
+        "rps": 0.2342412610976762
+      },
+      "team_goal_poisson": {
+        "accuracy": 0.5013157894736842,
+        "brier": 0.6078334722680054,
+        "log_loss": 1.0147370772418645,
+        "n": 760,
+        "rps": 0.20813057329135107
+      }
+    }
+  },
+  "pinned_commit": "9ee7a0c351805c99cc334478a9bf04b7d0432fec",
+  "source_repo": "openfootball/england",
+  "total_evaluation_n": 760,
+  "training_only_seasons": [
+    "2023-24"
+  ]
+}

@@ -67,9 +67,16 @@ a formal significance test:
    smaller effective sample.
 2. **The Poisson baseline's advantage over the expanding prior is real and consistent** — the
    interval is entirely on the "Poisson wins" side in both the overall comparison and in each
-   individual season (not shown above but confirmed in the JSON). This is the expected result
-   for a model that actually uses team identity, not just league-wide base rates, and it is
-   reported as a real, useful finding, not an assumption.
+   individual season (not shown above but confirmed in the JSON). This is reported as a real,
+   useful finding, not an assumption.
+
+**Correction (S04):** this comparison changes BOTH team-information usage AND the likelihood
+family at once (a categorical league-wide prior vs. a team-specific independent-Poisson goal
+model) — it is not, by itself, proof that the improvement comes from team identity rather than
+from the Poisson/goal-based likelihood structure itself. S04's `league_only_poisson` ablation
+(same Poisson machinery, no team identity) isolates this; see `reports/S04_ATTRIBUTION_AUDIT.md`
+for the result. The S03 figures above are unchanged by this correction — only the
+interpretation of "why" is qualified.
 
 These intervals describe the uncertainty in this specific held-out sample; they are not
 evidence of a causal "better model" claim and should not be read as a formal hypothesis test.

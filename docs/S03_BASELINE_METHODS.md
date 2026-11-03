@@ -56,9 +56,15 @@ available from the first 2024/25 forecast date onward, it is never exercised in 
 evaluation — tested only synthetically).
 
 This produces a materially different H/D/A count than the expanding baseline from early in
-2024/25 onward (100 fixtures is roughly 2.5 "matchdays" worth at 380/season, so by the time
-training history exceeds ~100 fixtures the two baselines diverge) — verified directly in
-`tests/test_baseline_models.py`, not assumed.
+2024/25 onward. **Correction (S04):** this document originally said "100 fixtures is roughly
+2.5 matchdays," which was simply wrong arithmetic — a 20-club double round-robin plays 10
+fixtures per standard matchweek, so 100 fixtures is roughly **ten** standard matchweeks' worth,
+not 2.5. Stated as an approximation deliberately: real rearranged fixtures (see
+`reports/S02_FORMAT_AUDIT.md` and `docs/DATA_CONTRACT.md`) mean a given match-date batch does
+not always align exactly with a single matchweek label, so "ten matchweeks" is a scale
+description, not a claim that the rolling window's 100-fixture boundary lands on a clean
+matchweek-10 cut. By the time training history exceeds ~100 fixtures the two baselines
+diverge — verified directly in `tests/test_baseline_models.py`, not assumed.
 
 ## Baseline 3 — independent team-goal Poisson, with frozen pseudo-match shrinkage
 
@@ -130,8 +136,23 @@ lambda to confirm the cap is never silently hit in practice).
 
 H/D/A are then the sums `sum_{i>j} P(i)P(j)`, `sum_{i=j} P(i)P(j)`, `sum_{i<j} P(i)P(j)` over the
 included `i, j <= M` grid, **normalised by dividing by `included_mass(M)`** so the three values
-sum to exactly 1 — the normalisation divisor and the raw `tail(M)` value are both recorded per
-fixture in the review export, not silently discarded.
+sum to exactly 1. `lambda_home`, `lambda_away`, `included_mass(M)`, and the raw `tail(M)` value
+are all computed and held in `Prediction.diagnostics` for every Poisson prediction — this was
+never in doubt; the model always computes them internally.
+
+**Correction (S04):** this document previously said these trace fields "are recorded per
+fixture in the review export." That was an export/documentation discrepancy, not a modelling
+error: the actual S03 CSV (`data/processed/s03_backtest_predictions_REVIEW.csv`, 21 columns)
+does not contain `lambda_home`, `lambda_away`, `tail_mass`, `included_mass`, or `max_goals` —
+only the three final, already-normalised probabilities and the per-fixture proper-score values
+derived from them. This does NOT mean the probabilities are wrong (independently re-verified to
+sum to 1 within the stated tolerance for every one of the 760 Poisson predictions — see
+`reports/S03_PROTOCOL_ALIGNMENT.md` / S03 verification); it means the diagnostic trace columns
+promised here were never actually exported. The frozen S03 CSV is **not** being rewritten to
+add them retroactively. S04's new four-model export
+(`data/processed/s04_ablation_predictions_REVIEW.csv`) adds these exact trace columns for both
+Poisson models going forward, and this document's promise now accurately describes that export,
+not the historical S03 one.
 
 ## Numeric validity (all three baselines)
 

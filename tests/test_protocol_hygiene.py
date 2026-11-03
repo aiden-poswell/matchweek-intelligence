@@ -83,3 +83,28 @@ def test_forecasting_protocol_poisson_baseline_is_honestly_described_as_shrunk()
 def test_readme_no_longer_claims_slice_01_data_feasibility_only_as_current_status():
     content = (REPO_ROOT / "README.md").read_text(encoding="utf-8")
     assert "Slice 01 — data feasibility only" not in content
+
+
+# --- S04 Stage A2: the rolling-window matchweek-equivalence correction -------------
+#
+# An independent review found docs/S03_BASELINE_METHODS.md called a 100-fixture
+# rolling window "roughly 2.5 matchdays," which is simply wrong arithmetic for a
+# 20-club double round-robin (10 fixtures/matchweek -> 100 fixtures ~ ten matchweeks).
+# This is a single, narrow, non-brittle check on one doc's specific wrong claim — it
+# does not scan every doc for a forbidden phrase, so it carries no self-reference risk.
+
+
+def test_s03_methods_no_longer_asserts_2_5_matchdays_as_unqualified_fact():
+    # The wrong number may still appear as part of the honest correction narrative
+    # (quoting what was originally — wrongly — said), but never unqualified: a
+    # "Correction" marker must appear shortly before it.
+    content = (REPO_ROOT / "docs" / "S03_BASELINE_METHODS.md").read_text(encoding="utf-8")
+    idx = content.find("2.5")
+    assert idx != -1, "expected the correction narrative to still reference the old wrong claim"
+    preceding_window = content[max(0, idx - 200) : idx]
+    assert "Correction" in preceding_window
+
+
+def test_s03_methods_states_the_corrected_ten_matchweek_scale():
+    content = (REPO_ROOT / "docs" / "S03_BASELINE_METHODS.md").read_text(encoding="utf-8")
+    assert "ten" in content and "matchweek" in content
