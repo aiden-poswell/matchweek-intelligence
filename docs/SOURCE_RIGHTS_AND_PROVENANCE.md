@@ -120,6 +120,14 @@ every count in this section) are taken directly from `reports/s01_data_quality.j
   either — they are missing, honestly reported as `result_missing`, but not yet over the bound.
 - `current_season_publishable` for this file: **False** (19 > 0 stale missing results is enough to
   fail closed; the gate does not require every missing result to be stale).
+  **[S02 note, added without altering this S01-era finding]** `current_season_publishable` was
+  a single S01 field later found to be structurally fail-open for other as-of dates (a current
+  season with a few recent, non-stale missing results could still read `True`) and was retired
+  in S02. The conclusion stated here — this file is blocked — is unaffected: it was already
+  `False`, and stays `False` under the replacement fields (`historical_season_complete`,
+  `current_results_coverage_sufficient`, hard-coded-`False` `live_claim_allowed`; see
+  `docs/DATA_CONTRACT.md`). This note documents the field's retirement; it does not change the
+  2026-11-02 evidence recorded above.
 
 This preliminary web review finding is **confirmed, with exact figures**, not merely repeated.
 
@@ -134,15 +142,23 @@ should show a result within days of a match being played, not weeks. 14 days com
 the longest normal scheduling gap in this competition while still catching a feed that has
 genuinely stopped updating, which is what Matchdays 6–8 show.
 
-### 1f. `current_season_publishable` status
+### 1f. `current_season_publishable` status (S01-era gate name — see note below)
 
 **BLOCKED.** The 2026/27 file fails closed: 19 scheduled-past fixtures (Matchday 6 in full, most
 of Matchday 7) are missing scores beyond the 14-day bound, and this is a structural feed gap, not
 an ambiguous edge case — confirmed by the actual `build_data_quality` output, not estimated. No
-current-season public or live claim may be made from this source as of this audit. This does
+current-season public or live claim may be made from this source as of this audit. This did
 **not** block legitimate historical replay using 2024/25 (fully scored, zero missing results,
-verified below) or, in a later slice, 2025/26 once its distinct sub-format is separately
-supported.
+verified below) — and, as of S02, 2025/26 and 2023/24 are also verified-eligible historical
+seasons once their distinct sub-formats were separately supported (see
+`reports/S02_HISTORICAL_CORPUS_AUDIT.md`), not merely anticipated as "a later slice."
+
+**[S02 note]** The literal field name `current_season_publishable` was retired in S02 for the
+fail-open reason noted in §1d above. This section's historical conclusion (2026/27 blocked;
+2024/25, and later 2023/24 and 2025/26, usable for retrospective replay) is preserved exactly as
+originally found — only the field name used to express "blocked" has changed, to
+`live_claim_allowed = False` (hard-coded) alongside `historical_season_complete` and
+`current_results_coverage_sufficient`. See `docs/DATA_CONTRACT.md` for the current contract.
 
 ### 1g. Independent spot-check (verification date 2026-11-02, Australia/Sydney)
 

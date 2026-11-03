@@ -1,31 +1,40 @@
 # matchweek-intelligence
 
-Status: **Slice 01 — data feasibility only.** This is a source-rights and data-freshness audit,
-not a forecasting model and not a dashboard. Nothing in this repository claims to predict a real
-match outcome.
+Status: **Slice 03 in progress — chronological forecasting baselines, still historical-only.**
+Nothing in this repository claims to predict a real, upcoming match outcome. Every forecast
+this project produces is a retrospective simulation: "what would a model fit only on data
+available before date X have said about fixtures on or after date X."
 
-## What this slice actually contains
+## What is built (completed slices)
 
-- An evaluation of candidate open football-results data sources against three questions: what
-  rights do we actually have, is the data genuinely current, and is the schema trustworthy enough
-  to build on.
-- A minimal, source-verified ingestion routine for whichever source(s) pass that evaluation,
-  with a pinned commit, a content-hash manifest, and a data-quality report.
-- A pre-registered forecasting protocol describing what a later slice would build and how it
-  would be evaluated — no model is fitted in this slice.
+- **S01 — source rights and freshness audit.** `openfootball/england` accepted as a CC0,
+  pinned-commit data source. `docs/SOURCE_RIGHTS_AND_PROVENANCE.md`,
+  `reports/S01_SOURCE_DECISION.md`.
+- **S02 — verified three-season historical corpus.** 2023/24, 2024/25 and 2025/26 Premier
+  League seasons (380 fixtures each, 1,140 total) independently validated: exact fixture
+  counts, full 20-team double round-robin structural check, score integrity, canonical
+  team-identity mapping, calendar-window checks. 2026/27 remains excluded — current and
+  partial, never a historical candidate. `docs/DATA_CONTRACT.md`,
+  `docs/BACKTEST_INPUT_CONTRACT.md`, `reports/S02_HISTORICAL_CORPUS_AUDIT.md`.
+- **S03 (this slice) — chronological forecasting baselines.** Three predeclared, simple
+  statistical baselines (expanding league prior, rolling league frequency, independent
+  team-goal Poisson) backtested out-of-time against the 760 held-out 2024/25 + 2025/26
+  fixtures, using 2023/24 as training-only history. `docs/S03_BASELINE_METHODS.md`,
+  `reports/S03_BASELINE_BACKTEST.md`.
 
-## What this slice does not contain
+## What is explicitly NOT built yet
 
-- No model, no forecast probabilities, no backtest results, no dashboard, no PDF, no public
-  website.
-- No claim that any current-season fixture data is complete or fresh unless the audit in
-  `reports/s01_source_manifest.json` and `reports/s01_data_quality.json` says so explicitly.
+- No public website, no PDF, no dashboard, no interactive app.
+- No sophisticated challenger model (Dixon-Coles, decay, regularised Poisson) — reserved for
+  a later slice, contingent on these simple baselines actually being worth beating.
+- No live or current-season (2026/27) forecast of any kind. `live_claim_allowed` is
+  hard-coded `False` in `build_data_quality.py`; nothing in this repository can override it.
+- No tactical narrative, no betting advice, no market-anchored pricing.
 
 ## Status and privacy
 
-Private while under development. No GitHub remote is configured. Source-rights status for every
-dataset used is recorded in `docs/SOURCE_RIGHTS_AND_PROVENANCE.md` — nothing is redistributed
-publicly until that document says it may be.
+Private while under development. No GitHub remote is configured. Source-rights status for
+every dataset used is recorded in `docs/SOURCE_RIGHTS_AND_PROVENANCE.md`.
 
 ## Setup
 

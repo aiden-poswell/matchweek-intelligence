@@ -1,10 +1,11 @@
-# Forecasting protocol — pre-registered, not implemented
+# Forecasting protocol — pre-registered in S01, implemented in S03
 
-Status: this document describes what a **later slice** would build and how it would be
-evaluated. **No model is fitted, no probability is computed, and no backtest result exists
-anywhere in this repository as of Slice 01.** This is a design commitment made before looking at
-any model output, so a later slice can be checked against it rather than rationalising whatever
-the model happens to produce.
+Status: this document was written in Slice 01, before any model existed, as a design
+commitment so a later slice could be checked against it rather than rationalising whatever the
+model happened to produce. **Slice 03 implements exactly the three baselines in §"Baselines"
+below** (frozen constants in `docs/S03_BASELINE_METHODS.md`) and backtests them out-of-time;
+see `reports/S03_BASELINE_BACKTEST.md` for the held-out result. The "candidate models" and
+"public product" sections below remain unimplemented, reserved for a later slice.
 
 ## Product
 
@@ -21,9 +22,16 @@ In increasing sophistication, evaluated on the same chronological splits as any 
 1. **Overall league 1X2 prior** — the historical home/draw/away frequency across the training
    window, applied uniformly to every fixture.
 2. **Simple rolling home/draw/away frequency** — recomputed as the training window advances.
-3. **A simple goal-rate Poisson model** — independent home/away goal rates per team, no decay,
-   no regularisation.
-4. **Elo** (optional comparison, not assumed to outperform anything).
+3. **A simple goal-rate Poisson model** — independent home/away goal rates per team, no temporal
+   decay. **Correction (S03):** "no regularisation" was wrong as originally written — an
+   unregularised MLE goal rate is undefined (or wildly unstable) for a promoted club with zero
+   or very little prior top-flight history, which this corpus genuinely has every season. S03
+   pre-registers a fixed, modest pseudo-match shrinkage toward the contemporaneous league goal
+   mean (k=5 pseudo-matches, frozen in `docs/S03_BASELINE_METHODS.md`, never tuned against the
+   held-out seasons) as a necessary baseline adjustment for safe estimation — this is still the
+   simplest viable version of this model, just not a literal unregularised MLE, and it is
+   described honestly as shrunk, not as "no regularisation."
+4. **Elo** (optional comparison, not assumed to outperform anything; not implemented in S03).
 
 No sophisticated model is credited as "working" unless it beats baseline (1)-(3) out-of-time, with
 an explicit N and confidence interval, not a single point estimate.
@@ -41,11 +49,15 @@ better in-sample is not a reason to prefer it.
 ## Evaluation discipline
 
 - **Strict chronology.** Every model fit may see only results strictly before each prediction
-  cutoff. Same-day fixtures are always a simultaneous batch (`chronology.as_of_filter`) — a model
-  is never trained on an earlier same-day result before predicting another same-day fixture, since
-  this source carries no reliable kickoff-time field to order within a day.
-  `tests/test_chronology.py` already proves the exclusion mechanism with synthetic fixtures; a
-  later slice must extend this to the actual walk-forward training loop.
+  cutoff, AND only rows that are actually scored. The training-safe helper is
+  `chronology.completed_training_results_as_of(records, cutoff_date)` — NOT `as_of_filter()`
+  alone, which is status-agnostic and can still return a `result_missing` row that happens to
+  be chronologically in the past (see `docs/DATA_CONTRACT.md` for why the two helpers have
+  deliberately different contracts). Same-day fixtures are always a simultaneous batch — a
+  model is never trained on an earlier same-day result before predicting another same-day
+  fixture, since this source carries no reliable kickoff-time field to order within a day.
+  `tests/test_chronology.py` proves the exclusion mechanism with synthetic fixtures;
+  `src/matchweek_intelligence/model_inputs.py` (S03) is the actual walk-forward training loop.
 - **Expanding or rolling backtests**, evaluated per-season and overall, with explicit sample
   sizes (N) reported alongside every metric — never a metric without its N.
 - **Metrics:** 1X2 probability vectors must sum to 1 (a hard assertion, not a convention); log
@@ -67,10 +79,13 @@ history when prior Championship results exist and are simply not yet ingested.
 ## Public product (explicitly out of scope for this slice)
 
 An eventual public, original-design report showing historical holdout skill, next-matchweek
-outcome probabilities, model uncertainty, and an explicit source as-of date — gated on the
-current-season source passing its own freshness check (`current_season_publishable = true`),
-not on switching to a source with worse rights to get a "yes." Every public prediction must state
-its scenario assumptions and unplayed-match coverage plainly. This remains analysis, not a
+outcome probabilities, model uncertainty, and an explicit source as-of date — gated on
+`live_claim_allowed = True` for the current-season source (S02 replaced the single, fail-open
+S01 field `current_season_publishable` with three separated fields; `live_claim_allowed` is the
+one that gates any live/public claim, and it is hard-coded `False` in `build_data_quality.py`
+as of this slice — there is no mechanism in this repository that can currently set it `True`).
+Never switch to a source with worse rights to manufacture a "yes." Every public prediction must
+state its scenario assumptions and unplayed-match coverage plainly. This remains analysis, not a
 betting system, and nothing in this protocol authorises publishing anything.
 
 ## Professional narrative, not decorative insight
@@ -84,8 +99,9 @@ source has no tactical, event, or tracking data, so no tactical claim can be gro
 ## Stop conditions
 
 - Insufficient matches in the training window for the league/season in question.
-- Missing or ambiguous date chronology (a file that fails `detect_subformat` cleanly, or
-  `result_missing` rows that can't be bounded by `as_of_filter`).
+- Missing or ambiguous date chronology (a file that fails `detect_subformat` cleanly, or any
+  `result_missing` row reaching `completed_training_results_as_of` — which must never happen
+  by construction, since that helper filters on `status == "played_with_score"`).
 - Source rights not cleared for the intended output (public vs. private).
 - A candidate model backtesting worse than the baselines in §"Baselines" above, on held-out data.
 

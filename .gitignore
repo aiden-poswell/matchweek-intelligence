@@ -1,7 +1,9 @@
 # Raw source snapshots and any private investigation material — never tracked.
 data/raw/
 data/private/
+data/processed/
 *_PRIVATE.*
+*_REVIEW.csv
 
 # Python
 __pycache__/
