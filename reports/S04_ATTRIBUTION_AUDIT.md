@@ -18,7 +18,7 @@ aggregation routine, same tail bound, same safe empty-training fallback), but
 `lambda_home`/`lambda_away` are the plain league-wide goal means — no team identity read at
 all.
 
-## Result: the answer is almost entirely "team identity," not "Poisson family"
+## Result: within this comparison path, the step that matters is adding team identity
 
 | Model | Log loss (overall, N=760) |
 | --- | --- |
@@ -40,10 +40,20 @@ top of that likelihood family.
 | **Sum (≈ S03's total team-goal − expanding result)** | **−0.0685** | (S03: −0.0685, [−0.0929, −0.0434]) |
 
 The two component intervals both exclude zero, but the team-identity step is roughly
-**40× larger** than the Poisson-family-alone step. Stated plainly: of the ~0.0685 log-loss
-improvement S03 found for `team_goal_poisson` over the categorical prior, **about 0.0016 (2%)
-is attributable to using a Poisson/goal-based likelihood at all, and about 0.0669 (98%) is
-attributable to adding team-specific attack/defence information on top of it.**
+**40× larger** than the Poisson-family-alone step in this specific decomposition.
+
+**Correction (S05) — tightened wording, same numbers:** within this particular *sequential
+model comparison / accounting bridge* (expanding prior → league-only Poisson → team-goal
+Poisson, in that order), about 98% of the observed ~0.0685 log-loss improvement falls on the
+league-only-Poisson → team-specific-Poisson step, and about 2% falls on the expanding-prior →
+league-only-Poisson step. **This is a path-dependent accounting split across three specific
+models, not a causal or factorial identification of "how much of the improvement is caused by
+team identity" in any model-agnostic sense, and not a universal percentage that would hold
+under a different comparison path, baseline ordering, or model set.** A different sequence of
+models (e.g. comparing team-goal Poisson directly against a team-aware categorical baseline
+that doesn't yet exist) could attribute the same total improvement differently. The numbers
+themselves (−0.0016, −0.0669, −0.0685) are unchanged — only the word "attributable" has been
+replaced with language that doesn't imply more than a three-model accounting bridge supports.
 
 ### Per-season consistency
 
@@ -59,14 +69,18 @@ resolve at N=380 per season.
 
 ## What this does and does not establish
 
-- **Does establish:** the large majority of `team_goal_poisson`'s real, out-of-time advantage
-  over the categorical baselines in this corpus is attributable to team-specific information,
-  not to the Poisson goal-count likelihood family by itself. This is a genuine attribution
-  result, not an assumption restated.
-- **Does not establish:** that a Poisson/goal-based likelihood is never useful on its own in
-  any other context, league, or time window — this is one specific ablation on one specific
-  corpus. It also does not establish a formal statistical significance claim; the bootstrap
-  intervals are descriptive and approximate, stated as such throughout.
+- **Does establish:** within this specific three-model sequential comparison, the
+  league-only-Poisson → team-specific-Poisson step accounts for the large majority of
+  `team_goal_poisson`'s real, out-of-time log-loss advantage over the categorical baseline —
+  far more of it than the expanding-prior → league-only-Poisson step. This is a genuine,
+  verified result about THIS comparison path, not an assumption restated.
+- **Does not establish:** a causal or factorial identification of "how much of the improvement
+  team identity causes" in a model-agnostic sense, a universal percentage that would survive a
+  different comparison path or baseline ordering, or that a Poisson/goal-based likelihood is
+  never useful on its own in any other context, league, or time window — this is one specific
+  ablation, compared one specific way, on one specific corpus. It also does not establish a
+  formal statistical significance claim; the bootstrap intervals are descriptive and
+  approximate, stated as such throughout.
 - **Does not change** any S03 figure. S03's `team_goal_poisson` vs. `expanding_league_prior`
   comparison is correct as originally reported; this audit only adds the missing middle term
   of the decomposition.

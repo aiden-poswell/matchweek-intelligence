@@ -16,6 +16,10 @@ from matchweek_intelligence.build_attribution_backtest import (
     run_attribution_backtest,
 )
 from matchweek_intelligence.metrics import OUTCOME_ORDER
+from matchweek_intelligence.prediction_row_validation import (
+    PredictionRowValidationError,
+    validate_prediction_rows,
+)
 
 DEFAULT_OUTPUT_PATH = Path("reports/s04_calibration_diagnostics.json")
 
@@ -195,34 +199,20 @@ def _worst_scored_fixtures(
 
 
 def _validate_integrity(rows: list[AttributionPredictionRow]) -> None:
-    for model in _MODEL_NAMES:
-        model_rows = [r for r in rows if r.model_name == model]
-        if len(model_rows) != 760:
-            raise CalibrationDiagnosticsError(
-                f"{model}: expected 760 rows, found {len(model_rows)}"
-            )
-        keys = {_fixture_key(r) for r in model_rows}
-        if len(keys) != 760:
-            raise CalibrationDiagnosticsError(f"{model}: fixture keys are not unique")
-        for season in _EVALUATION_SEASONS:
-            n = sum(1 for r in model_rows if r.season == season)
-            if n != 380:
-                raise CalibrationDiagnosticsError(f"{model} {season}: expected 380, found {n}")
-        for r in model_rows:
-            total = r.p_home + r.p_draw + r.p_away
-            if not (abs(total - 1.0) <= 1e-9):
-                raise CalibrationDiagnosticsError(f"{model}: probabilities sum to {total}, not 1")
-            for p in (r.p_home, r.p_draw, r.p_away):
-                if not (p > 0):
-                    raise CalibrationDiagnosticsError(f"{model}: non-positive probability {p}")
-            if r.latest_training_match_date:
-                if r.latest_training_match_date >= r.match_date:
-                    raise CalibrationDiagnosticsError(
-                        f"{model}: training cutoff {r.latest_training_match_date} "
-                        f"does not strictly precede fixture {r.match_date}"
-                    )
-        if any(r.season == "2026-27" for r in model_rows):
-            raise CalibrationDiagnosticsError(f"{model}: 2026/27 present")
+    # Delegates to the shared cross-model validator (prediction_row_validation.py),
+    # which also independently re-verifies the stored log_loss/brier/rps/accuracy_hit
+    # fields against the raw probabilities and actual outcome — this module's own
+    # earlier version of this check did not, which was a real gap an independent
+    # reviewer demonstrated (see prediction_row_validation.py's module docstring).
+    try:
+        validate_prediction_rows(
+            rows,
+            expected_models=frozenset(_MODEL_NAMES),
+            expected_n_per_model=760,
+            season_split={season: 380 for season in _EVALUATION_SEASONS},
+        )
+    except PredictionRowValidationError as exc:
+        raise CalibrationDiagnosticsError(str(exc)) from exc
 
 
 def build_report(rows: list[AttributionPredictionRow] | None = None) -> dict:

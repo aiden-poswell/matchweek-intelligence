@@ -176,12 +176,17 @@ def _validate_lambda(name: str, lam: float) -> None:
         raise BaselineModelError(f"{name} is not finite/positive: {lam}")
 
 
-def _poisson_outcome_distribution(lambda_home: float, lambda_away: float) -> dict:
-    """The SHARED goal-grid / tail-bound / H-D-A-aggregation routine used by BOTH
-    Poisson models (`team_goal_poisson` and `league_only_poisson`). Given the two
-    independent Poisson rate parameters, returns a dict with the normalised
-    `p_home`/`p_draw`/`p_away` plus the raw `tail_mass`/`included_mass`/`max_goals`
-    diagnostics — never a second, divergent implementation of this calculation.
+def poisson_goal_grid(
+    lambda_home: float, lambda_away: float
+) -> tuple[list[float], list[float], int, float, float]:
+    """The SHARED independent-Poisson goal-grid / tail-bound construction, used by
+    every model in this project that needs a joint goal-count distribution
+    (`team_goal_poisson`, `league_only_poisson`, and S05's `dixon_coles_team_poisson`).
+    Returns `(home_terms, away_terms, max_goals, included_mass, tail_mass)` — the raw,
+    UN-aggregated per-goal-count probability lists, before any H/D/A aggregation and
+    before any low-score correction is applied. This is intentionally public
+    (no leading underscore) so a sibling module can reuse it without a second,
+    divergently-maintained copy of the tail-bound search.
     """
     _validate_lambda("lambda_home", lambda_home)
     _validate_lambda("lambda_away", lambda_away)
@@ -202,20 +207,59 @@ def _poisson_outcome_distribution(lambda_home: float, lambda_away: float) -> dic
     if included_mass <= 0 or not math.isfinite(included_mass):
         raise BaselineModelError(f"included_mass is not usable: {included_mass}")
 
+    return home_terms, away_terms, max_goals, included_mass, tail
+
+
+def aggregate_joint_grid_to_1x2(
+    home_terms: list[float],
+    away_terms: list[float],
+    cell_mass=lambda i, j, ph, pa: ph * pa,
+) -> tuple[float, float, float, float]:
+    """Aggregates a joint goal-count distribution into UNNORMALISED (h_mass, d_mass,
+    a_mass, total_mass). `cell_mass(i, j, home_terms[i], away_terms[j])` computes each
+    cell's joint mass — the plain independent-Poisson default is `ph * pa`; S05's
+    Dixon-Coles challenger passes a callback that additionally multiplies the four
+    low-score cells by `tau(i, j)` BEFORE this aggregation runs, never after. The
+    caller divides by `total_mass` (re-summed here, not assumed) to get probabilities
+    — this is the explicit renormalisation step the DC correction requires, and it is
+    the SAME code path the plain Poisson models already used (where `total_mass`
+    happens to equal the already-known `included_mass`).
+    """
     h_mass = d_mass = a_mass = 0.0
     for i, ph in enumerate(home_terms):
         for j, pa in enumerate(away_terms):
-            joint = ph * pa
+            joint = cell_mass(i, j, ph, pa)
             if i > j:
                 h_mass += joint
             elif i == j:
                 d_mass += joint
             else:
                 a_mass += joint
+    return h_mass, d_mass, a_mass, h_mass + d_mass + a_mass
 
-    p_home = h_mass / included_mass
-    p_draw = d_mass / included_mass
-    p_away = a_mass / included_mass
+
+def _poisson_outcome_distribution(lambda_home: float, lambda_away: float) -> dict:
+    """The SHARED goal-grid / tail-bound / H-D-A-aggregation routine used by BOTH
+    plain-independent Poisson models (`team_goal_poisson` and `league_only_poisson`).
+    Given the two independent Poisson rate parameters, returns a dict with the
+    normalised `p_home`/`p_draw`/`p_away` plus the raw `tail_mass`/`included_mass`/
+    `max_goals` diagnostics — never a second, divergent implementation.
+    """
+    home_terms, away_terms, max_goals, included_mass, tail = poisson_goal_grid(
+        lambda_home, lambda_away
+    )
+    # Normalise by the already-known `included_mass` (= sum(home_terms) * sum(away_terms)),
+    # NOT by re-summing h_mass+d_mass+a_mass from the aggregation loop below — the two are
+    # mathematically equal but can differ in the last bit or two of floating-point
+    # arithmetic, and this exact divisor is what S03/S04's frozen byte-identical output
+    # was already computed with. Only S05's Dixon-Coles path (which genuinely changes the
+    # total mass via tau) uses the freshly re-summed total from the aggregator.
+    h_mass, d_mass, a_mass, _ = aggregate_joint_grid_to_1x2(home_terms, away_terms)
+    p_home, p_draw, p_away = (
+        h_mass / included_mass,
+        d_mass / included_mass,
+        a_mass / included_mass,
+    )
     _validate_probabilities(p_home, p_draw, p_away)
 
     return {
@@ -230,7 +274,15 @@ def _poisson_outcome_distribution(lambda_home: float, lambda_away: float) -> dic
     }
 
 
-def team_goal_poisson(records: list[ModelRecord], home_team: str, away_team: str) -> Prediction:
+def team_goal_poisson_lambdas(
+    records: list[ModelRecord], home_team: str, away_team: str
+) -> tuple[float, float, _TeamRates, _TeamRates]:
+    """The exact pre-match lambda_home/lambda_away computation `team_goal_poisson`
+    uses, extracted so S05's Dixon-Coles challenger (and this module's own cold-start
+    diagnostics) can reuse the IDENTICAL team-rate/shrinkage logic without a second,
+    divergent copy of it. Raises `BaselineModelError` on invalid league means — the
+    exact same validation `team_goal_poisson` already performed inline.
+    """
     league_home_mean, league_away_mean = _league_means(records)
     if not (math.isfinite(league_home_mean) and league_home_mean > 0):
         raise BaselineModelError(f"league_home_mean is not finite/positive: {league_home_mean}")
@@ -242,6 +294,13 @@ def team_goal_poisson(records: list[ModelRecord], home_team: str, away_team: str
 
     lambda_home = home_rates.h_for * away_rates.a_conceded / league_home_mean
     lambda_away = away_rates.a_for * home_rates.h_conceded / league_away_mean
+    return lambda_home, lambda_away, home_rates, away_rates
+
+
+def team_goal_poisson(records: list[ModelRecord], home_team: str, away_team: str) -> Prediction:
+    lambda_home, lambda_away, home_rates, away_rates = team_goal_poisson_lambdas(
+        records, home_team, away_team
+    )
 
     dist = _poisson_outcome_distribution(lambda_home, lambda_away)
     trace = {k: v for k, v in dist.items() if k not in ("p_home", "p_draw", "p_away")}

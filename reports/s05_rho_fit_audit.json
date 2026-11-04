@@ -1,0 +1,2018 @@
+{
+  "entries": [
+    {
+      "bound_hi": 0.2,
+      "bound_lo": -0.2,
+      "fit_status": "fitted_interior",
+      "match_date": "2024-08-16",
+      "n_fixtures_this_date": 1,
+      "n_training": 374,
+      "rho": -0.029963202061756983
+    },
+    {
+      "bound_hi": 0.2,
+      "bound_lo": -0.2,
+      "fit_status": "fitted_interior",
+      "match_date": "2024-08-17",
+      "n_fixtures_this_date": 6,
+      "n_training": 375,
+      "rho": -0.022870919112572302
+    },
+    {
+      "bound_hi": 0.2,
+      "bound_lo": -0.2,
+      "fit_status": "fitted_interior",
+      "match_date": "2024-08-18",
+      "n_fixtures_this_date": 2,
+      "n_training": 381,
+      "rho": -0.021419314736171664
+    },
+    {
+      "bound_hi": 0.2,
+      "bound_lo": -0.2,
+      "fit_status": "fitted_interior",
+      "match_date": "2024-08-19",
+      "n_fixtures_this_date": 1,
+      "n_training": 383,
+      "rho": -0.021419314736171664
+    },
+    {
+      "bound_hi": 0.2,
+      "bound_lo": -0.2,
+      "fit_status": "fitted_interior",
+      "match_date": "2024-08-24",
+      "n_fixtures_this_date": 7,
+      "n_training": 384,
+      "rho": -0.026442235942957026
+    },
+    {
+      "bound_hi": 0.2,
+      "bound_lo": -0.2,
+      "fit_status": "fitted_interior",
+      "match_date": "2024-08-25",
+      "n_fixtures_this_date": 3,
+      "n_training": 391,
+      "rho": -0.016320558697088955
+    },
+    {
+      "bound_hi": 0.2,
+      "bound_lo": -0.2,
+      "fit_status": "fitted_interior",
+      "match_date": "2024-08-31",
+      "n_fixtures_this_date": 7,
+      "n_training": 394,
+      "rho": -0.02124204005723297
+    },
+    {
+      "bound_hi": 0.2,
+      "bound_lo": -0.2,
+      "fit_status": "fitted_interior",
+      "match_date": "2024-09-01",
+      "n_fixtures_this_date": 3,
+      "n_training": 401,
+      "rho": -0.035726571989401684
+    },
+    {
+      "bound_hi": 0.2,
+      "bound_lo": -0.2,
+      "fit_status": "fitted_interior",
+      "match_date": "2024-09-14",
+      "n_fixtures_this_date": 8,
+      "n_training": 404,
+      "rho": -0.04045765366913508
+    },
+    {
+      "bound_hi": 0.2,
+      "bound_lo": -0.2,
+      "fit_status": "fitted_interior",
+      "match_date": "2024-09-15",
+      "n_fixtures_this_date": 2,
+      "n_training": 412,
+      "rho": -0.03539971836892633
+    },
+    {
+      "bound_hi": 0.2,
+      "bound_lo": -0.2,
+      "fit_status": "fitted_interior",
+      "match_date": "2024-09-21",
+      "n_fixtures_this_date": 8,
+      "n_training": 414,
+      "rho": -0.03068354439531005
+    },
+    {
+      "bound_hi": 0.2,
+      "bound_lo": -0.2,
+      "fit_status": "fitted_interior",
+      "match_date": "2024-09-22",
+      "n_fixtures_this_date": 2,
+      "n_training": 422,
+      "rho": -0.0485835655971488
+    },
+    {
+      "bound_hi": 0.2,
+      "bound_lo": -0.2,
+      "fit_status": "fitted_interior",
+      "match_date": "2024-09-28",
+      "n_fixtures_this_date": 7,
+      "n_training": 424,
+      "rho": -0.0485835655971488
+    },
+    {
+      "bound_hi": 0.2,
+      "bound_lo": -0.2,
+      "fit_status": "fitted_interior",
+      "match_date": "2024-09-29",
+      "n_fixtures_this_date": 2,
+      "n_training": 431,
+      "rho": -0.04968654074988639
+    },
+    {
+      "bound_hi": 0.2,
+      "bound_lo": -0.2,
+      "fit_status": "fitted_interior",
+      "match_date": "2024-09-30",
+      "n_fixtures_this_date": 1,
+      "n_training": 433,
+      "rho": -0.04968654074988639
+    },
+    {
+      "bound_hi": 0.2,
+      "bound_lo": -0.2,
+      "fit_status": "fitted_interior",
+      "match_date": "2024-10-05",
+      "n_fixtures_this_date": 7,
+      "n_training": 434,
+      "rho": -0.04968654074988639
+    },
+    {
+      "bound_hi": 0.2,
+      "bound_lo": -0.2,
+      "fit_status": "fitted_interior",
+      "match_date": "2024-10-06",
+      "n_fixtures_this_date": 3,
+      "n_training": 441,
+      "rho": -0.04586182078692905
+    },
+    {
+      "bound_hi": 0.2,
+      "bound_lo": -0.2,
+      "fit_status": "fitted_interior",
+      "match_date": "2024-10-19",
+      "n_fixtures_this_date": 7,
+      "n_training": 444,
+      "rho": -0.05970958790944771
+    },
+    {
+      "bound_hi": 0.2,
+      "bound_lo": -0.2,
+      "fit_status": "fitted_interior",
+      "match_date": "2024-10-20",
+      "n_fixtures_this_date": 2,
+      "n_training": 451,
+      "rho": -0.04901599191737473
+    },
+    {
+      "bound_hi": 0.2,
+      "bound_lo": -0.2,
+      "fit_status": "fitted_interior",
+      "match_date": "2024-10-21",
+      "n_fixtures_this_date": 1,
+      "n_training": 453,
+      "rho": -0.04901599191737473
+    },
+    {
+      "bound_hi": 0.2,
+      "bound_lo": -0.2,
+      "fit_status": "fitted_interior",
+      "match_date": "2024-10-25",
+      "n_fixtures_this_date": 1,
+      "n_training": 454,
+      "rho": -0.044300355768106564
+    },
+    {
+      "bound_hi": 0.2,
+      "bound_lo": -0.2,
+      "fit_status": "fitted_interior",
+      "match_date": "2024-10-26",
+      "n_fixtures_this_date": 5,
+      "n_training": 455,
+      "rho": -0.044300355768106564
+    },
+    {
+      "bound_hi": 0.2,
+      "bound_lo": -0.2,
+      "fit_status": "fitted_interior",
+      "match_date": "2024-10-27",
+      "n_fixtures_this_date": 4,
+      "n_training": 460,
+      "rho": -0.04839890525068319
+    },
+    {
+      "bound_hi": 0.2,
+      "bound_lo": -0.2,
+      "fit_status": "fitted_interior",
+      "match_date": "2024-11-02",
+      "n_fixtures_this_date": 7,
+      "n_training": 464,
+      "rho": -0.04144575770339872
+    },
+    {
+      "bound_hi": 0.2,
+      "bound_lo": -0.2,
+      "fit_status": "fitted_interior",
+      "match_date": "2024-11-03",
+      "n_fixtures_this_date": 2,
+      "n_training": 471,
+      "rho": -0.03383606003925399
+    },
+    {
+      "bound_hi": 0.2,
+      "bound_lo": -0.2,
+      "fit_status": "fitted_interior",
+      "match_date": "2024-11-04",
+      "n_fixtures_this_date": 1,
+      "n_training": 473,
+      "rho": -0.037441257823476626
+    },
+    {
+      "bound_hi": 0.2,
+      "bound_lo": -0.2,
+      "fit_status": "fitted_interior",
+      "match_date": "2024-11-09",
+      "n_fixtures_this_date": 6,
+      "n_training": 474,
+      "rho": -0.037441257823476626
+    },
+    {
+      "bound_hi": 0.2,
+      "bound_lo": -0.2,
+      "fit_status": "fitted_interior",
+      "match_date": "2024-11-10",
+      "n_fixtures_this_date": 4,
+      "n_training": 480,
+      "rho": -0.0438133507002625
+    },
+    {
+      "bound_hi": 0.2,
+      "bound_lo": -0.2,
+      "fit_status": "fitted_interior",
+      "match_date": "2024-11-23",
+      "n_fixtures_this_date": 7,
+      "n_training": 484,
+      "rho": -0.047321126254137105
+    },
+    {
+      "bound_hi": 0.2,
+      "bound_lo": -0.2,
+      "fit_status": "fitted_interior",
+      "match_date": "2024-11-24",
+      "n_fixtures_this_date": 2,
+      "n_training": 491,
+      "rho": -0.051752104448652234
+    },
+    {
+      "bound_hi": 0.2,
+      "bound_lo": -0.2,
+      "fit_status": "fitted_interior",
+      "match_date": "2024-11-25",
+      "n_fixtures_this_date": 1,
+      "n_training": 493,
+      "rho": -0.055189497620009055
+    },
+    {
+      "bound_hi": 0.2,
+      "bound_lo": -0.2,
+      "fit_status": "fitted_interior",
+      "match_date": "2024-11-29",
+      "n_fixtures_this_date": 1,
+      "n_training": 494,
+      "rho": -0.055189497620009055
+    },
+    {
+      "bound_hi": 0.2,
+      "bound_lo": -0.2,
+      "fit_status": "fitted_interior",
+      "match_date": "2024-11-30",
+      "n_fixtures_this_date": 5,
+      "n_training": 495,
+      "rho": -0.05859740386409534
+    },
+    {
+      "bound_hi": 0.2,
+      "bound_lo": -0.2,
+      "fit_status": "fitted_interior",
+      "match_date": "2024-12-01",
+      "n_fixtures_this_date": 4,
+      "n_training": 500,
+      "rho": -0.056626827297564825
+    },
+    {
+      "bound_hi": 0.2,
+      "bound_lo": -0.2,
+      "fit_status": "fitted_interior",
+      "match_date": "2024-12-03",
+      "n_fixtures_this_date": 2,
+      "n_training": 504,
+      "rho": -0.05997836926098
+    },
+    {
+      "bound_hi": 0.2,
+      "bound_lo": -0.2,
+      "fit_status": "fitted_interior",
+      "match_date": "2024-12-04",
+      "n_fixtures_this_date": 6,
+      "n_training": 506,
+      "rho": -0.05538354483095101
+    },
+    {
+      "bound_hi": 0.2,
+      "bound_lo": -0.2,
+      "fit_status": "fitted_interior",
+      "match_date": "2024-12-05",
+      "n_fixtures_this_date": 2,
+      "n_training": 512,
+      "rho": -0.05538354483095101
+    },
+    {
+      "bound_hi": 0.2,
+      "bound_lo": -0.2,
+      "fit_status": "fitted_interior",
+      "match_date": "2024-12-07",
+      "n_fixtures_this_date": 4,
+      "n_training": 514,
+      "rho": -0.04876336207190102
+    },
+    {
+      "bound_hi": 0.2,
+      "bound_lo": -0.2,
+      "fit_status": "fitted_interior",
+      "match_date": "2024-12-08",
+      "n_fixtures_this_date": 4,
+      "n_training": 518,
+      "rho": -0.04538958597378319
+    },
+    {
+      "bound_hi": 0.2,
+      "bound_lo": -0.2,
+      "fit_status": "fitted_interior",
+      "match_date": "2024-12-09",
+      "n_fixtures_this_date": 1,
+      "n_training": 522,
+      "rho": -0.04871588560374866
+    },
+    {
+      "bound_hi": 0.2,
+      "bound_lo": -0.2,
+      "fit_status": "fitted_interior",
+      "match_date": "2024-12-14",
+      "n_fixtures_this_date": 5,
+      "n_training": 523,
+      "rho": -0.04871588560374866
+    },
+    {
+      "bound_hi": 0.2,
+      "bound_lo": -0.2,
+      "fit_status": "fitted_interior",
+      "match_date": "2024-12-15",
+      "n_fixtures_this_date": 4,
+      "n_training": 528,
+      "rho": -0.0535987367074608
+    },
+    {
+      "bound_hi": 0.2,
+      "bound_lo": -0.2,
+      "fit_status": "fitted_interior",
+      "match_date": "2024-12-16",
+      "n_fixtures_this_date": 1,
+      "n_training": 532,
+      "rho": -0.0535987367074608
+    },
+    {
+      "bound_hi": 0.2,
+      "bound_lo": -0.2,
+      "fit_status": "fitted_interior",
+      "match_date": "2024-12-21",
+      "n_fixtures_this_date": 5,
+      "n_training": 533,
+      "rho": -0.05685132467606542
+    },
+    {
+      "bound_hi": 0.2,
+      "bound_lo": -0.2,
+      "fit_status": "fitted_interior",
+      "match_date": "2024-12-22",
+      "n_fixtures_this_date": 5,
+      "n_training": 538,
+      "rho": -0.06007705010100484
+    },
+    {
+      "bound_hi": 0.2,
+      "bound_lo": -0.2,
+      "fit_status": "fitted_interior",
+      "match_date": "2024-12-26",
+      "n_fixtures_this_date": 8,
+      "n_training": 543,
+      "rho": -0.07012005879158584
+    },
+    {
+      "bound_hi": 0.2,
+      "bound_lo": -0.2,
+      "fit_status": "fitted_interior",
+      "match_date": "2024-12-27",
+      "n_fixtures_this_date": 2,
+      "n_training": 551,
+      "rho": -0.0657071043338831
+    },
+    {
+      "bound_hi": 0.2,
+      "bound_lo": -0.2,
+      "fit_status": "fitted_interior",
+      "match_date": "2024-12-29",
+      "n_fixtures_this_date": 6,
+      "n_training": 553,
+      "rho": -0.06860688230040514
+    },
+    {
+      "bound_hi": 0.2,
+      "bound_lo": -0.2,
+      "fit_status": "fitted_interior",
+      "match_date": "2024-12-30",
+      "n_fixtures_this_date": 3,
+      "n_training": 559,
+      "rho": -0.06860688230040514
+    },
+    {
+      "bound_hi": 0.2,
+      "bound_lo": -0.2,
+      "fit_status": "fitted_interior",
+      "match_date": "2025-01-01",
+      "n_fixtures_this_date": 1,
+      "n_training": 562,
+      "rho": -0.06860688230040514
+    },
+    {
+      "bound_hi": 0.2,
+      "bound_lo": -0.2,
+      "fit_status": "fitted_interior",
+      "match_date": "2025-01-04",
+      "n_fixtures_this_date": 7,
+      "n_training": 563,
+      "rho": -0.06860688230040514
+    },
+    {
+      "bound_hi": 0.2,
+      "bound_lo": -0.2,
+      "fit_status": "fitted_interior",
+      "match_date": "2025-01-05",
+      "n_fixtures_this_date": 2,
+      "n_training": 570,
+      "rho": -0.07174233744782477
+    },
+    {
+      "bound_hi": 0.2,
+      "bound_lo": -0.2,
+      "fit_status": "fitted_interior",
+      "match_date": "2025-01-06",
+      "n_fixtures_this_date": 1,
+      "n_training": 572,
+      "rho": -0.07174233744782477
+    },
+    {
+      "bound_hi": 0.2,
+      "bound_lo": -0.2,
+      "fit_status": "fitted_interior",
+      "match_date": "2025-01-14",
+      "n_fixtures_this_date": 4,
+      "n_training": 573,
+      "rho": -0.07174233744782477
+    },
+    {
+      "bound_hi": 0.2,
+      "bound_lo": -0.2,
+      "fit_status": "fitted_interior",
+      "match_date": "2025-01-15",
+      "n_fixtures_this_date": 4,
+      "n_training": 577,
+      "rho": -0.07467571123207142
+    },
+    {
+      "bound_hi": 0.2,
+      "bound_lo": -0.2,
+      "fit_status": "fitted_interior",
+      "match_date": "2025-01-16",
+      "n_fixtures_this_date": 2,
+      "n_training": 581,
+      "rho": -0.07021599543472952
+    },
+    {
+      "bound_hi": 0.2,
+      "bound_lo": -0.2,
+      "fit_status": "fitted_interior",
+      "match_date": "2025-01-18",
+      "n_fixtures_this_date": 5,
+      "n_training": 583,
+      "rho": -0.07021599543472952
+    },
+    {
+      "bound_hi": 0.2,
+      "bound_lo": -0.2,
+      "fit_status": "fitted_interior",
+      "match_date": "2025-01-19",
+      "n_fixtures_this_date": 4,
+      "n_training": 588,
+      "rho": -0.07021599543472952
+    },
+    {
+      "bound_hi": 0.2,
+      "bound_lo": -0.2,
+      "fit_status": "fitted_interior",
+      "match_date": "2025-01-20",
+      "n_fixtures_this_date": 1,
+      "n_training": 592,
+      "rho": -0.07021599543472952
+    },
+    {
+      "bound_hi": 0.2,
+      "bound_lo": -0.2,
+      "fit_status": "fitted_interior",
+      "match_date": "2025-01-25",
+      "n_fixtures_this_date": 6,
+      "n_training": 593,
+      "rho": -0.07021599543472952
+    },
+    {
+      "bound_hi": 0.2,
+      "bound_lo": -0.2,
+      "fit_status": "fitted_interior",
+      "match_date": "2025-01-26",
+      "n_fixtures_this_date": 4,
+      "n_training": 599,
+      "rho": -0.06229988925565483
+    },
+    {
+      "bound_hi": 0.2,
+      "bound_lo": -0.2,
+      "fit_status": "fitted_interior",
+      "match_date": "2025-02-01",
+      "n_fixtures_this_date": 6,
+      "n_training": 603,
+      "rho": -0.06033423081066007
+    },
+    {
+      "bound_hi": 0.2,
+      "bound_lo": -0.2,
+      "fit_status": "fitted_interior",
+      "match_date": "2025-02-02",
+      "n_fixtures_this_date": 3,
+      "n_training": 609,
+      "rho": -0.06033423081066007
+    },
+    {
+      "bound_hi": 0.2,
+      "bound_lo": -0.2,
+      "fit_status": "fitted_interior",
+      "match_date": "2025-02-03",
+      "n_fixtures_this_date": 1,
+      "n_training": 612,
+      "rho": -0.06033423081066007
+    },
+    {
+      "bound_hi": 0.2,
+      "bound_lo": -0.2,
+      "fit_status": "fitted_interior",
+      "match_date": "2025-02-12",
+      "n_fixtures_this_date": 1,
+      "n_training": 613,
+      "rho": -0.06033423081066007
+    },
+    {
+      "bound_hi": 0.2,
+      "bound_lo": -0.2,
+      "fit_status": "fitted_interior",
+      "match_date": "2025-02-14",
+      "n_fixtures_this_date": 1,
+      "n_training": 614,
+      "rho": -0.06033423081066007
+    },
+    {
+      "bound_hi": 0.2,
+      "bound_lo": -0.2,
+      "fit_status": "fitted_interior",
+      "match_date": "2025-02-15",
+      "n_fixtures_this_date": 7,
+      "n_training": 615,
+      "rho": -0.06033423081066007
+    },
+    {
+      "bound_hi": 0.2,
+      "bound_lo": -0.2,
+      "fit_status": "fitted_interior",
+      "match_date": "2025-02-16",
+      "n_fixtures_this_date": 2,
+      "n_training": 622,
+      "rho": -0.058311840827639974
+    },
+    {
+      "bound_hi": 0.2,
+      "bound_lo": -0.2,
+      "fit_status": "fitted_interior",
+      "match_date": "2025-02-19",
+      "n_fixtures_this_date": 1,
+      "n_training": 624,
+      "rho": -0.05379576990254679
+    },
+    {
+      "bound_hi": 0.2,
+      "bound_lo": -0.2,
+      "fit_status": "fitted_interior",
+      "match_date": "2025-02-21",
+      "n_fixtures_this_date": 1,
+      "n_training": 625,
+      "rho": -0.05379576990254679
+    },
+    {
+      "bound_hi": 0.2,
+      "bound_lo": -0.2,
+      "fit_status": "fitted_interior",
+      "match_date": "2025-02-22",
+      "n_fixtures_this_date": 7,
+      "n_training": 626,
+      "rho": -0.05379576990254679
+    },
+    {
+      "bound_hi": 0.2,
+      "bound_lo": -0.2,
+      "fit_status": "fitted_interior",
+      "match_date": "2025-02-23",
+      "n_fixtures_this_date": 2,
+      "n_training": 633,
+      "rho": -0.03847811174530479
+    },
+    {
+      "bound_hi": 0.2,
+      "bound_lo": -0.2,
+      "fit_status": "fitted_interior",
+      "match_date": "2025-02-25",
+      "n_fixtures_this_date": 4,
+      "n_training": 635,
+      "rho": -0.03847811174530479
+    },
+    {
+      "bound_hi": 0.2,
+      "bound_lo": -0.2,
+      "fit_status": "fitted_interior",
+      "match_date": "2025-02-26",
+      "n_fixtures_this_date": 5,
+      "n_training": 639,
+      "rho": -0.03847811174530479
+    },
+    {
+      "bound_hi": 0.2,
+      "bound_lo": -0.2,
+      "fit_status": "fitted_interior",
+      "match_date": "2025-02-27",
+      "n_fixtures_this_date": 1,
+      "n_training": 644,
+      "rho": -0.04083218677263514
+    },
+    {
+      "bound_hi": 0.2,
+      "bound_lo": -0.2,
+      "fit_status": "fitted_interior",
+      "match_date": "2025-03-08",
+      "n_fixtures_this_date": 6,
+      "n_training": 645,
+      "rho": -0.04083218677263514
+    },
+    {
+      "bound_hi": 0.2,
+      "bound_lo": -0.2,
+      "fit_status": "fitted_interior",
+      "match_date": "2025-03-09",
+      "n_fixtures_this_date": 3,
+      "n_training": 651,
+      "rho": -0.02843853384100309
+    },
+    {
+      "bound_hi": 0.2,
+      "bound_lo": -0.2,
+      "fit_status": "fitted_interior",
+      "match_date": "2025-03-10",
+      "n_fixtures_this_date": 1,
+      "n_training": 654,
+      "rho": -0.028123288267272485
+    },
+    {
+      "bound_hi": 0.2,
+      "bound_lo": -0.2,
+      "fit_status": "fitted_interior",
+      "match_date": "2025-03-15",
+      "n_fixtures_this_date": 5,
+      "n_training": 655,
+      "rho": -0.023328884883688807
+    },
+    {
+      "bound_hi": 0.2,
+      "bound_lo": -0.2,
+      "fit_status": "fitted_interior",
+      "match_date": "2025-03-16",
+      "n_fixtures_this_date": 3,
+      "n_training": 660,
+      "rho": -0.0260480948364118
+    },
+    {
+      "bound_hi": 0.2,
+      "bound_lo": -0.2,
+      "fit_status": "fitted_interior",
+      "match_date": "2025-04-01",
+      "n_fixtures_this_date": 3,
+      "n_training": 663,
+      "rho": -0.022913129588029962
+    },
+    {
+      "bound_hi": 0.2,
+      "bound_lo": -0.2,
+      "fit_status": "fitted_interior",
+      "match_date": "2025-04-02",
+      "n_fixtures_this_date": 6,
+      "n_training": 666,
+      "rho": -0.015401873805054984
+    },
+    {
+      "bound_hi": 0.2,
+      "bound_lo": -0.2,
+      "fit_status": "fitted_interior",
+      "match_date": "2025-04-03",
+      "n_fixtures_this_date": 1,
+      "n_training": 672,
+      "rho": -0.016426745017916522
+    },
+    {
+      "bound_hi": 0.2,
+      "bound_lo": -0.2,
+      "fit_status": "fitted_interior",
+      "match_date": "2025-04-05",
+      "n_fixtures_this_date": 5,
+      "n_training": 673,
+      "rho": -0.012078221440994394
+    },
+    {
+      "bound_hi": 0.2,
+      "bound_lo": -0.2,
+      "fit_status": "fitted_interior",
+      "match_date": "2025-04-06",
+      "n_fixtures_this_date": 4,
+      "n_training": 678,
+      "rho": -0.01475925334428841
+    },
+    {
+      "bound_hi": 0.2,
+      "bound_lo": -0.2,
+      "fit_status": "fitted_interior",
+      "match_date": "2025-04-07",
+      "n_fixtures_this_date": 1,
+      "n_training": 682,
+      "rho": -0.029604862065113792
+    },
+    {
+      "bound_hi": 0.2,
+      "bound_lo": -0.2,
+      "fit_status": "fitted_interior",
+      "match_date": "2025-04-12",
+      "n_fixtures_this_date": 5,
+      "n_training": 683,
+      "rho": -0.029604862065113792
+    },
+    {
+      "bound_hi": 0.2,
+      "bound_lo": -0.2,
+      "fit_status": "fitted_interior",
+      "match_date": "2025-04-13",
+      "n_fixtures_this_date": 4,
+      "n_training": 688,
+      "rho": -0.028309076096508037
+    },
+    {
+      "bound_hi": 0.2,
+      "bound_lo": -0.2,
+      "fit_status": "fitted_interior",
+      "match_date": "2025-04-14",
+      "n_fixtures_this_date": 1,
+      "n_training": 692,
+      "rho": -0.028309076096508037
+    },
+    {
+      "bound_hi": 0.2,
+      "bound_lo": -0.2,
+      "fit_status": "fitted_interior",
+      "match_date": "2025-04-16",
+      "n_fixtures_this_date": 1,
+      "n_training": 693,
+      "rho": -0.025182213392218426
+    },
+    {
+      "bound_hi": 0.2,
+      "bound_lo": -0.2,
+      "fit_status": "fitted_interior",
+      "match_date": "2025-04-19",
+      "n_fixtures_this_date": 5,
+      "n_training": 694,
+      "rho": -0.025182213392218426
+    },
+    {
+      "bound_hi": 0.2,
+      "bound_lo": -0.2,
+      "fit_status": "fitted_interior",
+      "match_date": "2025-04-20",
+      "n_fixtures_this_date": 4,
+      "n_training": 699,
+      "rho": -0.03422830778079802
+    },
+    {
+      "bound_hi": 0.2,
+      "bound_lo": -0.2,
+      "fit_status": "fitted_interior",
+      "match_date": "2025-04-21",
+      "n_fixtures_this_date": 1,
+      "n_training": 703,
+      "rho": -0.027941636119553925
+    },
+    {
+      "bound_hi": 0.2,
+      "bound_lo": -0.2,
+      "fit_status": "fitted_interior",
+      "match_date": "2025-04-22",
+      "n_fixtures_this_date": 1,
+      "n_training": 704,
+      "rho": -0.027941636119553925
+    },
+    {
+      "bound_hi": 0.2,
+      "bound_lo": -0.2,
+      "fit_status": "fitted_interior",
+      "match_date": "2025-04-23",
+      "n_fixtures_this_date": 1,
+      "n_training": 705,
+      "rho": -0.027941636119553925
+    },
+    {
+      "bound_hi": 0.2,
+      "bound_lo": -0.2,
+      "fit_status": "fitted_interior",
+      "match_date": "2025-04-26",
+      "n_fixtures_this_date": 5,
+      "n_training": 706,
+      "rho": -0.027941636119553925
+    },
+    {
+      "bound_hi": 0.2,
+      "bound_lo": -0.2,
+      "fit_status": "fitted_interior",
+      "match_date": "2025-04-27",
+      "n_fixtures_this_date": 2,
+      "n_training": 711,
+      "rho": -0.025903920419344396
+    },
+    {
+      "bound_hi": 0.2,
+      "bound_lo": -0.2,
+      "fit_status": "fitted_interior",
+      "match_date": "2025-05-01",
+      "n_fixtures_this_date": 1,
+      "n_training": 713,
+      "rho": -0.028321188852025916
+    },
+    {
+      "bound_hi": 0.2,
+      "bound_lo": -0.2,
+      "fit_status": "fitted_interior",
+      "match_date": "2025-05-02",
+      "n_fixtures_this_date": 1,
+      "n_training": 714,
+      "rho": -0.028321188852025916
+    },
+    {
+      "bound_hi": 0.2,
+      "bound_lo": -0.2,
+      "fit_status": "fitted_interior",
+      "match_date": "2025-05-03",
+      "n_fixtures_this_date": 4,
+      "n_training": 715,
+      "rho": -0.025673146550247203
+    },
+    {
+      "bound_hi": 0.2,
+      "bound_lo": -0.2,
+      "fit_status": "fitted_interior",
+      "match_date": "2025-05-04",
+      "n_fixtures_this_date": 4,
+      "n_training": 719,
+      "rho": -0.022498782334794437
+    },
+    {
+      "bound_hi": 0.2,
+      "bound_lo": -0.2,
+      "fit_status": "fitted_interior",
+      "match_date": "2025-05-05",
+      "n_fixtures_this_date": 1,
+      "n_training": 723,
+      "rho": -0.027293966410344733
+    },
+    {
+      "bound_hi": 0.2,
+      "bound_lo": -0.2,
+      "fit_status": "fitted_interior",
+      "match_date": "2025-05-10",
+      "n_fixtures_this_date": 5,
+      "n_training": 724,
+      "rho": -0.029674282955395606
+    },
+    {
+      "bound_hi": 0.2,
+      "bound_lo": -0.2,
+      "fit_status": "fitted_interior",
+      "match_date": "2025-05-11",
+      "n_fixtures_this_date": 5,
+      "n_training": 729,
+      "rho": -0.028606338453868875
+    },
+    {
+      "bound_hi": 0.2,
+      "bound_lo": -0.2,
+      "fit_status": "fitted_interior",
+      "match_date": "2025-05-16",
+      "n_fixtures_this_date": 2,
+      "n_training": 734,
+      "rho": -0.028606338453868875
+    },
+    {
+      "bound_hi": 0.2,
+      "bound_lo": -0.2,
+      "fit_status": "fitted_interior",
+      "match_date": "2025-05-18",
+      "n_fixtures_this_date": 5,
+      "n_training": 736,
+      "rho": -0.025921693215974123
+    },
+    {
+      "bound_hi": 0.2,
+      "bound_lo": -0.2,
+      "fit_status": "fitted_interior",
+      "match_date": "2025-05-19",
+      "n_fixtures_this_date": 1,
+      "n_training": 741,
+      "rho": -0.023161246261357002
+    },
+    {
+      "bound_hi": 0.2,
+      "bound_lo": -0.2,
+      "fit_status": "fitted_interior",
+      "match_date": "2025-05-20",
+      "n_fixtures_this_date": 2,
+      "n_training": 742,
+      "rho": -0.023161246261357002
+    },
+    {
+      "bound_hi": 0.2,
+      "bound_lo": -0.2,
+      "fit_status": "fitted_interior",
+      "match_date": "2025-05-25",
+      "n_fixtures_this_date": 10,
+      "n_training": 744,
+      "rho": -0.023161246261357002
+    },
+    {
+      "bound_hi": 0.2,
+      "bound_lo": -0.2,
+      "fit_status": "fitted_interior",
+      "match_date": "2025-08-15",
+      "n_fixtures_this_date": 1,
+      "n_training": 754,
+      "rho": -0.01910563153567102
+    },
+    {
+      "bound_hi": 0.2,
+      "bound_lo": -0.2,
+      "fit_status": "fitted_interior",
+      "match_date": "2025-08-16",
+      "n_fixtures_this_date": 5,
+      "n_training": 755,
+      "rho": -0.01910563153567102
+    },
+    {
+      "bound_hi": 0.2,
+      "bound_lo": -0.2,
+      "fit_status": "fitted_interior",
+      "match_date": "2025-08-17",
+      "n_fixtures_this_date": 3,
+      "n_training": 760,
+      "rho": -0.028356688268027175
+    },
+    {
+      "bound_hi": 0.2,
+      "bound_lo": -0.2,
+      "fit_status": "fitted_interior",
+      "match_date": "2025-08-18",
+      "n_fixtures_this_date": 1,
+      "n_training": 763,
+      "rho": -0.030702420712054552
+    },
+    {
+      "bound_hi": 0.2,
+      "bound_lo": -0.2,
+      "fit_status": "fitted_interior",
+      "match_date": "2025-08-22",
+      "n_fixtures_this_date": 1,
+      "n_training": 764,
+      "rho": -0.028467232671439358
+    },
+    {
+      "bound_hi": 0.2,
+      "bound_lo": -0.2,
+      "fit_status": "fitted_interior",
+      "match_date": "2025-08-23",
+      "n_fixtures_this_date": 5,
+      "n_training": 765,
+      "rho": -0.028467232671439358
+    },
+    {
+      "bound_hi": 0.2,
+      "bound_lo": -0.2,
+      "fit_status": "fitted_interior",
+      "match_date": "2025-08-24",
+      "n_fixtures_this_date": 3,
+      "n_training": 770,
+      "rho": -0.021916816925778
+    },
+    {
+      "bound_hi": 0.2,
+      "bound_lo": -0.2,
+      "fit_status": "fitted_interior",
+      "match_date": "2025-08-25",
+      "n_fixtures_this_date": 1,
+      "n_training": 773,
+      "rho": -0.026282402747276588
+    },
+    {
+      "bound_hi": 0.2,
+      "bound_lo": -0.2,
+      "fit_status": "fitted_interior",
+      "match_date": "2025-08-30",
+      "n_fixtures_this_date": 6,
+      "n_training": 774,
+      "rho": -0.026282402747276588
+    },
+    {
+      "bound_hi": 0.2,
+      "bound_lo": -0.2,
+      "fit_status": "fitted_interior",
+      "match_date": "2025-08-31",
+      "n_fixtures_this_date": 4,
+      "n_training": 780,
+      "rho": -0.025786181381950084
+    },
+    {
+      "bound_hi": 0.2,
+      "bound_lo": -0.2,
+      "fit_status": "fitted_interior",
+      "match_date": "2025-09-13",
+      "n_fixtures_this_date": 8,
+      "n_training": 784,
+      "rho": -0.022878335067266428
+    },
+    {
+      "bound_hi": 0.2,
+      "bound_lo": -0.2,
+      "fit_status": "fitted_interior",
+      "match_date": "2025-09-14",
+      "n_fixtures_this_date": 2,
+      "n_training": 792,
+      "rho": -0.0246028028945905
+    },
+    {
+      "bound_hi": 0.2,
+      "bound_lo": -0.2,
+      "fit_status": "fitted_interior",
+      "match_date": "2025-09-20",
+      "n_fixtures_this_date": 7,
+      "n_training": 794,
+      "rho": -0.02250831513591301
+    },
+    {
+      "bound_hi": 0.2,
+      "bound_lo": -0.2,
+      "fit_status": "fitted_interior",
+      "match_date": "2025-09-21",
+      "n_fixtures_this_date": 3,
+      "n_training": 801,
+      "rho": -0.024593511880734796
+    },
+    {
+      "bound_hi": 0.2,
+      "bound_lo": -0.2,
+      "fit_status": "fitted_interior",
+      "match_date": "2025-09-27",
+      "n_fixtures_this_date": 7,
+      "n_training": 804,
+      "rho": -0.032298254835700604
+    },
+    {
+      "bound_hi": 0.2,
+      "bound_lo": -0.2,
+      "fit_status": "fitted_interior",
+      "match_date": "2025-09-28",
+      "n_fixtures_this_date": 2,
+      "n_training": 811,
+      "rho": -0.03155733735005087
+    },
+    {
+      "bound_hi": 0.2,
+      "bound_lo": -0.2,
+      "fit_status": "fitted_interior",
+      "match_date": "2025-09-29",
+      "n_fixtures_this_date": 1,
+      "n_training": 813,
+      "rho": -0.03155733735005087
+    },
+    {
+      "bound_hi": 0.2,
+      "bound_lo": -0.2,
+      "fit_status": "fitted_interior",
+      "match_date": "2025-10-03",
+      "n_fixtures_this_date": 1,
+      "n_training": 814,
+      "rho": -0.03358778652831278
+    },
+    {
+      "bound_hi": 0.2,
+      "bound_lo": -0.2,
+      "fit_status": "fitted_interior",
+      "match_date": "2025-10-04",
+      "n_fixtures_this_date": 4,
+      "n_training": 815,
+      "rho": -0.03358778652831278
+    },
+    {
+      "bound_hi": 0.2,
+      "bound_lo": -0.2,
+      "fit_status": "fitted_interior",
+      "match_date": "2025-10-05",
+      "n_fixtures_this_date": 5,
+      "n_training": 819,
+      "rho": -0.03358778652831278
+    },
+    {
+      "bound_hi": 0.2,
+      "bound_lo": -0.2,
+      "fit_status": "fitted_interior",
+      "match_date": "2025-10-18",
+      "n_fixtures_this_date": 7,
+      "n_training": 824,
+      "rho": -0.03299626152711484
+    },
+    {
+      "bound_hi": 0.2,
+      "bound_lo": -0.2,
+      "fit_status": "fitted_interior",
+      "match_date": "2025-10-19",
+      "n_fixtures_this_date": 2,
+      "n_training": 831,
+      "rho": -0.031234699784281308
+    },
+    {
+      "bound_hi": 0.2,
+      "bound_lo": -0.2,
+      "fit_status": "fitted_interior",
+      "match_date": "2025-10-20",
+      "n_fixtures_this_date": 1,
+      "n_training": 833,
+      "rho": -0.031234699784281308
+    },
+    {
+      "bound_hi": 0.2,
+      "bound_lo": -0.2,
+      "fit_status": "fitted_interior",
+      "match_date": "2025-10-24",
+      "n_fixtures_this_date": 1,
+      "n_training": 834,
+      "rho": -0.031234699784281308
+    },
+    {
+      "bound_hi": 0.2,
+      "bound_lo": -0.2,
+      "fit_status": "fitted_interior",
+      "match_date": "2025-10-25",
+      "n_fixtures_this_date": 4,
+      "n_training": 835,
+      "rho": -0.031234699784281308
+    },
+    {
+      "bound_hi": 0.2,
+      "bound_lo": -0.2,
+      "fit_status": "fitted_interior",
+      "match_date": "2025-10-26",
+      "n_fixtures_this_date": 5,
+      "n_training": 839,
+      "rho": -0.031234699784281308
+    },
+    {
+      "bound_hi": 0.2,
+      "bound_lo": -0.2,
+      "fit_status": "fitted_interior",
+      "match_date": "2025-11-01",
+      "n_fixtures_this_date": 7,
+      "n_training": 844,
+      "rho": -0.025892627128183642
+    },
+    {
+      "bound_hi": 0.2,
+      "bound_lo": -0.2,
+      "fit_status": "fitted_interior",
+      "match_date": "2025-11-02",
+      "n_fixtures_this_date": 2,
+      "n_training": 851,
+      "rho": -0.022048866605999945
+    },
+    {
+      "bound_hi": 0.2,
+      "bound_lo": -0.2,
+      "fit_status": "fitted_interior",
+      "match_date": "2025-11-03",
+      "n_fixtures_this_date": 1,
+      "n_training": 853,
+      "rho": -0.022048866605999945
+    },
+    {
+      "bound_hi": 0.2,
+      "bound_lo": -0.2,
+      "fit_status": "fitted_interior",
+      "match_date": "2025-11-08",
+      "n_fixtures_this_date": 5,
+      "n_training": 854,
+      "rho": -0.024050541157096685
+    },
+    {
+      "bound_hi": 0.2,
+      "bound_lo": -0.2,
+      "fit_status": "fitted_interior",
+      "match_date": "2025-11-09",
+      "n_fixtures_this_date": 5,
+      "n_training": 859,
+      "rho": -0.024050541157096685
+    },
+    {
+      "bound_hi": 0.2,
+      "bound_lo": -0.2,
+      "fit_status": "fitted_interior",
+      "match_date": "2025-11-22",
+      "n_fixtures_this_date": 7,
+      "n_training": 864,
+      "rho": -0.028984499701705035
+    },
+    {
+      "bound_hi": 0.2,
+      "bound_lo": -0.2,
+      "fit_status": "fitted_interior",
+      "match_date": "2025-11-23",
+      "n_fixtures_this_date": 2,
+      "n_training": 871,
+      "rho": -0.027009850188703194
+    },
+    {
+      "bound_hi": 0.2,
+      "bound_lo": -0.2,
+      "fit_status": "fitted_interior",
+      "match_date": "2025-11-24",
+      "n_fixtures_this_date": 1,
+      "n_training": 873,
+      "rho": -0.027009850188703194
+    },
+    {
+      "bound_hi": 0.2,
+      "bound_lo": -0.2,
+      "fit_status": "fitted_interior",
+      "match_date": "2025-11-29",
+      "n_fixtures_this_date": 5,
+      "n_training": 874,
+      "rho": -0.02418738348876303
+    },
+    {
+      "bound_hi": 0.2,
+      "bound_lo": -0.2,
+      "fit_status": "fitted_interior",
+      "match_date": "2025-11-30",
+      "n_fixtures_this_date": 5,
+      "n_training": 879,
+      "rho": -0.02418738348876303
+    },
+    {
+      "bound_hi": 0.2,
+      "bound_lo": -0.2,
+      "fit_status": "fitted_interior",
+      "match_date": "2025-12-02",
+      "n_fixtures_this_date": 3,
+      "n_training": 884,
+      "rho": -0.023992312050539456
+    },
+    {
+      "bound_hi": 0.2,
+      "bound_lo": -0.2,
+      "fit_status": "fitted_interior",
+      "match_date": "2025-12-03",
+      "n_fixtures_this_date": 6,
+      "n_training": 887,
+      "rho": -0.021501558934024625
+    },
+    {
+      "bound_hi": 0.2,
+      "bound_lo": -0.2,
+      "fit_status": "fitted_interior",
+      "match_date": "2025-12-04",
+      "n_fixtures_this_date": 1,
+      "n_training": 893,
+      "rho": -0.018655290390936538
+    },
+    {
+      "bound_hi": 0.2,
+      "bound_lo": -0.2,
+      "fit_status": "fitted_interior",
+      "match_date": "2025-12-06",
+      "n_fixtures_this_date": 7,
+      "n_training": 894,
+      "rho": -0.020593305600299504
+    },
+    {
+      "bound_hi": 0.2,
+      "bound_lo": -0.2,
+      "fit_status": "fitted_interior",
+      "match_date": "2025-12-07",
+      "n_fixtures_this_date": 2,
+      "n_training": 901,
+      "rho": -0.023873478645950175
+    },
+    {
+      "bound_hi": 0.2,
+      "bound_lo": -0.2,
+      "fit_status": "fitted_interior",
+      "match_date": "2025-12-08",
+      "n_fixtures_this_date": 1,
+      "n_training": 903,
+      "rho": -0.0257885953458154
+    },
+    {
+      "bound_hi": 0.2,
+      "bound_lo": -0.2,
+      "fit_status": "fitted_interior",
+      "match_date": "2025-12-13",
+      "n_fixtures_this_date": 4,
+      "n_training": 904,
+      "rho": -0.0257885953458154
+    },
+    {
+      "bound_hi": 0.2,
+      "bound_lo": -0.2,
+      "fit_status": "fitted_interior",
+      "match_date": "2025-12-14",
+      "n_fixtures_this_date": 5,
+      "n_training": 908,
+      "rho": -0.0257885953458154
+    },
+    {
+      "bound_hi": 0.2,
+      "bound_lo": -0.2,
+      "fit_status": "fitted_interior",
+      "match_date": "2025-12-15",
+      "n_fixtures_this_date": 1,
+      "n_training": 913,
+      "rho": -0.025074601390824416
+    },
+    {
+      "bound_hi": 0.2,
+      "bound_lo": -0.2,
+      "fit_status": "fitted_interior",
+      "match_date": "2025-12-20",
+      "n_fixtures_this_date": 8,
+      "n_training": 914,
+      "rho": -0.025074601390824416
+    },
+    {
+      "bound_hi": 0.2,
+      "bound_lo": -0.2,
+      "fit_status": "fitted_interior",
+      "match_date": "2025-12-21",
+      "n_fixtures_this_date": 1,
+      "n_training": 922,
+      "rho": -0.027789484628485635
+    },
+    {
+      "bound_hi": 0.2,
+      "bound_lo": -0.2,
+      "fit_status": "fitted_interior",
+      "match_date": "2025-12-22",
+      "n_fixtures_this_date": 1,
+      "n_training": 923,
+      "rho": -0.027789484628485635
+    },
+    {
+      "bound_hi": 0.2,
+      "bound_lo": -0.2,
+      "fit_status": "fitted_interior",
+      "match_date": "2025-12-26",
+      "n_fixtures_this_date": 1,
+      "n_training": 924,
+      "rho": -0.025184496229176866
+    },
+    {
+      "bound_hi": 0.2,
+      "bound_lo": -0.2,
+      "fit_status": "fitted_interior",
+      "match_date": "2025-12-27",
+      "n_fixtures_this_date": 7,
+      "n_training": 925,
+      "rho": -0.021982269205432448
+    },
+    {
+      "bound_hi": 0.2,
+      "bound_lo": -0.2,
+      "fit_status": "fitted_interior",
+      "match_date": "2025-12-28",
+      "n_fixtures_this_date": 2,
+      "n_training": 932,
+      "rho": -0.02129965554271321
+    },
+    {
+      "bound_hi": 0.2,
+      "bound_lo": -0.2,
+      "fit_status": "fitted_interior",
+      "match_date": "2025-12-30",
+      "n_fixtures_this_date": 6,
+      "n_training": 934,
+      "rho": -0.020137074608517887
+    },
+    {
+      "bound_hi": 0.2,
+      "bound_lo": -0.2,
+      "fit_status": "fitted_interior",
+      "match_date": "2026-01-01",
+      "n_fixtures_this_date": 4,
+      "n_training": 940,
+      "rho": -0.02199305321136016
+    },
+    {
+      "bound_hi": 0.2,
+      "bound_lo": -0.2,
+      "fit_status": "fitted_interior",
+      "match_date": "2026-01-03",
+      "n_fixtures_this_date": 4,
+      "n_training": 944,
+      "rho": -0.03649309623744754
+    },
+    {
+      "bound_hi": 0.2,
+      "bound_lo": -0.2,
+      "fit_status": "fitted_interior",
+      "match_date": "2026-01-04",
+      "n_fixtures_this_date": 6,
+      "n_training": 948,
+      "rho": -0.03649309623744754
+    },
+    {
+      "bound_hi": 0.2,
+      "bound_lo": -0.2,
+      "fit_status": "fitted_interior",
+      "match_date": "2026-01-06",
+      "n_fixtures_this_date": 1,
+      "n_training": 954,
+      "rho": -0.04176504485607781
+    },
+    {
+      "bound_hi": 0.2,
+      "bound_lo": -0.2,
+      "fit_status": "fitted_interior",
+      "match_date": "2026-01-07",
+      "n_fixtures_this_date": 8,
+      "n_training": 955,
+      "rho": -0.04176504485607781
+    },
+    {
+      "bound_hi": 0.2,
+      "bound_lo": -0.2,
+      "fit_status": "fitted_interior",
+      "match_date": "2026-01-08",
+      "n_fixtures_this_date": 1,
+      "n_training": 963,
+      "rho": -0.04858997213429665
+    },
+    {
+      "bound_hi": 0.2,
+      "bound_lo": -0.2,
+      "fit_status": "fitted_interior",
+      "match_date": "2026-01-17",
+      "n_fixtures_this_date": 7,
+      "n_training": 964,
+      "rho": -0.05227941464562516
+    },
+    {
+      "bound_hi": 0.2,
+      "bound_lo": -0.2,
+      "fit_status": "fitted_interior",
+      "match_date": "2026-01-18",
+      "n_fixtures_this_date": 2,
+      "n_training": 971,
+      "rho": -0.05378357785419574
+    },
+    {
+      "bound_hi": 0.2,
+      "bound_lo": -0.2,
+      "fit_status": "fitted_interior",
+      "match_date": "2026-01-19",
+      "n_fixtures_this_date": 1,
+      "n_training": 973,
+      "rho": -0.05445969262525076
+    },
+    {
+      "bound_hi": 0.2,
+      "bound_lo": -0.2,
+      "fit_status": "fitted_interior",
+      "match_date": "2026-01-24",
+      "n_fixtures_this_date": 5,
+      "n_training": 974,
+      "rho": -0.05611077727617768
+    },
+    {
+      "bound_hi": 0.2,
+      "bound_lo": -0.2,
+      "fit_status": "fitted_interior",
+      "match_date": "2026-01-25",
+      "n_fixtures_this_date": 4,
+      "n_training": 979,
+      "rho": -0.05611077727617768
+    },
+    {
+      "bound_hi": 0.2,
+      "bound_lo": -0.2,
+      "fit_status": "fitted_interior",
+      "match_date": "2026-01-26",
+      "n_fixtures_this_date": 1,
+      "n_training": 983,
+      "rho": -0.05611077727617768
+    },
+    {
+      "bound_hi": 0.2,
+      "bound_lo": -0.2,
+      "fit_status": "fitted_interior",
+      "match_date": "2026-01-31",
+      "n_fixtures_this_date": 5,
+      "n_training": 984,
+      "rho": -0.05775569892527176
+    },
+    {
+      "bound_hi": 0.2,
+      "bound_lo": -0.2,
+      "fit_status": "fitted_interior",
+      "match_date": "2026-02-01",
+      "n_fixtures_this_date": 4,
+      "n_training": 989,
+      "rho": -0.05939441988049812
+    },
+    {
+      "bound_hi": 0.2,
+      "bound_lo": -0.2,
+      "fit_status": "fitted_interior",
+      "match_date": "2026-02-02",
+      "n_fixtures_this_date": 1,
+      "n_training": 993,
+      "rho": -0.05745941461793436
+    },
+    {
+      "bound_hi": 0.2,
+      "bound_lo": -0.2,
+      "fit_status": "fitted_interior",
+      "match_date": "2026-02-06",
+      "n_fixtures_this_date": 1,
+      "n_training": 994,
+      "rho": -0.05745941461793436
+    },
+    {
+      "bound_hi": 0.2,
+      "bound_lo": -0.2,
+      "fit_status": "fitted_interior",
+      "match_date": "2026-02-07",
+      "n_fixtures_this_date": 7,
+      "n_training": 995,
+      "rho": -0.05745941461793436
+    },
+    {
+      "bound_hi": 0.2,
+      "bound_lo": -0.2,
+      "fit_status": "fitted_interior",
+      "match_date": "2026-02-08",
+      "n_fixtures_this_date": 2,
+      "n_training": 1002,
+      "rho": -0.05908178105222976
+    },
+    {
+      "bound_hi": 0.2,
+      "bound_lo": -0.2,
+      "fit_status": "fitted_interior",
+      "match_date": "2026-02-10",
+      "n_fixtures_this_date": 4,
+      "n_training": 1004,
+      "rho": -0.05644845084656348
+    },
+    {
+      "bound_hi": 0.2,
+      "bound_lo": -0.2,
+      "fit_status": "fitted_interior",
+      "match_date": "2026-02-11",
+      "n_fixtures_this_date": 5,
+      "n_training": 1008,
+      "rho": -0.05806404981086887
+    },
+    {
+      "bound_hi": 0.2,
+      "bound_lo": -0.2,
+      "fit_status": "fitted_interior",
+      "match_date": "2026-02-12",
+      "n_fixtures_this_date": 1,
+      "n_training": 1013,
+      "rho": -0.055467031080693306
+    },
+    {
+      "bound_hi": 0.2,
+      "bound_lo": -0.2,
+      "fit_status": "fitted_interior",
+      "match_date": "2026-02-18",
+      "n_fixtures_this_date": 1,
+      "n_training": 1014,
+      "rho": -0.057064241879239835
+    },
+    {
+      "bound_hi": 0.2,
+      "bound_lo": -0.2,
+      "fit_status": "fitted_interior",
+      "match_date": "2026-02-21",
+      "n_fixtures_this_date": 5,
+      "n_training": 1015,
+      "rho": -0.057064241879239835
+    },
+    {
+      "bound_hi": 0.2,
+      "bound_lo": -0.2,
+      "fit_status": "fitted_interior",
+      "match_date": "2026-02-22",
+      "n_fixtures_this_date": 4,
+      "n_training": 1020,
+      "rho": -0.0648877960241919
+    },
+    {
+      "bound_hi": 0.2,
+      "bound_lo": -0.2,
+      "fit_status": "fitted_interior",
+      "match_date": "2026-02-23",
+      "n_fixtures_this_date": 1,
+      "n_training": 1024,
+      "rho": -0.06090045531982253
+    },
+    {
+      "bound_hi": 0.2,
+      "bound_lo": -0.2,
+      "fit_status": "fitted_interior",
+      "match_date": "2026-02-27",
+      "n_fixtures_this_date": 1,
+      "n_training": 1025,
+      "rho": -0.058731168937456904
+    },
+    {
+      "bound_hi": 0.2,
+      "bound_lo": -0.2,
+      "fit_status": "fitted_interior",
+      "match_date": "2026-02-28",
+      "n_fixtures_this_date": 5,
+      "n_training": 1026,
+      "rho": -0.058731168937456904
+    },
+    {
+      "bound_hi": 0.2,
+      "bound_lo": -0.2,
+      "fit_status": "fitted_interior",
+      "match_date": "2026-03-01",
+      "n_fixtures_this_date": 4,
+      "n_training": 1031,
+      "rho": -0.05823284553544131
+    },
+    {
+      "bound_hi": 0.2,
+      "bound_lo": -0.2,
+      "fit_status": "fitted_interior",
+      "match_date": "2026-03-03",
+      "n_fixtures_this_date": 4,
+      "n_training": 1035,
+      "rho": -0.05823284553544131
+    },
+    {
+      "bound_hi": 0.2,
+      "bound_lo": -0.2,
+      "fit_status": "fitted_interior",
+      "match_date": "2026-03-04",
+      "n_fixtures_this_date": 5,
+      "n_training": 1039,
+      "rho": -0.05781385331545575
+    },
+    {
+      "bound_hi": 0.2,
+      "bound_lo": -0.2,
+      "fit_status": "fitted_interior",
+      "match_date": "2026-03-05",
+      "n_fixtures_this_date": 1,
+      "n_training": 1044,
+      "rho": -0.0529780828834267
+    },
+    {
+      "bound_hi": 0.2,
+      "bound_lo": -0.2,
+      "fit_status": "fitted_interior",
+      "match_date": "2026-03-14",
+      "n_fixtures_this_date": 5,
+      "n_training": 1045,
+      "rho": -0.0529780828834267
+    },
+    {
+      "bound_hi": 0.2,
+      "bound_lo": -0.2,
+      "fit_status": "fitted_interior",
+      "match_date": "2026-03-15",
+      "n_fixtures_this_date": 4,
+      "n_training": 1050,
+      "rho": -0.05209553499112615
+    },
+    {
+      "bound_hi": 0.2,
+      "bound_lo": -0.2,
+      "fit_status": "fitted_interior",
+      "match_date": "2026-03-16",
+      "n_fixtures_this_date": 1,
+      "n_training": 1054,
+      "rho": -0.05856052494478582
+    },
+    {
+      "bound_hi": 0.2,
+      "bound_lo": -0.2,
+      "fit_status": "fitted_interior",
+      "match_date": "2026-03-20",
+      "n_fixtures_this_date": 1,
+      "n_training": 1055,
+      "rho": -0.05856052494478582
+    },
+    {
+      "bound_hi": 0.2,
+      "bound_lo": -0.2,
+      "fit_status": "fitted_interior",
+      "match_date": "2026-03-21",
+      "n_fixtures_this_date": 4,
+      "n_training": 1056,
+      "rho": -0.05856052494478582
+    },
+    {
+      "bound_hi": 0.2,
+      "bound_lo": -0.2,
+      "fit_status": "fitted_interior",
+      "match_date": "2026-03-22",
+      "n_fixtures_this_date": 3,
+      "n_training": 1060,
+      "rho": -0.06114792242808984
+    },
+    {
+      "bound_hi": 0.2,
+      "bound_lo": -0.2,
+      "fit_status": "fitted_interior",
+      "match_date": "2026-04-10",
+      "n_fixtures_this_date": 1,
+      "n_training": 1063,
+      "rho": -0.06114792242808984
+    },
+    {
+      "bound_hi": 0.2,
+      "bound_lo": -0.2,
+      "fit_status": "fitted_interior",
+      "match_date": "2026-04-11",
+      "n_fixtures_this_date": 4,
+      "n_training": 1064,
+      "rho": -0.06114792242808984
+    },
+    {
+      "bound_hi": 0.2,
+      "bound_lo": -0.2,
+      "fit_status": "fitted_interior",
+      "match_date": "2026-04-12",
+      "n_fixtures_this_date": 4,
+      "n_training": 1068,
+      "rho": -0.06114792242808984
+    },
+    {
+      "bound_hi": 0.2,
+      "bound_lo": -0.2,
+      "fit_status": "fitted_interior",
+      "match_date": "2026-04-13",
+      "n_fixtures_this_date": 1,
+      "n_training": 1072,
+      "rho": -0.06056358182759859
+    },
+    {
+      "bound_hi": 0.2,
+      "bound_lo": -0.2,
+      "fit_status": "fitted_interior",
+      "match_date": "2026-04-18",
+      "n_fixtures_this_date": 5,
+      "n_training": 1073,
+      "rho": -0.06056358182759859
+    },
+    {
+      "bound_hi": 0.2,
+      "bound_lo": -0.2,
+      "fit_status": "fitted_interior",
+      "match_date": "2026-04-19",
+      "n_fixtures_this_date": 4,
+      "n_training": 1078,
+      "rho": -0.06098739349009148
+    },
+    {
+      "bound_hi": 0.2,
+      "bound_lo": -0.2,
+      "fit_status": "fitted_interior",
+      "match_date": "2026-04-20",
+      "n_fixtures_this_date": 1,
+      "n_training": 1082,
+      "rho": -0.06098739349009148
+    },
+    {
+      "bound_hi": 0.2,
+      "bound_lo": -0.2,
+      "fit_status": "fitted_interior",
+      "match_date": "2026-04-21",
+      "n_fixtures_this_date": 1,
+      "n_training": 1083,
+      "rho": -0.06379596190146078
+    },
+    {
+      "bound_hi": 0.2,
+      "bound_lo": -0.2,
+      "fit_status": "fitted_interior",
+      "match_date": "2026-04-22",
+      "n_fixtures_this_date": 2,
+      "n_training": 1084,
+      "rho": -0.06379596190146078
+    },
+    {
+      "bound_hi": 0.2,
+      "bound_lo": -0.2,
+      "fit_status": "fitted_interior",
+      "match_date": "2026-04-24",
+      "n_fixtures_this_date": 1,
+      "n_training": 1086,
+      "rho": -0.06267373119329689
+    },
+    {
+      "bound_hi": 0.2,
+      "bound_lo": -0.2,
+      "fit_status": "fitted_interior",
+      "match_date": "2026-04-25",
+      "n_fixtures_this_date": 5,
+      "n_training": 1087,
+      "rho": -0.06267373119329689
+    },
+    {
+      "bound_hi": 0.2,
+      "bound_lo": -0.2,
+      "fit_status": "fitted_interior",
+      "match_date": "2026-04-27",
+      "n_fixtures_this_date": 1,
+      "n_training": 1092,
+      "rho": -0.056902961868745564
+    },
+    {
+      "bound_hi": 0.2,
+      "bound_lo": -0.2,
+      "fit_status": "fitted_interior",
+      "match_date": "2026-05-01",
+      "n_fixtures_this_date": 1,
+      "n_training": 1093,
+      "rho": -0.056902961868745564
+    },
+    {
+      "bound_hi": 0.2,
+      "bound_lo": -0.2,
+      "fit_status": "fitted_interior",
+      "match_date": "2026-05-02",
+      "n_fixtures_this_date": 4,
+      "n_training": 1094,
+      "rho": -0.056902961868745564
+    },
+    {
+      "bound_hi": 0.2,
+      "bound_lo": -0.2,
+      "fit_status": "fitted_interior",
+      "match_date": "2026-05-03",
+      "n_fixtures_this_date": 3,
+      "n_training": 1098,
+      "rho": -0.058324126978559515
+    },
+    {
+      "bound_hi": 0.2,
+      "bound_lo": -0.2,
+      "fit_status": "fitted_interior",
+      "match_date": "2026-05-04",
+      "n_fixtures_this_date": 2,
+      "n_training": 1101,
+      "rho": -0.058324126978559515
+    },
+    {
+      "bound_hi": 0.2,
+      "bound_lo": -0.2,
+      "fit_status": "fitted_interior",
+      "match_date": "2026-05-09",
+      "n_fixtures_this_date": 5,
+      "n_training": 1103,
+      "rho": -0.058324126978559515
+    },
+    {
+      "bound_hi": 0.2,
+      "bound_lo": -0.2,
+      "fit_status": "fitted_interior",
+      "match_date": "2026-05-10",
+      "n_fixtures_this_date": 4,
+      "n_training": 1108,
+      "rho": -0.058834584270340384
+    },
+    {
+      "bound_hi": 0.2,
+      "bound_lo": -0.2,
+      "fit_status": "fitted_interior",
+      "match_date": "2026-05-11",
+      "n_fixtures_this_date": 1,
+      "n_training": 1112,
+      "rho": -0.05901279190239997
+    },
+    {
+      "bound_hi": 0.2,
+      "bound_lo": -0.2,
+      "fit_status": "fitted_interior",
+      "match_date": "2026-05-13",
+      "n_fixtures_this_date": 1,
+      "n_training": 1113,
+      "rho": -0.06041071063155723
+    },
+    {
+      "bound_hi": 0.2,
+      "bound_lo": -0.2,
+      "fit_status": "fitted_interior",
+      "match_date": "2026-05-15",
+      "n_fixtures_this_date": 1,
+      "n_training": 1114,
+      "rho": -0.06041071063155723
+    },
+    {
+      "bound_hi": 0.2,
+      "bound_lo": -0.2,
+      "fit_status": "fitted_interior",
+      "match_date": "2026-05-17",
+      "n_fixtures_this_date": 6,
+      "n_training": 1115,
+      "rho": -0.06041071063155723
+    },
+    {
+      "bound_hi": 0.2,
+      "bound_lo": -0.2,
+      "fit_status": "fitted_interior",
+      "match_date": "2026-05-18",
+      "n_fixtures_this_date": 1,
+      "n_training": 1121,
+      "rho": -0.05972715769120507
+    },
+    {
+      "bound_hi": 0.2,
+      "bound_lo": -0.2,
+      "fit_status": "fitted_interior",
+      "match_date": "2026-05-19",
+      "n_fixtures_this_date": 2,
+      "n_training": 1122,
+      "rho": -0.05864379619832817
+    },
+    {
+      "bound_hi": 0.2,
+      "bound_lo": -0.2,
+      "fit_status": "fitted_interior",
+      "match_date": "2026-05-24",
+      "n_fixtures_this_date": 10,
+      "n_training": 1124,
+      "rho": -0.06003355422480744
+    }
+  ],
+  "fit_status_counts": {
+    "fitted_interior": 223
+  },
+  "n_dates": 223,
+  "rho_max": -0.012078221440994394,
+  "rho_median": -0.044300355768106564,
+  "rho_min": -0.07467571123207142
+}

@@ -1,0 +1,491 @@
+{
+  "adoption_recommendation": "dixon_coles_team_poisson's point-estimate log loss is slightly better than frozen team_goal_poisson's in this replay, but the 95% descriptive interval straddles zero \u2014 this is NOT strong enough evidence to confidently adopt the added complexity. Recommend keeping team_goal_poisson as the public demo's forecasting default; dixon_coles_team_poisson remains a documented, promising candidate for a future genuinely prospective test, not a replacement earned by this replay alone.",
+  "config": {
+    "bootstrap": {
+      "method": "paired fixed-seed date-block bootstrap",
+      "replicates": 1000,
+      "seed": 20250103
+    },
+    "boundary_epsilon": 1e-06,
+    "golden_section_max_iterations": 120,
+    "golden_section_tolerance": 1e-08,
+    "min_training_observations_for_fit": 50,
+    "positivity_margin": 1e-12,
+    "rho_outer_bound": [
+      -0.2,
+      0.2
+    ]
+  },
+  "dixon_coles_vs_team_goal_poisson": {
+    "by_season": {
+      "2024-25": {
+        "ci95_descriptive": [
+          -0.0030216342325586343,
+          0.0017498083753653138
+        ],
+        "interpretation": "negative means left_model wins (lower log loss)",
+        "left_model": "team_goal_poisson",
+        "note": "descriptive and approximate; not a formal hypothesis test",
+        "point_diff_log_loss_right_minus_left": -0.0006497208551734523,
+        "replicates": 1000,
+        "right_model": "dixon_coles_team_poisson",
+        "seed": 20250103
+      },
+      "2025-26": {
+        "ci95_descriptive": [
+          -0.003900793046716533,
+          0.0005839522598509728
+        ],
+        "interpretation": "negative means left_model wins (lower log loss)",
+        "left_model": "team_goal_poisson",
+        "note": "descriptive and approximate; not a formal hypothesis test",
+        "point_diff_log_loss_right_minus_left": -0.001612980008203202,
+        "replicates": 1000,
+        "right_model": "dixon_coles_team_poisson",
+        "seed": 20250103
+      }
+    },
+    "overall": {
+      "ci95_descriptive": [
+        -0.0027520446106497065,
+        0.0004951203810964477
+      ],
+      "interpretation": "negative means left_model wins (lower log loss)",
+      "left_model": "team_goal_poisson",
+      "note": "descriptive and approximate; not a formal hypothesis test",
+      "point_diff_log_loss_right_minus_left": -0.0011313504316883272,
+      "replicates": 1000,
+      "right_model": "dixon_coles_team_poisson",
+      "seed": 20250103
+    }
+  },
+  "draw_calibration": {
+    "dixon_coles_team_poisson": {
+      "gap_pct_points_observed_minus_predicted": 2.672244438644827,
+      "mean_predicted_pct": 23.248808192934117,
+      "n": 760,
+      "observed_pct": 25.921052631578945
+    },
+    "expanding_league_prior": {
+      "gap_pct_points_observed_minus_predicted": 2.692083899198286,
+      "mean_predicted_pct": 23.228968732380658,
+      "n": 760,
+      "observed_pct": 25.921052631578945
+    },
+    "league_only_poisson": {
+      "gap_pct_points_observed_minus_predicted": 2.2926431569042394,
+      "mean_predicted_pct": 23.628409474674704,
+      "n": 760,
+      "observed_pct": 25.921052631578945
+    },
+    "rolling_league_frequency": {
+      "gap_pct_points_observed_minus_predicted": 0.6389856181113818,
+      "mean_predicted_pct": 25.282067013467564,
+      "n": 760,
+      "observed_pct": 25.921052631578945
+    },
+    "team_goal_poisson": {
+      "gap_pct_points_observed_minus_predicted": 3.53675826835175,
+      "mean_predicted_pct": 22.384294363227195,
+      "n": 760,
+      "observed_pct": 25.921052631578945
+    }
+  },
+  "draw_calibration_bins": {
+    "dixon_coles_team_poisson": [
+      {
+        "bin_index": 0,
+        "mean_predicted_pct": 17.702187029730933,
+        "n": 152,
+        "observed_rate_pct": 17.763157894736842,
+        "predicted_prob_range": [
+          0.090744012719164,
+          0.20128547981562525
+        ]
+      },
+      {
+        "bin_index": 1,
+        "mean_predicted_pct": 21.619631982849192,
+        "n": 152,
+        "observed_rate_pct": 26.31578947368421,
+        "predicted_prob_range": [
+          0.20167100215734388,
+          0.22703454239891604
+        ]
+      },
+      {
+        "bin_index": 2,
+        "mean_predicted_pct": 23.634469476507274,
+        "n": 152,
+        "observed_rate_pct": 28.289473684210524,
+        "predicted_prob_range": [
+          0.2273032893533742,
+          0.24416379666511476
+        ]
+      },
+      {
+        "bin_index": 3,
+        "mean_predicted_pct": 25.324923923831456,
+        "n": 152,
+        "observed_rate_pct": 24.342105263157894,
+        "predicted_prob_range": [
+          0.2443433215824079,
+          0.2634046588213038
+        ]
+      },
+      {
+        "bin_index": 4,
+        "mean_predicted_pct": 27.96282855175174,
+        "n": 152,
+        "observed_rate_pct": 32.89473684210527,
+        "predicted_prob_range": [
+          0.2635213199805093,
+          0.3195969146714915
+        ]
+      }
+    ],
+    "expanding_league_prior": [
+      {
+        "bin_index": 0,
+        "mean_predicted_pct": 22.37378023966453,
+        "n": 152,
+        "observed_rate_pct": 28.947368421052634,
+        "predicted_prob_range": [
+          0.2125,
+          0.22827346465816917
+        ]
+      },
+      {
+        "bin_index": 1,
+        "mean_predicted_pct": 22.94523247445973,
+        "n": 152,
+        "observed_rate_pct": 28.289473684210524,
+        "predicted_prob_range": [
+          0.22827346465816917,
+          0.23065476190476192
+        ]
+      },
+      {
+        "bin_index": 2,
+        "mean_predicted_pct": 23.155042337290947,
+        "n": 152,
+        "observed_rate_pct": 21.710526315789476,
+        "predicted_prob_range": [
+          0.23065476190476192,
+          0.23277467411545624
+        ]
+      },
+      {
+        "bin_index": 3,
+        "mean_predicted_pct": 23.531890178071944,
+        "n": 152,
+        "observed_rate_pct": 25.0,
+        "predicted_prob_range": [
+          0.23277467411545624,
+          0.23893805309734514
+        ]
+      },
+      {
+        "bin_index": 4,
+        "mean_predicted_pct": 24.138898432416152,
+        "n": 152,
+        "observed_rate_pct": 25.657894736842106,
+        "predicted_prob_range": [
+          0.23893805309734514,
+          0.2444836716681377
+        ]
+      }
+    ],
+    "league_only_poisson": [
+      {
+        "bin_index": 0,
+        "mean_predicted_pct": 23.105407276113247,
+        "n": 152,
+        "observed_rate_pct": 28.289473684210524,
+        "predicted_prob_range": [
+          0.2280812875125622,
+          0.23228065833641984
+        ]
+      },
+      {
+        "bin_index": 1,
+        "mean_predicted_pct": 23.373773939309867,
+        "n": 152,
+        "observed_rate_pct": 21.052631578947366,
+        "predicted_prob_range": [
+          0.23228065833641984,
+          0.23545475405474006
+        ]
+      },
+      {
+        "bin_index": 2,
+        "mean_predicted_pct": 23.688911247937593,
+        "n": 152,
+        "observed_rate_pct": 24.342105263157894,
+        "predicted_prob_range": [
+          0.23545475405474006,
+          0.238353420856914
+        ]
+      },
+      {
+        "bin_index": 3,
+        "mean_predicted_pct": 23.88222812212537,
+        "n": 152,
+        "observed_rate_pct": 26.31578947368421,
+        "predicted_prob_range": [
+          0.238353420856914,
+          0.23976102383834313
+        ]
+      },
+      {
+        "bin_index": 4,
+        "mean_predicted_pct": 24.091726787887442,
+        "n": 152,
+        "observed_rate_pct": 29.605263157894733,
+        "predicted_prob_range": [
+          0.23976102383834313,
+          0.24174450990075208
+        ]
+      }
+    ],
+    "rolling_league_frequency": [
+      {
+        "bin_index": 0,
+        "mean_predicted_pct": 19.418457577849736,
+        "n": 152,
+        "observed_rate_pct": 28.947368421052634,
+        "predicted_prob_range": [
+          0.16346153846153846,
+          0.20952380952380953
+        ]
+      },
+      {
+        "bin_index": 1,
+        "mean_predicted_pct": 22.27224566019441,
+        "n": 152,
+        "observed_rate_pct": 27.631578947368425,
+        "predicted_prob_range": [
+          0.20952380952380953,
+          0.2358490566037736
+        ]
+      },
+      {
+        "bin_index": 2,
+        "mean_predicted_pct": 24.883764917999564,
+        "n": 152,
+        "observed_rate_pct": 17.105263157894736,
+        "predicted_prob_range": [
+          0.2358490566037736,
+          0.2616822429906542
+        ]
+      },
+      {
+        "bin_index": 3,
+        "mean_predicted_pct": 27.513463060991565,
+        "n": 152,
+        "observed_rate_pct": 28.947368421052634,
+        "predicted_prob_range": [
+          0.2616822429906542,
+          0.28846153846153844
+        ]
+      },
+      {
+        "bin_index": 4,
+        "mean_predicted_pct": 32.32240385030252,
+        "n": 152,
+        "observed_rate_pct": 26.973684210526315,
+        "predicted_prob_range": [
+          0.28846153846153844,
+          0.3669724770642202
+        ]
+      }
+    ],
+    "team_goal_poisson": [
+      {
+        "bin_index": 0,
+        "mean_predicted_pct": 17.060622851630107,
+        "n": 152,
+        "observed_rate_pct": 17.763157894736842,
+        "predicted_prob_range": [
+          0.08880054142999778,
+          0.19371544749205996
+        ]
+      },
+      {
+        "bin_index": 1,
+        "mean_predicted_pct": 20.874228444370285,
+        "n": 152,
+        "observed_rate_pct": 26.973684210526315,
+        "predicted_prob_range": [
+          0.19379070308762472,
+          0.21977555036744298
+        ]
+      },
+      {
+        "bin_index": 2,
+        "mean_predicted_pct": 22.80950690389403,
+        "n": 152,
+        "observed_rate_pct": 28.289473684210524,
+        "predicted_prob_range": [
+          0.21985432391071716,
+          0.23556389107120201
+        ]
+      },
+      {
+        "bin_index": 3,
+        "mean_predicted_pct": 24.353484019484984,
+        "n": 152,
+        "observed_rate_pct": 23.026315789473685,
+        "predicted_prob_range": [
+          0.23559946712721117,
+          0.2526600857991947
+        ]
+      },
+      {
+        "bin_index": 4,
+        "mean_predicted_pct": 26.82362959675657,
+        "n": 152,
+        "observed_rate_pct": 33.55263157894737,
+        "predicted_prob_range": [
+          0.25267304238800325,
+          0.30517618402336366
+        ]
+      }
+    ]
+  },
+  "evaluation_seasons": [
+    "2024-25",
+    "2025-26"
+  ],
+  "hindsight_disclosure": "Both evaluated seasons have already been inspected repeatedly across S03/S04/S05. This is an exploratory, hindsight-informed chronological replay, not a pristine prospective holdout. See docs/S05_DIXON_COLES_PROTOCOL.md.",
+  "models": {
+    "by_season": {
+      "2024-25": {
+        "dixon_coles_team_poisson": {
+          "accuracy": 0.5236842105263158,
+          "brier": 0.5953040347726708,
+          "log_loss": 0.996555406151609,
+          "n": 380,
+          "rps": 0.2057091024315279
+        },
+        "expanding_league_prior": {
+          "accuracy": 0.40789473684210525,
+          "brier": 0.6563440697456397,
+          "log_loss": 1.082313595394208,
+          "n": 380,
+          "rps": 0.23540799730241005
+        },
+        "league_only_poisson": {
+          "accuracy": 0.40789473684210525,
+          "brier": 0.6548133373157664,
+          "log_loss": 1.079878973484988,
+          "n": 380,
+          "rps": 0.23488253400787207
+        },
+        "rolling_league_frequency": {
+          "accuracy": 0.39210526315789473,
+          "brier": 0.6654544703361661,
+          "log_loss": 1.0976953357136419,
+          "n": 380,
+          "rps": 0.23852826887987663
+        },
+        "team_goal_poisson": {
+          "accuracy": 0.5236842105263158,
+          "brier": 0.5956632883395853,
+          "log_loss": 0.9972051270067824,
+          "n": 380,
+          "rps": 0.20576897802601363
+        }
+      },
+      "2025-26": {
+        "dixon_coles_team_poisson": {
+          "accuracy": 0.4789473684210526,
+          "brier": 0.6189382584933095,
+          "log_loss": 1.0306560474687432,
+          "n": 380,
+          "rps": 0.21031460227283583
+        },
+        "expanding_league_prior": {
+          "accuracy": 0.4263157894736842,
+          "brier": 0.6561631973576569,
+          "log_loss": 1.0842320433707606,
+          "n": 380,
+          "rps": 0.22796153660307245
+        },
+        "league_only_poisson": {
+          "accuracy": 0.4263157894736842,
+          "brier": 0.6558034546106839,
+          "log_loss": 1.083485121770636,
+          "n": 380,
+          "rps": 0.22795455428510503
+        },
+        "rolling_league_frequency": {
+          "accuracy": 0.4026315789473684,
+          "brier": 0.660699017687579,
+          "log_loss": 1.0909639602933063,
+          "n": 380,
+          "rps": 0.22995425331547584
+        },
+        "team_goal_poisson": {
+          "accuracy": 0.4789473684210526,
+          "brier": 0.6200036561964256,
+          "log_loss": 1.0322690274769464,
+          "n": 380,
+          "rps": 0.21049216855668854
+        }
+      }
+    },
+    "overall": {
+      "dixon_coles_team_poisson": {
+        "accuracy": 0.5013157894736842,
+        "brier": 0.6071211466329902,
+        "log_loss": 1.0136057268101761,
+        "n": 760,
+        "rps": 0.20801185235218184
+      },
+      "expanding_league_prior": {
+        "accuracy": 0.41710526315789476,
+        "brier": 0.6562536335516483,
+        "log_loss": 1.0832728193824843,
+        "n": 760,
+        "rps": 0.23168476695274123
+      },
+      "league_only_poisson": {
+        "accuracy": 0.41710526315789476,
+        "brier": 0.6553083959632252,
+        "log_loss": 1.081682047627812,
+        "n": 760,
+        "rps": 0.23141854414648855
+      },
+      "rolling_league_frequency": {
+        "accuracy": 0.3973684210526316,
+        "brier": 0.6630767440118726,
+        "log_loss": 1.094329648003474,
+        "n": 760,
+        "rps": 0.2342412610976762
+      },
+      "team_goal_poisson": {
+        "accuracy": 0.5013157894736842,
+        "brier": 0.6078334722680054,
+        "log_loss": 1.0147370772418645,
+        "n": 760,
+        "rps": 0.20813057329135107
+      }
+    }
+  },
+  "pinned_commit": "9ee7a0c351805c99cc334478a9bf04b7d0432fec",
+  "rho_summary": {
+    "fit_status_counts": {
+      "fitted_interior": 223
+    },
+    "n_dates": 223,
+    "rho_max": -0.012078221440994394,
+    "rho_median": -0.044300355768106564,
+    "rho_min": -0.07467571123207142
+  },
+  "source_repo": "openfootball/england",
+  "total_evaluation_n": 760,
+  "training_only_seasons": [
+    "2023-24"
+  ]
+}

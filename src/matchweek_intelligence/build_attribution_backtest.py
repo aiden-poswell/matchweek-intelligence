@@ -25,6 +25,7 @@ from matchweek_intelligence import metrics as mx
 from matchweek_intelligence.chronology import completed_training_results_as_of
 from matchweek_intelligence.fetch import PINNED_COMMIT, SOURCE_REPO
 from matchweek_intelligence.model_inputs import ModelRecord, load_eligible_historical_records
+from matchweek_intelligence.prediction_row_validation import validate_prediction_rows
 
 EVALUATION_SEASONS: tuple[str, ...] = ("2024-25", "2025-26")
 TRAINING_ONLY_SEASONS: tuple[str, ...] = ("2023-24",)
@@ -256,6 +257,15 @@ def _date_block_bootstrap_log_loss_diff(
 
 def build_metrics_report(rows: list[AttributionPredictionRow]) -> dict:
     models = list(_MODELS.keys())
+    # Never trust the supplied rows' fields — including the precomputed log_loss/brier/
+    # rps/accuracy_hit columns — without independently re-verifying them first. See
+    # prediction_row_validation.py's module docstring for the real defect this closes.
+    validate_prediction_rows(
+        rows,
+        expected_models=frozenset(models),
+        expected_n_per_model=760,
+        season_split={season: 380 for season in EVALUATION_SEASONS},
+    )
     overall_by_model = {m: _aggregate(rows, m) for m in models}
     by_season = {
         season: {m: _aggregate(rows, m, season=season) for m in models}
@@ -337,8 +347,11 @@ def write_metrics_report(report: dict, path: Path = DEFAULT_METRICS_PATH) -> Non
 
 def main() -> None:
     rows = run_attribution_backtest()
-    write_predictions_csv(rows)
+    # Validate BEFORE writing anything: build_metrics_report's internal validation
+    # must gate both output files, not just the metrics JSON — a prior version of
+    # this function wrote the CSV before any validation ran at all.
     report = build_metrics_report(rows)
+    write_predictions_csv(rows)
     write_metrics_report(report)
     print(f"evaluated {report['total_evaluation_n']} fixtures across {len(_MODELS)} models")
     for model, agg in report["models"]["overall"].items():
