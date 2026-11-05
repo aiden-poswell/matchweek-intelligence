@@ -1,0 +1,68 @@
+{
+  "evaluation_seasons": [
+    "2024-25",
+    "2025-26"
+  ],
+  "fixture_count": 760,
+  "live_claim_allowed": false,
+  "model_name": "team_goal_poisson",
+  "per_season_n": {
+    "2024-25": 380,
+    "2025-26": 380
+  },
+  "pinned_commit": "9ee7a0c351805c99cc334478a9bf04b7d0432fec",
+  "replays_json_sha256": "746eabc9f24e87f48b220661058e81b698857b6719e36a5756490f6c65d5328c",
+  "schema_version": "1.0.0",
+  "scorecard_reconciliation": {
+    "2024-25 brier": {
+      "computed": 0.5956632883395853,
+      "frozen_s04": 0.5956632883395853
+    },
+    "2024-25 draw mean_predicted_pct": {
+      "computed": 21.885136967674306,
+      "frozen_s04": 21.885136967674306
+    },
+    "2024-25 draw observed_pct": {
+      "computed": 24.47368421052632,
+      "frozen_s04": 24.47368421052632
+    },
+    "2024-25 log_loss": {
+      "computed": 0.9972051270067824,
+      "frozen_s04": 0.9972051270067824
+    },
+    "2024-25 n": {
+      "computed": 380.0,
+      "frozen_s04": 380.0
+    },
+    "2024-25 rps": {
+      "computed": 0.20576897802601363,
+      "frozen_s04": 0.20576897802601363
+    },
+    "2025-26 brier": {
+      "computed": 0.6200036561964256,
+      "frozen_s04": 0.6200036561964256
+    },
+    "2025-26 draw mean_predicted_pct": {
+      "computed": 22.883451758780087,
+      "frozen_s04": 22.883451758780087
+    },
+    "2025-26 draw observed_pct": {
+      "computed": 27.368421052631582,
+      "frozen_s04": 27.368421052631582
+    },
+    "2025-26 log_loss": {
+      "computed": 1.0322690274769464,
+      "frozen_s04": 1.0322690274769464
+    },
+    "2025-26 n": {
+      "computed": 380.0,
+      "frozen_s04": 380.0
+    },
+    "2025-26 rps": {
+      "computed": 0.21049216855668854,
+      "frozen_s04": 0.21049216855668854
+    }
+  },
+  "source_repo": "openfootball/england",
+  "unique_fixture_keys": 760
+}

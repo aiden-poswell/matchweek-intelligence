@@ -71,7 +71,13 @@ def validate_prediction_rows(
         )
 
     reference_keys: set[tuple] | None = None
-    fixture_truth: dict[tuple, tuple[int, int, str]] = {}
+    # (home_score, away_score, actual_outcome, season) — season is included so the
+    # SAME real fixture cannot be silently labelled with a different season by a
+    # different model (a reproduced gap: the per-model 380/380 split alone cannot
+    # catch two fixtures' season labels being swapped between models while each
+    # model's own aggregate split stays correct). The fixture key is still only
+    # (match_date, home_team, away_team) — never a round/matchday label.
+    fixture_truth: dict[tuple, tuple[int, int, str, str]] = {}
 
     for model in sorted(expected_models):
         model_rows = by_model[model]
@@ -94,6 +100,14 @@ def validate_prediction_rows(
 
         if any(r.season == "2026-27" for r in model_rows):
             raise PredictionRowValidationError(f"{model}: a 2026/27 row is present")
+
+        supported_seasons = frozenset(season_split)
+        for r in model_rows:
+            if r.season not in supported_seasons:
+                raise PredictionRowValidationError(
+                    f"{model} {_fixture_key(r)}: unsupported season {r.season!r} "
+                    f"(expected one of {sorted(supported_seasons)})"
+                )
 
         for season, expected_n in season_split.items():
             n = sum(1 for r in model_rows if r.season == season)
@@ -120,11 +134,11 @@ def validate_prediction_rows(
                     f"(derived outcome: {derived!r})"
                 )
 
-            truth = (r.home_score, r.away_score, r.actual_outcome)
+            truth = (r.home_score, r.away_score, r.actual_outcome, r.season)
             if key in fixture_truth:
                 if fixture_truth[key] != truth:
                     raise PredictionRowValidationError(
-                        f"{key}: score/outcome disagreement across models — "
+                        f"{key}: score/outcome/season disagreement across models — "
                         f"{fixture_truth[key]} vs {truth} (seen in {model})"
                     )
             else:

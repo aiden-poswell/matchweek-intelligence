@@ -23,7 +23,7 @@
           -0.0030216342325586343,
           0.0017498083753653138
         ],
-        "interpretation": "negative means left_model wins (lower log loss)",
+        "interpretation": "negative means right_model wins (lower log loss)",
         "left_model": "team_goal_poisson",
         "note": "descriptive and approximate; not a formal hypothesis test",
         "point_diff_log_loss_right_minus_left": -0.0006497208551734523,
@@ -36,7 +36,7 @@
           -0.003900793046716533,
           0.0005839522598509728
         ],
-        "interpretation": "negative means left_model wins (lower log loss)",
+        "interpretation": "negative means right_model wins (lower log loss)",
         "left_model": "team_goal_poisson",
         "note": "descriptive and approximate; not a formal hypothesis test",
         "point_diff_log_loss_right_minus_left": -0.001612980008203202,
@@ -50,7 +50,7 @@
         -0.0027520446106497065,
         0.0004951203810964477
       ],
-      "interpretation": "negative means left_model wins (lower log loss)",
+      "interpretation": "negative means right_model wins (lower log loss)",
       "left_model": "team_goal_poisson",
       "note": "descriptive and approximate; not a formal hypothesis test",
       "point_diff_log_loss_right_minus_left": -0.0011313504316883272,

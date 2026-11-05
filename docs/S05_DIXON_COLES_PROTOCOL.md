@@ -1,10 +1,15 @@
-# S05 Dixon-Coles protocol — frozen before fitting or viewing any challenger result
+# S05 Dixon-Coles protocol — a single specified protocol, documented before any result was computed
 
-Every numeric default and implementation choice below is fixed here, BEFORE
-`dixon_coles_team_poisson` was fitted against any held-out fixture and BEFORE any S05 result
-was inspected. None of these constants were tuned against the 760 evaluated fixtures. This is
-the single, pre-registered challenger for S05 — not a menu of variants to pick the best from in
-hindsight.
+Every numeric default and implementation choice below was documented here as frozen within the
+S05 development sequence, before `dixon_coles_team_poisson` was fitted against any held-out
+fixture and before any S05 result was inspected. None of these constants were tuned against the
+760 evaluated fixtures. This is the single challenger specified for S05 — not a menu of variants
+to pick the best from in hindsight. **Correction (S06):** S05 itself was left uncommitted
+throughout its own development (confirmed in `matchweek-intelligence-s05-verification.md`), so
+there is no separate, independently verifiable pre-fit Git checkpoint proving this document
+predated the fit — only the documented sequence within this slice. This is a specified and
+followed protocol, not an independently pre-registered or blinded study; see
+`S06_PROVENANCE_CORRECTION.md` for the full correction.
 
 ## What this challenger is, precisely
 
@@ -136,7 +141,7 @@ deterministic given its bounds and objective.
 This is the ONE challenger evaluated in S05. There is no menu of alternative `rho`
 parameterisations, decay schemes, or bound choices being compared to pick a winner after seeing
 scores. If `dixon_coles_team_poisson` does not beat frozen `team_goal_poisson` on log loss, the
-documented conclusion is that this specific, pre-registered complexity increase did not earn
+documented conclusion is that this specific, specified-in-advance complexity increase did not earn
 adoption in this replay — not a prompt to retune, redefine, or try a second variant.
 
 ## Hindsight disclosure (restated from `docs/S04_CHALLENGER_RESEARCH_PLAN.md`)

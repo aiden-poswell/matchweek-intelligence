@@ -80,6 +80,56 @@ def test_rho_zero_recovers_the_frozen_independent_poisson_probabilities_exactly(
     assert dc_dist["p_away"] == pytest.approx(plain_dist["p_away"], abs=1e-12)
 
 
+# --- S06 Stage A3: strict positivity at the exact zero boundary --------------------
+#
+# dixon_coles_outcome_distribution only rejected joint < 0, not joint == 0. At
+# lambda_home=lambda_away=rho=1.0, tau(0,0) = 1 - 1*1*1 = 0 and tau(1,1) = 1 - 1 = 0
+# exactly — a zero multiplier was silently ACCEPTED, contrary to the protocol's
+# strictly-positive, fail-closed rule. (rho=1.0 is outside the real fitted/outer bound
+# range used in S05 — this is a latent robustness defect in the function itself, not an
+# observed bad S05 forecast; every real fitted rho stayed well inside safe bounds.)
+
+
+def test_a3_exact_zero_tau_boundary_is_rejected_not_silently_accepted():
+    assert dc.tau(0, 0, 1.0, 1.0, 1.0) == 0.0
+    assert dc.tau(1, 1, 1.0, 1.0, 1.0) == 0.0
+    with pytest.raises(dc.DixonColesError, match="not strictly positive"):
+        dc.dixon_coles_outcome_distribution(1.0, 1.0, rho=1.0)
+
+
+def test_a3_rho_zero_positive_control_is_unaffected_by_the_boundary_fix():
+    # rho=0 keeps every tau exactly 1.0 (well above the margin) and must still exactly
+    # recover the frozen independent-Poisson probabilities after the A3 fix.
+    lh, la = 1.8, 1.3
+    dc_dist = dc.dixon_coles_outcome_distribution(lh, la, rho=0.0)
+    plain_dist = _poisson_outcome_distribution(lh, la)
+    assert dc_dist["p_home"] == pytest.approx(plain_dist["p_home"], abs=1e-12)
+    assert dc_dist["p_draw"] == pytest.approx(plain_dist["p_draw"], abs=1e-12)
+    assert dc_dist["p_away"] == pytest.approx(plain_dist["p_away"], abs=1e-12)
+
+
+def test_a3_realistic_small_negative_rho_is_not_affected_by_the_stricter_check():
+    # Every real S05-fitted rho is small and negative (min -0.0747); confirm the
+    # stricter low-score-tau check still passes ordinary, legitimate parameter values.
+    dist = dc.dixon_coles_outcome_distribution(1.3, 1.1, rho=-0.05)
+    for p in (dist["p_home"], dist["p_draw"], dist["p_away"]):
+        assert math.isfinite(p) and p > 0
+    assert sum((dist["p_home"], dist["p_draw"], dist["p_away"])) == pytest.approx(1.0, abs=1e-9)
+
+
+def test_a3_far_tail_cell_legitimate_zero_underflow_is_not_rejected():
+    # A far-tail cell (well outside LOW_SCORE_CELLS) always has tau == 1.0 and can
+    # legitimately underflow ph * pa to exactly 0.0 for a high-goal cell — the A3 fix
+    # must not touch this path at all, since it only checks tau on the four low-score
+    # cells. This is an existence check: a normal, moderate (lambda, rho) pair must
+    # still produce a valid, finite, correctly-summing distribution (if any far-tail
+    # cell were wrongly rejected, this call would raise).
+    dist = dc.dixon_coles_outcome_distribution(lambda_home=4.0, lambda_away=0.3, rho=-0.19)
+    for p in (dist["p_home"], dist["p_draw"], dist["p_away"]):
+        assert math.isfinite(p) and p > 0
+    assert sum((dist["p_home"], dist["p_draw"], dist["p_away"])) == pytest.approx(1.0, abs=1e-9)
+
+
 @pytest.mark.parametrize("rho", [-0.15, -0.05, 0.0, 0.05, 0.15])
 def test_total_probability_sums_to_one_across_a_range_of_rho(rho):
     dist = dc.dixon_coles_outcome_distribution(1.6, 1.1, rho)

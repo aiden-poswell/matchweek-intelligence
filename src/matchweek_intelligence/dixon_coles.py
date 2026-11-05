@@ -2,9 +2,11 @@
 cells on top of the frozen `team_goal_poisson` pre-match lambda pair.
 
 Every constant and implementation choice here is frozen in
-`docs/S05_DIXON_COLES_PROTOCOL.md`, written and committed BEFORE any held-out S05
-result was fitted or inspected. Nothing here was tuned against the 760 evaluated
-fixtures.
+`docs/S05_DIXON_COLES_PROTOCOL.md`, documented as frozen within the S05 development
+sequence before any held-out S05 result was fitted or inspected. Nothing here was
+tuned against the 760 evaluated fixtures. (S06 correction: S05 was left uncommitted
+throughout its own development, so no separate pre-fit Git checkpoint independently
+proves this chronology — see `S06_PROVENANCE_CORRECTION.md`.)
 """
 
 from __future__ import annotations
@@ -92,7 +94,21 @@ def dixon_coles_outcome_distribution(lambda_home: float, lambda_away: float, rho
     )
 
     def cell_mass(i: int, j: int, ph: float, pa: float) -> float:
-        t = tau(i, j, lambda_home, lambda_away, rho) if (i, j) in LOW_SCORE_CELLS else 1.0
+        if (i, j) in LOW_SCORE_CELLS:
+            # The protocol requires strictly-positive tau on the four adjusted cells —
+            # reject non-finite or <= POSITIVITY_MARGIN BEFORE applying it, rather than
+            # only catching a negative joint afterwards (which silently let an exact
+            # tau=0 boundary — e.g. tau(0,0)=0 at lambda_home=lambda_away=rho=1 — through
+            # unflagged, since 0 is not < 0). Far-tail cells with t=1.0 are never checked
+            # here, so a legitimate Poisson underflow to 0 at high (i, j) is unaffected.
+            t = tau(i, j, lambda_home, lambda_away, rho)
+            if not math.isfinite(t) or t <= POSITIVITY_MARGIN:
+                raise DixonColesError(
+                    f"low-score tau at ({i},{j}) is non-finite or not strictly positive "
+                    f"(tau={t}, rho={rho}, lambda_home={lambda_home}, lambda_away={lambda_away})"
+                )
+        else:
+            t = 1.0
         joint = ph * pa * t
         if joint < 0:
             raise DixonColesError(

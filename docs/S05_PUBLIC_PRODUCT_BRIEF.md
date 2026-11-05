@@ -9,10 +9,14 @@ brief to build against, grounded in the actual S03–S05 research findings — n
 
 A small, historical, honestly-labelled web page: **the Matchweek Replay Lab.** A visitor picks
 a real, completed Premier League fixture from 2024/25 or 2025/26, and sees exactly what this
-project's frozen model would have said about it **using only results available strictly before
-that match's kickoff** — alongside the actual result, and the model's season-level track
-record. It is a demonstration of disciplined, leak-free, chronologically honest forecasting
-methodology, not a prediction service.
+project's frozen model would have said about it **using results from before this match date**
+— alongside the actual result, and the model's season-level track record. **Correction (S06):**
+the modelling pipeline works at match-date granularity, not a validated precise kickoff
+timestamp with timezone, and it excludes all matches on the target date from training — so the
+product must never say "before kickoff," "available at kickoff," or any other falsely precise
+intraday statement. Every forecast was computed retrospectively on historical results; none
+could have been publicly issued in advance. It is a demonstration of disciplined, leak-free,
+chronologically honest forecasting methodology, not a prediction service.
 
 ## What it is not
 
@@ -28,7 +32,7 @@ methodology, not a prediction service.
 
 ## Default model and why
 
-**`team_goal_poisson` is the default.** S05's one pre-registered Dixon-Coles challenger showed a
+**`team_goal_poisson` is the default.** S05's one specified-protocol Dixon-Coles challenger showed a
 small, directionally consistent improvement (log loss 1.0136 vs. 1.0147 overall) but its 95%
 descriptive bootstrap interval straddled zero in every scope tested — not strong enough evidence
 to adopt the added complexity (`reports/S05_DIXON_COLES_EVALUATION.md`). **The product must not

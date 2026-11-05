@@ -1,10 +1,14 @@
-# S05 Dixon-Coles evaluation — one pre-registered challenger, honestly scored
+# S05 Dixon-Coles evaluation — one specified-protocol challenger, honestly scored
 
 Entirely historical. **This is an exploratory, hindsight-informed chronological replay, not a
 pristine prospective holdout** — both evaluated seasons' outcomes have already been inspected
 repeatedly across S03, S04, and S05. Nothing here is a live forecast; `live_claim_allowed`
-remains hard-coded `False`. Full method freeze: `docs/S05_DIXON_COLES_PROTOCOL.md`, written and
-committed BEFORE this model was fitted. Full numbers: `reports/s05_challenger_metrics.json`,
+remains hard-coded `False`. Full method freeze: `docs/S05_DIXON_COLES_PROTOCOL.md`, documented as frozen within the S05
+development sequence, before this model's result was computed or inspected — but S05 was left
+uncommitted throughout its own development (see `matchweek-intelligence-s05-verification.md`),
+so there is no separate pre-fit Git checkpoint independently proving that chronology; this
+remains a specified-and-followed protocol, not an independently pre-registered or blinded
+study (see `S06_PROVENANCE_CORRECTION.md`). Full numbers: `reports/s05_challenger_metrics.json`,
 `reports/s05_rho_fit_audit.json`. Per-fixture audit (not tracked in Git):
 `data/processed/s05_challenger_predictions_REVIEW.csv` (3,800 rows = 760 fixtures × 5 models).
 

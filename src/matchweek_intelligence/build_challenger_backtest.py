@@ -365,7 +365,13 @@ def _date_block_bootstrap_log_loss_diff(
         "right_model": model_right,
         "point_diff_log_loss_right_minus_left": point_diff,
         "ci95_descriptive": [lo, hi],
-        "interpretation": "negative means left_model wins (lower log loss)",
+        # point_diff = mean(right) - mean(left): NEGATIVE means right_model's log loss
+        # is LOWER, i.e. right_model wins. (Corrected in S06 — this previously read
+        # "negative means left_model wins", which is backwards; reproduced with a
+        # synthetic exact-log-loss pair before this fix. The written prose conclusions
+        # in reports/S05_DIXON_COLES_EVALUATION.md were already correct; only this
+        # machine-readable field was wrong.)
+        "interpretation": "negative means right_model wins (lower log loss)",
         "replicates": replicates,
         "seed": seed,
         "note": "descriptive and approximate; not a formal hypothesis test",

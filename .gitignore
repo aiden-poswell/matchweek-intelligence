@@ -20,6 +20,14 @@ dist/
 .idea/
 *.log
 
+# Web app build tooling and output — never tracked; web/public/data/replays.json
+# (the intentional derived public artifact) and web/src, web/package*.json etc. are
+# ordinary tracked source and are NOT excluded by this.
+web/node_modules/
+web/dist/
+web/.vite/
+web/coverage/
+
 # Secrets
 .env
 .env.*

@@ -211,6 +211,101 @@ def test_validator_rejects_a_2026_27_row():
         )
 
 
+def test_validator_rejects_an_unsupported_season_label():
+    rows = _synthetic_valid_rows()
+    rows[0] = _replace(rows[0], season="2023-24")  # not in season_split, not 2026-27 either
+    with pytest.raises(PredictionRowValidationError, match="unsupported season"):
+        validate_prediction_rows(
+            rows,
+            expected_models=frozenset({"model_a", "model_b"}),
+            expected_n_per_model=1,
+            season_split={"2024-25": 1},
+        )
+
+
+# --- S06 Stage A2: cross-model fixture-season consistency ---------------------------
+#
+# A reproduced gap: validate_prediction_rows checked each model's own per-season ROW
+# COUNT, but never that the SAME real fixture carries the SAME season across models.
+# Two fixtures whose season labels are swapped between model_a and model_b each keep a
+# correct 1/1 split per model, so the old count-only check passed silently.
+
+
+def _synthetic_two_fixture_rows_by_model_season(
+    model_a_seasons: tuple[str, str], model_b_seasons: tuple[str, str]
+) -> list[AttributionPredictionRow]:
+    from matchweek_intelligence import metrics as mx
+
+    ll = mx.log_loss(0.5)
+    brier = mx.brier_score(0.5, 0.3, 0.2, "H")
+    rps = mx.ranked_probability_score(0.5, 0.3, 0.2, "H")
+    fixtures = [
+        ("2024-08-16", "X", "Y"),
+        ("2025-08-16", "P", "Q"),
+    ]
+    rows = []
+    for model, seasons in (("model_a", model_a_seasons), ("model_b", model_b_seasons)):
+        for (match_date, home_team, away_team), season in zip(fixtures, seasons, strict=True):
+            rows.append(
+                AttributionPredictionRow(
+                    match_date=match_date,
+                    season=season,
+                    home_team=home_team,
+                    away_team=away_team,
+                    home_score=2,
+                    away_score=1,
+                    actual_outcome="H",
+                    p_home=0.5,
+                    p_draw=0.3,
+                    p_away=0.2,
+                    training_n=10,
+                    latest_training_match_date="2024-05-19",
+                    home_team_exposure=5,
+                    away_team_exposure=5,
+                    home_team_cold_start=False,
+                    away_team_cold_start=False,
+                    accuracy_hit=True,
+                    lambda_home="",
+                    lambda_away="",
+                    included_mass="",
+                    tail_mass="",
+                    max_goals="",
+                    model_name=model,
+                    log_loss=ll,
+                    brier=brier,
+                    rps=rps,
+                )
+            )
+    return rows
+
+
+def test_e_positive_control_consistent_seasons_across_models_passes():
+    rows = _synthetic_two_fixture_rows_by_model_season(
+        model_a_seasons=("2024-25", "2025-26"), model_b_seasons=("2024-25", "2025-26")
+    )
+    validate_prediction_rows(
+        rows,
+        expected_models=frozenset({"model_a", "model_b"}),
+        expected_n_per_model=2,
+        season_split={"2024-25": 1, "2025-26": 1},
+    )  # must not raise
+
+
+def test_e_cross_model_season_swap_is_rejected_despite_correct_per_model_counts():
+    rows = _synthetic_two_fixture_rows_by_model_season(
+        model_a_seasons=("2024-25", "2025-26"), model_b_seasons=("2025-26", "2024-25")
+    )
+    # Each model individually still has exactly one 2024-25 row and one 2025-26 row —
+    # only the cross-model fixture-to-season mapping disagrees.
+    with pytest.raises(PredictionRowValidationError, match="score/outcome/season disagreement"):
+        validate_prediction_rows(
+            rows,
+            expected_models=frozenset({"model_a", "model_b"}),
+            expected_n_per_model=2,
+            season_split={"2024-25": 1, "2025-26": 1},
+        )
+
+
 def test_validator_never_writes_anything_itself_and_raises_before_any_aggregation():
     # The validator is a pure check: it has no file I/O of its own, so "no output file
     # is written on failure" reduces to "the caller's write call is never reached" —

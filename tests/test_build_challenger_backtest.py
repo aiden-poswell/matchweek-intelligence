@@ -161,3 +161,69 @@ def test_build_metrics_report_accepts_the_genuine_s05_rows_unchanged(real_challe
     rows, rho_audit = real_challenger_result
     report = build_metrics_report(rows, rho_audit)  # must not raise
     assert report["total_evaluation_n"] == 760
+
+
+# --- S06 Stage A1: bootstrap sign-interpretation regression ------------------------
+#
+# point_diff_log_loss_right_minus_left = mean(right) - mean(left). A previous version
+# of the "interpretation" string said "negative means left_model wins", which is
+# backwards: a negative value means RIGHT's log loss is lower, i.e. right_model wins.
+
+
+def _make_exact_loss_row(d: str, model: str, log_loss: float) -> ChallengerPredictionRow:
+    return ChallengerPredictionRow(
+        match_date=d,
+        season="2024-25",
+        home_team="A",
+        away_team="B",
+        home_score=1,
+        away_score=0,
+        actual_outcome="H",
+        model_name=model,
+        p_home=0.5,
+        p_draw=0.3,
+        p_away=0.2,
+        training_n=10,
+        latest_training_match_date="",
+        home_team_exposure=1,
+        away_team_exposure=1,
+        home_team_cold_start=False,
+        away_team_cold_start=False,
+        log_loss=log_loss,
+        brier=0.1,
+        rps=0.1,
+        accuracy_hit=True,
+        lambda_home="",
+        lambda_away="",
+        included_mass="",
+        tail_mass="",
+        max_goals="",
+        rho="",
+        rho_fit_status="",
+        rho_fit_n="",
+        rho_bound_lo="",
+        rho_bound_hi="",
+    )
+
+
+def test_a1_bootstrap_interpretation_string_matches_the_actual_sign_direction():
+    from matchweek_intelligence.build_challenger_backtest import (
+        _date_block_bootstrap_log_loss_diff,
+    )
+
+    rows = []
+    for i in range(60):
+        d = f"2024-01-{i + 1:02d}" if i < 31 else f"2024-02-{i - 30:02d}"
+        rows.append(_make_exact_loss_row(d, "worse_model", 2.0))
+        rows.append(_make_exact_loss_row(d, "better_model", 1.0))
+
+    result = _date_block_bootstrap_log_loss_diff(
+        rows, model_left="worse_model", model_right="better_model", season=None
+    )
+    # right (better_model, log_loss=1.0) - left (worse_model, log_loss=2.0) = -1.0
+    assert result["point_diff_log_loss_right_minus_left"] == pytest.approx(-1.0)
+    assert "right_model" in result["interpretation"]
+    assert "negative means right_model wins" in result["interpretation"]
+    # And the actual named winner (better_model, the lower log loss) must be the
+    # model the corrected string says wins when the diff is negative.
+    assert result["right_model"] == "better_model"
