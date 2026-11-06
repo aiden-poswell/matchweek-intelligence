@@ -7,7 +7,7 @@ fit only on results from before date X have said about fixtures on or after date
 match dates, not a validated precise kickoff timestamp, so no forecast here was or could have
 been issued before a match was actually played.
 
-**Live demo:** _pending — not yet deployed publicly._
+**Live demo:** <https://aiden-poswell.github.io/matchweek-intelligence/>
 
 ## What this is
 
