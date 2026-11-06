@@ -212,9 +212,9 @@ def _date_block_bootstrap_log_loss_diff(
     replicates: int = BOOTSTRAP_REPLICATES,
 ) -> dict:
     """95% descriptive (not inferential) interval for mean log-loss(model_right) -
-    mean log-loss(model_left); negative means model_left wins. Resamples whole
-    evaluation dates with replacement, the SAME resampled date list applied to both
-    models each replicate."""
+    mean log-loss(model_left); negative means model_right wins (lower log loss).
+    Resamples whole evaluation dates with replacement, the SAME resampled date list
+    applied to both models each replicate."""
     by_date_left: dict[str, list[float]] = defaultdict(list)
     by_date_right: dict[str, list[float]] = defaultdict(list)
     for r in rows:
@@ -248,7 +248,12 @@ def _date_block_bootstrap_log_loss_diff(
         "right_model": model_right,
         "point_diff_log_loss_right_minus_left": point_diff,
         "ci95_descriptive": [lo, hi],
-        "interpretation": "negative means left_model wins (lower log loss)",
+        # point_diff = mean(right) - mean(left): NEGATIVE means right_model's log loss
+        # is LOWER, i.e. right_model wins. (S07 erratum — this previously read
+        # "negative means left_model wins", which is backwards; reproduced with a
+        # synthetic exact-log-loss pair before this fix. See
+        # reports/S07_S04_INTERPRETATION_ERRATUM.md.)
+        "interpretation": "negative means right_model wins (lower log loss)",
         "replicates": replicates,
         "seed": seed,
         "note": "descriptive and approximate; not a formal hypothesis test",

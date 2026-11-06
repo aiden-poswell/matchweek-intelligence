@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 export interface AppQuery {
   view: "fixtures" | "scorecard" | "methodology";
@@ -30,32 +30,51 @@ function queryToSearch(query: AppQuery): string {
   return s ? `?${s}` : "";
 }
 
+export interface SetQueryOptions {
+  /** Use history.replaceState instead of pushState — for high-frequency updates
+   * (e.g. each keystroke in a search box) that should not each create a Back-stop. */
+  replace?: boolean;
+}
+
 /**
  * The entire app's navigable state lives in the URL's query string (never a path
  * segment, so this works correctly when served as a plain static file with no
- * server-side rewrite rule). Every state change does a `pushState` so the browser's
- * own Back/Forward buttons move through fixture/season/view history exactly as a
- * visitor expects from a normal multi-page site.
+ * server-side rewrite rule). Every state change updates history exactly once, as a
+ * plain side effect of calling `setQuery` from an event handler — never from inside
+ * a React state updater function, which React is free to invoke more than once (for
+ * retried/discarded renders) and which must therefore stay pure. A `queryRef` tracks
+ * the latest committed value synchronously so multiple `setQuery` calls in the same
+ * tick (or calls that race a pending render) always merge onto the true latest state,
+ * not a stale snapshot.
  */
-export function useQueryState(): [AppQuery, (next: Partial<AppQuery>) => void] {
+export function useQueryState(): [AppQuery, (next: Partial<AppQuery>, options?: SetQueryOptions) => void] {
   const [query, setQueryState] = useState<AppQuery>(() =>
     typeof window === "undefined" ? DEFAULT_QUERY : parseQuery(window.location.search),
   );
+  const queryRef = useRef(query);
+  queryRef.current = query;
 
   useEffect(() => {
-    const onPopState = () => setQueryState(parseQuery(window.location.search));
+    const onPopState = () => {
+      const next = parseQuery(window.location.search);
+      queryRef.current = next;
+      setQueryState(next);
+    };
     window.addEventListener("popstate", onPopState);
     return () => window.removeEventListener("popstate", onPopState);
   }, []);
 
-  const setQuery = useCallback((next: Partial<AppQuery>) => {
-    setQueryState((prev) => {
-      const merged = { ...prev, ...next };
-      const search = queryToSearch(merged);
-      const url = `${window.location.pathname}${search}${window.location.hash}`;
+  const setQuery = useCallback((next: Partial<AppQuery>, options?: SetQueryOptions) => {
+    const merged: AppQuery = { ...queryRef.current, ...next };
+    const search = queryToSearch(merged);
+    const url = `${window.location.pathname}${search}${window.location.hash}`;
+    if (options?.replace) {
+      window.history.replaceState(null, "", url);
+    } else {
       window.history.pushState(null, "", url);
-      return merged;
-    });
+    }
+    queryRef.current = merged;
+    setQueryState(merged);
   }, []);
 
   return [query, setQuery];

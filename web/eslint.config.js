@@ -3,23 +3,17 @@ import tseslint from "@typescript-eslint/eslint-plugin";
 import tsParser from "@typescript-eslint/parser";
 import reactHooks from "eslint-plugin-react-hooks";
 import reactRefresh from "eslint-plugin-react-refresh";
+import globals from "globals";
 
 export default [
-  { ignores: ["dist", "node_modules"] },
+  { ignores: ["dist", "node_modules", ".qa-*.mjs"] },
   js.configs.recommended,
   {
     files: ["**/*.{ts,tsx}"],
     languageOptions: {
       parser: tsParser,
       parserOptions: { ecmaVersion: "latest", sourceType: "module" },
-      globals: {
-        window: "readonly",
-        document: "readonly",
-        fetch: "readonly",
-        console: "readonly",
-        URLSearchParams: "readonly",
-        HTMLInputElement: "readonly",
-      },
+      globals: { ...globals.browser, ...globals.node },
     },
     plugins: {
       "@typescript-eslint": tseslint,

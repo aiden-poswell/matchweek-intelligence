@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import type { ReplayDataset } from "../types";
+import { validateReplayDataset } from "./validateReplayDataset";
 
 export type ReplayDataState =
   | { status: "loading" }
@@ -7,23 +8,6 @@ export type ReplayDataState =
   | { status: "ready"; data: ReplayDataset };
 
 const DATA_URL = `${import.meta.env.BASE_URL}data/replays.json`;
-
-function validateDataset(raw: unknown): ReplayDataset {
-  if (typeof raw !== "object" || raw === null) {
-    throw new Error("replay data is not a JSON object");
-  }
-  const d = raw as Partial<ReplayDataset>;
-  if (!Array.isArray(d.fixtures) || d.fixtures.length === 0) {
-    throw new Error("replay data contains no fixtures");
-  }
-  if (typeof d.fixture_count !== "number" || d.fixtures.length !== d.fixture_count) {
-    throw new Error("replay data fixture count does not match the fixture list");
-  }
-  if (!d.season_scorecards || !d.evaluation_seasons) {
-    throw new Error("replay data is missing season scorecards");
-  }
-  return d as ReplayDataset;
-}
 
 export function useReplayData(): ReplayDataState {
   const [state, setState] = useState<ReplayDataState>({ status: "loading" });
@@ -39,8 +23,14 @@ export function useReplayData(): ReplayDataState {
       })
       .then((raw) => {
         if (cancelled) return;
-        const data = validateDataset(raw);
-        setState({ status: "ready", data });
+        // The browser is its own trust boundary: the fetched JSON is independently,
+        // strictly re-validated here — never assumed safe merely because it came
+        // from this project's own generator. See validateReplayDataset's docstring.
+        const result = validateReplayDataset(raw);
+        if (!result.ok) {
+          throw new Error(`historical fixture data failed validation: ${result.error}`);
+        }
+        setState({ status: "ready", data: result.data });
       })
       .catch((err: unknown) => {
         if (cancelled) return;

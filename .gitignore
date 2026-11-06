@@ -28,6 +28,10 @@ web/dist/
 web/.vite/
 web/coverage/
 
+# Scratch, local-only QA/automation scripts used during manual browser verification
+# (not app source, never shipped, never part of the reviewed diff/zip).
+web/.qa-*.mjs
+
 # Secrets
 .env
 .env.*

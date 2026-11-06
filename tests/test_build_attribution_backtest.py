@@ -9,6 +9,7 @@ import pytest
 
 from matchweek_intelligence.build_attribution_backtest import (
     AttributionBacktestError,
+    AttributionPredictionRow,
     run_attribution_backtest,
 )
 from matchweek_intelligence.chronology import completed_training_results_as_of
@@ -156,3 +157,77 @@ def test_leakage_positive_control_an_earlier_result_changes_both_poisson_predict
         pred_a = model_fn(training_a, "A", "B")
         pred_b = model_fn(training_b, "A", "B")
         assert pred_a.as_tuple() != pred_b.as_tuple()
+
+
+# --- S07 erratum: bootstrap sign-interpretation regression --------------------------
+#
+# point_diff_log_loss_right_minus_left = mean(right) - mean(left). A previous version
+# of the "interpretation" string said "negative means left_model wins", which is
+# backwards: a negative value means RIGHT's log loss is lower, i.e. right_model wins.
+# This is the same class of bug independently fixed in build_challenger_backtest.py
+# for S06 (see tests/test_build_challenger_backtest.py); this module's own sibling
+# copy of the bug was deliberately left unfixed in S06 (disclosed in S06 findings)
+# because fixing it then would have altered the already-committed, frozen S04
+# artifact without a dedicated erratum. S07 is that dedicated erratum.
+
+
+def _make_exact_loss_row(d: str, model: str, log_loss: float) -> AttributionPredictionRow:
+    return AttributionPredictionRow(
+        match_date=d,
+        season="2024-25",
+        home_team="A",
+        away_team="B",
+        home_score=1,
+        away_score=0,
+        actual_outcome="H",
+        model_name=model,
+        p_home=0.5,
+        p_draw=0.3,
+        p_away=0.2,
+        training_n=10,
+        latest_training_match_date="",
+        home_team_exposure=1,
+        away_team_exposure=1,
+        home_team_cold_start=False,
+        away_team_cold_start=False,
+        log_loss=log_loss,
+        brier=0.1,
+        rps=0.1,
+        accuracy_hit=True,
+        lambda_home="",
+        lambda_away="",
+        included_mass="",
+        tail_mass="",
+        max_goals="",
+    )
+
+
+def test_s07_bootstrap_interpretation_matches_the_actual_sign_direction_both_ways():
+    from matchweek_intelligence.build_attribution_backtest import (
+        _date_block_bootstrap_log_loss_diff,
+    )
+
+    rows = []
+    for i in range(60):
+        d = f"2024-01-{i + 1:02d}" if i < 31 else f"2024-02-{i - 30:02d}"
+        rows.append(_make_exact_loss_row(d, "worse_model", 2.0))
+        rows.append(_make_exact_loss_row(d, "better_model", 1.0))
+
+    # Direction 1: right_model (better_model) has the lower log loss -> diff is
+    # negative -> the string must say right_model wins.
+    result = _date_block_bootstrap_log_loss_diff(
+        rows, model_left="worse_model", model_right="better_model", season=None
+    )
+    assert result["point_diff_log_loss_right_minus_left"] == pytest.approx(-1.0)
+    assert "right_model" in result["interpretation"]
+    assert "negative means right_model wins" in result["interpretation"]
+    assert result["right_model"] == "better_model"
+
+    # Direction 2: swap left/right — right_model (worse_model) now has the HIGHER log
+    # loss -> diff is positive -> under the same fixed interpretation string, a
+    # positive value correctly implies left_model (better_model) wins instead.
+    result_swapped = _date_block_bootstrap_log_loss_diff(
+        rows, model_left="better_model", model_right="worse_model", season=None
+    )
+    assert result_swapped["point_diff_log_loss_right_minus_left"] == pytest.approx(1.0)
+    assert result_swapped["left_model"] == "better_model"
