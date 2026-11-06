@@ -1,4 +1,75 @@
 {
+  "benchmark_scorecards": {
+    "by_season": {
+      "2024-25": {
+        "expanding_league_prior": {
+          "brier": 0.6563440697456397,
+          "log_loss": 1.082313595394208,
+          "n": 380,
+          "rps": 0.23540799730241005
+        },
+        "league_only_poisson": {
+          "brier": 0.6548133373157664,
+          "log_loss": 1.079878973484988,
+          "n": 380,
+          "rps": 0.23488253400787207
+        },
+        "team_goal_poisson": {
+          "brier": 0.5956632883395853,
+          "log_loss": 0.9972051270067824,
+          "n": 380,
+          "rps": 0.20576897802601363
+        }
+      },
+      "2025-26": {
+        "expanding_league_prior": {
+          "brier": 0.6561631973576569,
+          "log_loss": 1.0842320433707606,
+          "n": 380,
+          "rps": 0.22796153660307245
+        },
+        "league_only_poisson": {
+          "brier": 0.6558034546106839,
+          "log_loss": 1.083485121770636,
+          "n": 380,
+          "rps": 0.22795455428510503
+        },
+        "team_goal_poisson": {
+          "brier": 0.6200036561964256,
+          "log_loss": 1.0322690274769464,
+          "n": 380,
+          "rps": 0.21049216855668854
+        }
+      }
+    },
+    "disclosure": "These are the same three predeclared baselines audited in S03/S04 (docs/S03_BASELINE_METHODS.md, reports/S04_ATTRIBUTION_AUDIT.md), evaluated on the identical 760 held-out fixtures shown throughout this replay \u2014 not a new model, a new backtest, or a prospective performance guarantee. Lower is better for every score shown. Both evaluated seasons were inspected repeatedly during this project's own development (see the hindsight disclosure above); this is a descriptive comparison of hindsight-informed fit, not a certified live or held-out forecasting result.",
+    "lower_is_better": true,
+    "models": [
+      "expanding_league_prior",
+      "league_only_poisson",
+      "team_goal_poisson"
+    ],
+    "overall": {
+      "expanding_league_prior": {
+        "brier": 0.6562536335516483,
+        "log_loss": 1.0832728193824843,
+        "n": 760,
+        "rps": 0.23168476695274123
+      },
+      "league_only_poisson": {
+        "brier": 0.6553083959632252,
+        "log_loss": 1.081682047627812,
+        "n": 760,
+        "rps": 0.23141854414648855
+      },
+      "team_goal_poisson": {
+        "brier": 0.6078334722680054,
+        "log_loss": 1.0147370772418645,
+        "n": 760,
+        "rps": 0.20813057329135107
+      }
+    }
+  },
   "evaluation_seasons": [
     "2024-25",
     "2025-26"
@@ -14456,7 +14527,7 @@
   ],
   "retrospective": true,
   "retrospective_disclosure": "Every probability shown here was computed retrospectively, using only results from before this match date. The modelling pipeline works at match-date granularity, not a validated precise kickoff timestamp with timezone, and it excludes every match on the target date itself from training. No forecast in this dataset was or could have been issued in advance of the match being played; this is a historical replay, not a live or prospective forecasting feed.",
-  "schema_version": "1.0.0",
+  "schema_version": "1.1.0",
   "season_scorecards": {
     "2024-25": {
       "brier": 0.5956632883395853,

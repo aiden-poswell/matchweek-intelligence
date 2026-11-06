@@ -12,12 +12,21 @@ a specific API call made during this audit.
   (commit date 2026-10-15T14:42:31Z, message: "EFL Cup 2020-21: Leyton Orient v Tottenham
   Hotspur forfeited (#63)" — i.e. the most recent repo-wide commit was a *historical correction*
   to a 2020/21 cup fixture, not an update to the current season).
-- **Licence:** `LICENSE.md` at repo root is the full, unmodified **CC0 1.0 Universal** legal
-  text (verified by reading the actual file content, not just GitHub's detected SPDX tag).
-  `README.md` states explicitly: *"The football.db schema, data and scripts are dedicated to the
-  public domain. Use as you please with no restrictions whatsoever."* This is a clean,
-  explicit data-level grant — not a licence scoped to "software" that is merely silent on the
-  data files — the publisher's own words explicitly cover **data**, not just code.
+- **Licence:** `LICENSE.md` at the **upstream `openfootball/england` repository's own root**
+  (pinned: <https://github.com/openfootball/england/blob/9ee7a0c351805c99cc334478a9bf04b7d0432fec/LICENSE.md>)
+  is the full, unmodified **CC0 1.0 Universal** legal text (verified by reading the actual file
+  content, not just GitHub's detected SPDX tag). `README.md` states explicitly: *"The
+  football.db schema, data and scripts are dedicated to the public domain. Use as you please
+  with no restrictions whatsoever."* This is a clean, explicit data-level grant — not a licence
+  scoped to "software" that is merely silent on the data files — the publisher's own words
+  explicitly cover **data**, not just code.
+  **S08 erratum (does not change the finding above):** an earlier release-readiness checklist
+  (S07) misread this bullet as claiming this bullet's `LICENSE.md` lives at *this* project's own
+  repository root, and counted its absence there as a second release blocker. That was a
+  misinterpretation of this document, not a real gap in it — this bullet was always, and remains,
+  about the upstream `openfootball/england` repository's own root, not this project's. This
+  project's own original code's licence is a separate, owner-level decision addressed in
+  `README.md` and the root `LICENSE.md` it links to (added in S08; see `reports/S08_*` exports).
 - **Residual provenance risk (documented, not dismissed):** a CC0 declaration by the repository's
   maintainer is evidence the maintainer intends to place their own compiled work in the public
   domain. It is not independent proof that every underlying fact (a score, a kickoff time) was

@@ -35,6 +35,21 @@ export interface SeasonScorecard {
   draw_calibration: DrawCalibration;
 }
 
+export interface BenchmarkModelMetrics {
+  n: number;
+  log_loss: number;
+  brier: number;
+  rps: number;
+}
+
+export interface BenchmarkScorecards {
+  models: string[];
+  lower_is_better: boolean;
+  disclosure: string;
+  by_season: Record<Season, Record<string, BenchmarkModelMetrics>>;
+  overall: Record<string, BenchmarkModelMetrics>;
+}
+
 export interface ReplayDataset {
   schema_version: string;
   model_name: string;
@@ -53,4 +68,5 @@ export interface ReplayDataset {
   fixture_count: number;
   fixtures: Fixture[];
   season_scorecards: Record<Season, SeasonScorecard>;
+  benchmark_scorecards?: BenchmarkScorecards;
 }

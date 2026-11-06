@@ -70,9 +70,9 @@ export function Methodology({ dataset }: { dataset: ReplayDataset }) {
       <p>
         Fixture and score data: <code>{dataset.source.repo}</code>, pinned at commit{" "}
         <code>{dataset.source.pinned_commit}</code>, licensed {dataset.source.license}. This
-        derived dataset — fixture identities, actual results, and this one model's pre-match
-        probabilities — is published under the same rights-cleared basis as the underlying
-        corpus.
+        derived dataset — fixture identities, actual results, and this one model's
+        retrospectively-computed probabilities — is published under the same rights-cleared
+        basis as the underlying corpus.
       </p>
     </section>
   );

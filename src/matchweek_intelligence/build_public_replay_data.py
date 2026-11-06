@@ -20,6 +20,15 @@ deterministic rebuilds are byte-identical.
 Also writes `reports/S06_PUBLIC_DATA_AUDIT.md` (human-readable) and
 `reports/s06_public_data_quality.json` (machine-readable), recording the same provenance,
 counts, and reconciliation evidence.
+
+S08 Stage C (schema_version 1.1.0, additive only): also emits `benchmark_scorecards`, a
+descriptive comparison of the three predeclared S03/S04 baselines
+(`expanding_league_prior`, `league_only_poisson`, `team_goal_poisson`) on the identical 760
+fixtures, recomputed from the same canonical attribution-backtest run and reconciled
+against the frozen `reports/s04_attribution_metrics.json`. The existing `fixtures` and
+`season_scorecards` sections are byte-equivalent in meaning, probability, and identity to
+the pre-S08 (schema_version 1.0.0) artifact; only the schema version string and the new
+additive section change.
 """
 
 from __future__ import annotations
@@ -43,8 +52,29 @@ from matchweek_intelligence.prediction_row_validation import (
     validate_prediction_rows,
 )
 
-SCHEMA_VERSION = "1.0.0"
+SCHEMA_VERSION = "1.1.0"
 PUBLIC_MODEL_NAME = "team_goal_poisson"
+
+# S08 Stage C: the three predeclared S03/S04 baselines shown in the benchmark comparison,
+# in deliberate ascending-sophistication display order (also, empirically, descending log
+# loss) — not all four S04 models, since `rolling_league_frequency` was never the runner-up
+# story this comparison tells; adding it would dilute the one-sentence "why team-goal
+# Poisson" point without changing any evaluated number.
+BENCHMARK_MODELS: tuple[str, ...] = (
+    "expanding_league_prior",
+    "league_only_poisson",
+    "team_goal_poisson",
+)
+
+BENCHMARK_DISCLOSURE = (
+    "These are the same three predeclared baselines audited in S03/S04 "
+    "(docs/S03_BASELINE_METHODS.md, reports/S04_ATTRIBUTION_AUDIT.md), evaluated on the "
+    "identical 760 held-out fixtures shown throughout this replay — not a new model, a new "
+    "backtest, or a prospective performance guarantee. Lower is better for every score shown. "
+    "Both evaluated seasons were inspected repeatedly during this project's own development "
+    "(see the hindsight disclosure above); this is a descriptive comparison of hindsight-"
+    "informed fit, not a certified live or held-out forecasting result."
+)
 
 # The full set of models the underlying attribution backtest produces — validated as a
 # whole (cross-model consistency included) before this module filters down to the one
@@ -136,12 +166,32 @@ def _validate_and_filter_public_rows(
     return public_rows
 
 
-def load_public_replay_rows(
+def load_all_attribution_rows(
     all_records: list[ModelRecord] | None = None,
 ) -> list[AttributionPredictionRow]:
-    """Rebuilds all four S04 models through the real canonical pipeline and returns only
-    the validated `team_goal_poisson` rows, at the real 760-fixture, 380/380-season shape."""
+    """Runs the real canonical four-model attribution backtest once and returns EVERY
+    model's rows (not filtered to `team_goal_poisson`), validated as a whole via the same
+    cross-model gate `load_public_replay_rows` uses. This is the one source of truth for
+    both the published per-fixture rows AND the additive `benchmark_scorecards` section —
+    never a second, independently re-derived backtest."""
     rows = run_attribution_backtest(all_records=all_records)
+    validate_prediction_rows(
+        rows,
+        expected_models=_ALL_ATTRIBUTION_MODELS,
+        expected_n_per_model=760,
+        season_split={season: 380 for season in EVALUATION_SEASONS},
+    )
+    return rows
+
+
+def load_public_replay_rows(
+    all_records: list[ModelRecord] | None = None,
+    all_rows: list[AttributionPredictionRow] | None = None,
+) -> list[AttributionPredictionRow]:
+    """Rebuilds all four S04 models through the real canonical pipeline (unless
+    already-run `all_rows` are supplied) and returns only the validated
+    `team_goal_poisson` rows, at the real 760-fixture, 380/380-season shape."""
+    rows = all_rows if all_rows is not None else run_attribution_backtest(all_records=all_records)
     return _validate_and_filter_public_rows(rows)
 
 
@@ -212,6 +262,87 @@ def build_season_scorecards(rows: list[AttributionPredictionRow]) -> dict:
     return {season: _season_scorecard(rows, season) for season in EVALUATION_SEASONS}
 
 
+def _benchmark_metrics(
+    rows: list[AttributionPredictionRow], model_name: str, season: str | None = None
+) -> dict:
+    subset = [
+        r for r in rows if r.model_name == model_name and (season is None or r.season == season)
+    ]
+    n = len(subset)
+    if n == 0:
+        raise PublicReplayDataError(f"no benchmark rows for model={model_name} season={season}")
+    return {
+        "n": n,
+        "log_loss": sum(r.log_loss for r in subset) / n,
+        "brier": sum(r.brier for r in subset) / n,
+        "rps": sum(r.rps for r in subset) / n,
+    }
+
+
+def build_benchmark_scorecards(all_rows: list[AttributionPredictionRow]) -> dict:
+    """S08 Stage C: an additive, descriptive comparison of the three predeclared S03/S04
+    baselines (`BENCHMARK_MODELS`) on the identical 760 fixtures — showing why the adopted
+    `team_goal_poisson` model earns its place, without re-tuning, re-evaluating, or adding
+    any model beyond what S03/S04 already froze."""
+    return {
+        "models": list(BENCHMARK_MODELS),
+        "lower_is_better": True,
+        "disclosure": BENCHMARK_DISCLOSURE,
+        "by_season": {
+            season: {m: _benchmark_metrics(all_rows, m, season=season) for m in BENCHMARK_MODELS}
+            for season in EVALUATION_SEASONS
+        },
+        "overall": {m: _benchmark_metrics(all_rows, m, season=None) for m in BENCHMARK_MODELS},
+    }
+
+
+def _reconcile_benchmark_against_frozen_reports(
+    benchmark: dict,
+    s04_metrics_path: Path = DEFAULT_S04_METRICS_PATH,
+    tolerance: float = RECONCILE_TOLERANCE,
+) -> dict:
+    """Independently cross-checks the programmatically-derived benchmark scorecards
+    against the already-frozen, previously-committed S04 metrics report. Raises on any
+    mismatch beyond `tolerance` — a deliberate benchmark/metric mismatch must never
+    silently reach the public artifact."""
+    if not s04_metrics_path.exists():
+        raise PublicReplayDataError(f"frozen S04 metrics report not found: {s04_metrics_path}")
+    s04_metrics = json.loads(s04_metrics_path.read_text(encoding="utf-8"))
+
+    checks: list[tuple[str, float, float]] = []
+    for model in BENCHMARK_MODELS:
+        frozen_overall = s04_metrics["models"]["overall"][model]
+        ours_overall = benchmark["overall"][model]
+        for metric in ("n", "log_loss", "brier", "rps"):
+            checks.append(
+                (
+                    f"overall {model} {metric}",
+                    float(ours_overall[metric]),
+                    float(frozen_overall[metric]),
+                )
+            )
+        for season in EVALUATION_SEASONS:
+            frozen_season = s04_metrics["models"]["by_season"][season][model]
+            ours_season = benchmark["by_season"][season][model]
+            for metric in ("n", "log_loss", "brier", "rps"):
+                checks.append(
+                    (
+                        f"{season} {model} {metric}",
+                        float(ours_season[metric]),
+                        float(frozen_season[metric]),
+                    )
+                )
+
+    for label, ours_val, frozen_val in checks:
+        if abs(ours_val - frozen_val) > tolerance:
+            raise PublicReplayDataError(
+                f"benchmark reconciliation mismatch for {label}: "
+                f"computed={ours_val!r}, frozen S04 report={frozen_val!r} (tolerance={tolerance})"
+            )
+
+    return {f"benchmark {label}": {"computed": v1, "frozen_s04": v2} for label, v1, v2 in checks}
+
+
 def _reconcile_against_frozen_reports(
     scorecards: dict,
     s04_metrics_path: Path = DEFAULT_S04_METRICS_PATH,
@@ -272,11 +403,18 @@ def _reconcile_against_frozen_reports(
 
 def build_public_replay_dataset(
     rows: list[AttributionPredictionRow] | None = None,
+    all_rows: list[AttributionPredictionRow] | None = None,
     s04_metrics_path: Path = DEFAULT_S04_METRICS_PATH,
     s04_calibration_path: Path = DEFAULT_S04_CALIBRATION_PATH,
 ) -> tuple[dict, dict]:
     """Returns (replays_dataset, reconciliation_detail). Raises `PublicReplayDataError`
-    before building anything the caller could mistake for a validated result."""
+    before building anything the caller could mistake for a validated result.
+
+    `all_rows` is optional and strictly additive: when supplied (the real, unfiltered
+    four-model rows from `load_all_attribution_rows`), the dataset gains a
+    `benchmark_scorecards` section; when omitted, the dataset is produced exactly as
+    before S08 (unchanged `fixtures`/`season_scorecards` shape, no `benchmark_scorecards`
+    key) — so every existing caller and test keeps working unmodified."""
     rows = rows if rows is not None else load_public_replay_rows()
 
     fixtures = [_fixture_dict(r) for r in rows]
@@ -293,6 +431,16 @@ def build_public_replay_dataset(
     reconciliation = _reconcile_against_frozen_reports(
         scorecards, s04_metrics_path=s04_metrics_path, s04_calibration_path=s04_calibration_path
     )
+
+    benchmark_scorecards: dict | None = None
+    if all_rows is not None:
+        benchmark_scorecards = build_benchmark_scorecards(all_rows)
+        reconciliation = {
+            **reconciliation,
+            **_reconcile_benchmark_against_frozen_reports(
+                benchmark_scorecards, s04_metrics_path=s04_metrics_path
+            ),
+        }
 
     dataset = {
         "schema_version": SCHEMA_VERSION,
@@ -313,6 +461,8 @@ def build_public_replay_dataset(
         "fixtures": fixtures,
         "season_scorecards": scorecards,
     }
+    if benchmark_scorecards is not None:
+        dataset["benchmark_scorecards"] = benchmark_scorecards
     return dataset, reconciliation
 
 
@@ -399,8 +549,9 @@ def write_audit_reports(
 
 
 def main() -> None:
-    rows = load_public_replay_rows()
-    dataset, reconciliation = build_public_replay_dataset(rows=rows)
+    all_rows = load_all_attribution_rows()
+    rows = load_public_replay_rows(all_rows=all_rows)
+    dataset, reconciliation = build_public_replay_dataset(rows=rows, all_rows=all_rows)
     build_sha256 = write_replays_json(dataset)
     write_audit_reports(dataset, reconciliation, build_sha256)
     print(f"wrote {DEFAULT_REPLAYS_JSON_PATH} ({dataset['fixture_count']} fixtures)")
@@ -408,6 +559,12 @@ def main() -> None:
     for season in dataset["evaluation_seasons"]:
         sc = dataset["season_scorecards"][season]
         print(f"  {season}: n={sc['n']} log_loss={sc['log_loss']:.4f} brier={sc['brier']:.4f}")
+    if "benchmark_scorecards" in dataset:
+        print("benchmark (overall):")
+        for model, m in dataset["benchmark_scorecards"]["overall"].items():
+            print(
+                f"  {model}: log_loss={m['log_loss']:.4f} brier={m['brier']:.4f} rps={m['rps']:.4f}"
+            )
 
 
 if __name__ == "__main__":

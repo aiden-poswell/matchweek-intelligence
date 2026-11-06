@@ -21,7 +21,7 @@ export function ProbabilityBars({ pHome, pDraw, pAway, homeTeam, awayTeam }: Pro
     <div
       className="prob-bars"
       role="group"
-      aria-label="Pre-match outcome probabilities, home win, draw, away win, summing to 100 percent"
+      aria-label="Retrospective outcome probabilities, home win, draw, away win, summing to 100 percent"
     >
       {rows.map((row) => (
         <div className="prob-bar-row" key={row.key}>

@@ -1,10 +1,10 @@
-import type { Fixture, ReplayDataset, Season, SeasonScorecard } from "../types";
+import type { BenchmarkModelMetrics, Fixture, ReplayDataset, Season, SeasonScorecard } from "../types";
 
 export type ValidationResult =
   | { ok: true; data: ReplayDataset }
   | { ok: false; error: string };
 
-const EXPECTED_SCHEMA_VERSION = "1.0.0";
+const EXPECTED_SCHEMA_VERSION = "1.1.0";
 const EXPECTED_MODEL_NAME = "team_goal_poisson";
 const EXPECTED_SOURCE_REPO = "openfootball/england";
 const EXPECTED_PINNED_COMMIT = "9ee7a0c351805c99cc334478a9bf04b7d0432fec";
@@ -14,6 +14,13 @@ const EXPECTED_N_PER_SEASON = 380;
 const EXPECTED_TOTAL = 760;
 const PROBABILITY_TOLERANCE = 1e-6;
 const METRIC_RECONCILE_TOLERANCE = 1e-4;
+// S08 Stage C: the three predeclared S03/S04 baselines the benchmark comparison shows,
+// in the same deliberate display order as the Python generator's BENCHMARK_MODELS.
+const EXPECTED_BENCHMARK_MODELS: readonly string[] = [
+  "expanding_league_prior",
+  "league_only_poisson",
+  "team_goal_poisson",
+];
 
 const ISO_DATE_RE = /^\d{4}-\d{2}-\d{2}$/;
 
@@ -111,10 +118,28 @@ function validateFixtureShape(raw: unknown, index: number): raw is Fixture {
     // (or a same-day/future) result leaked into its own training data.
     return false;
   }
-  if (typeof f.home_team_exposure !== "number" || f.home_team_exposure < 0) return false;
-  if (typeof f.away_team_exposure !== "number" || f.away_team_exposure < 0) return false;
+  for (const key of ["home_team_exposure", "away_team_exposure"] as const) {
+    const exposure = f[key];
+    // Exposure is a raw count of prior training fixtures (the generator's
+    // `_exposure` is `sum(1 for r in training if ...)`) — it can never be
+    // fractional, and a non-integer value like 3.25 must be rejected outright.
+    if (
+      typeof exposure !== "number" ||
+      !Number.isFinite(exposure) ||
+      !Number.isInteger(exposure) ||
+      exposure < 0
+    ) {
+      return false;
+    }
+  }
   if (typeof f.home_team_cold_start !== "boolean") return false;
   if (typeof f.away_team_cold_start !== "boolean") return false;
+  // The generator defines cold-start as exactly `exposure == 0` (zero prior
+  // fixtures seen in this fixture's own training window) — not career-long
+  // absence from the league. A flag that disagrees with its own exposure count
+  // (e.g. cold_start=true alongside exposure=38) is a tampered or inconsistent row.
+  if (f.home_team_cold_start !== (f.home_team_exposure === 0)) return false;
+  if (f.away_team_cold_start !== (f.away_team_exposure === 0)) return false;
   if (f.season !== "2024-25" && f.season !== "2025-26") return false;
   void index;
   return true;
@@ -131,6 +156,15 @@ function validateScorecardShape(raw: unknown): raw is SeasonScorecard {
   const dc = s.draw_calibration;
   for (const key of ["mean_predicted_pct", "observed_pct", "gap_pct_points_observed_minus_predicted"]) {
     if (typeof dc[key] !== "number" || !Number.isFinite(dc[key] as number)) return false;
+  }
+  return true;
+}
+
+function validateBenchmarkMetricsShape(raw: unknown): raw is BenchmarkModelMetrics {
+  if (!isPlainObject(raw)) return false;
+  if (typeof raw.n !== "number" || !Number.isInteger(raw.n) || raw.n <= 0) return false;
+  for (const key of ["log_loss", "brier", "rps"] as const) {
+    if (typeof raw[key] !== "number" || !Number.isFinite(raw[key] as number)) return false;
   }
   return true;
 }
@@ -235,6 +269,19 @@ export function validateReplayDataset(raw: unknown): ValidationResult {
     if (!validateScorecardShape(scorecards[season])) {
       return fail(`season_scorecards.${season} is missing or malformed`);
     }
+    // The gap is defined as (observed - predicted) points, not a free-standing
+    // field — a published gap that disagrees with its own two inputs (e.g. a
+    // fabricated +999pp pasted alongside unchanged mean/observed percentages)
+    // is rejected here, before any independent per-fixture recomputation runs.
+    const dc = (scorecards[season] as SeasonScorecard).draw_calibration;
+    const selfConsistentGap = dc.observed_pct - dc.mean_predicted_pct;
+    if (Math.abs(dc.gap_pct_points_observed_minus_predicted - selfConsistentGap) > METRIC_RECONCILE_TOLERANCE) {
+      return fail(
+        `season_scorecards.${season}.draw_calibration.gap_pct_points_observed_minus_predicted ` +
+          `(${dc.gap_pct_points_observed_minus_predicted}) disagrees with observed_pct - mean_predicted_pct ` +
+          `(${selfConsistentGap})`,
+      );
+    }
   }
 
   // Independently recompute every season's log loss, Brier, RPS, and draw
@@ -260,12 +307,15 @@ export function validateReplayDataset(raw: unknown): ValidationResult {
       sumPredictedDraw += f.p_draw;
       if (f.actual_outcome === "D") drawCount += 1;
     }
+    const recomputedMeanPredictedPct = (sumPredictedDraw / n) * 100;
+    const recomputedObservedPct = (drawCount / n) * 100;
     const recomputed = {
       log_loss: totalLogLoss / n,
       brier: totalBrier / n,
       rps: totalRps / n,
-      mean_predicted_pct: (sumPredictedDraw / n) * 100,
-      observed_pct: (drawCount / n) * 100,
+      mean_predicted_pct: recomputedMeanPredictedPct,
+      observed_pct: recomputedObservedPct,
+      gap_pct_points_observed_minus_predicted: recomputedObservedPct - recomputedMeanPredictedPct,
     };
     const published = scorecards[season] as SeasonScorecard;
     if (published.n !== n) {
@@ -287,6 +337,11 @@ export function validateReplayDataset(raw: unknown): ValidationResult {
         recomputed.observed_pct,
         published.draw_calibration.observed_pct,
       ],
+      [
+        "draw_calibration.gap_pct_points_observed_minus_predicted",
+        recomputed.gap_pct_points_observed_minus_predicted,
+        published.draw_calibration.gap_pct_points_observed_minus_predicted,
+      ],
     ];
     for (const [label, recomputedValue, publishedValue] of checks) {
       if (Math.abs(recomputedValue - publishedValue) > METRIC_RECONCILE_TOLERANCE) {
@@ -294,6 +349,96 @@ export function validateReplayDataset(raw: unknown): ValidationResult {
           `season ${season} ${label}: recomputed ${recomputedValue} disagrees with published ` +
             `${publishedValue} (tolerance ${METRIC_RECONCILE_TOLERANCE})`,
         );
+      }
+    }
+  }
+
+  // S08 Stage C: the additive benchmark comparison. Its three models' per-fixture
+  // probabilities are not published, so the browser cannot rederive their scores from
+  // raw fixtures the way it does for team_goal_poisson above — but it CAN check
+  // internal self-consistency (shape, exact season/overall counts, and that overall
+  // equals the equal-weight average of the two seasons) and cross-check the one model
+  // that IS also published per-fixture (team_goal_poisson) against season_scorecards.
+  if (!isPlainObject(raw.benchmark_scorecards)) {
+    return fail("missing benchmark_scorecards");
+  }
+  const benchmark = raw.benchmark_scorecards;
+  if (
+    !Array.isArray(benchmark.models) ||
+    benchmark.models.length !== EXPECTED_BENCHMARK_MODELS.length ||
+    !EXPECTED_BENCHMARK_MODELS.every((m, i) => (benchmark.models as unknown[])[i] === m)
+  ) {
+    return fail(`unexpected benchmark_scorecards.models: ${JSON.stringify(benchmark.models)}`);
+  }
+  if (benchmark.lower_is_better !== true) {
+    return fail("benchmark_scorecards.lower_is_better must be true");
+  }
+  if (typeof benchmark.disclosure !== "string" || benchmark.disclosure.trim() === "") {
+    return fail("benchmark_scorecards.disclosure must be a non-empty string");
+  }
+  if (!isPlainObject(benchmark.by_season)) {
+    return fail("missing benchmark_scorecards.by_season");
+  }
+  if (!isPlainObject(benchmark.overall)) {
+    return fail("missing benchmark_scorecards.overall");
+  }
+  const benchmarkBySeason = benchmark.by_season;
+  const benchmarkOverall = benchmark.overall as Record<string, unknown>;
+  for (const model of EXPECTED_BENCHMARK_MODELS) {
+    if (!validateBenchmarkMetricsShape(benchmarkOverall[model])) {
+      return fail(`benchmark_scorecards.overall.${model} is missing or malformed`);
+    }
+    const overallMetrics = benchmarkOverall[model] as BenchmarkModelMetrics;
+    if (overallMetrics.n !== EXPECTED_TOTAL) {
+      return fail(
+        `benchmark_scorecards.overall.${model}.n (${overallMetrics.n}) is not ${EXPECTED_TOTAL}`,
+      );
+    }
+    const seasonMetrics: BenchmarkModelMetrics[] = [];
+    for (const season of SUPPORTED_SEASONS) {
+      const perSeason = isPlainObject(benchmarkBySeason[season])
+        ? (benchmarkBySeason[season] as Record<string, unknown>)
+        : undefined;
+      if (!perSeason || !validateBenchmarkMetricsShape(perSeason[model])) {
+        return fail(`benchmark_scorecards.by_season.${season}.${model} is missing or malformed`);
+      }
+      const metrics = perSeason[model] as BenchmarkModelMetrics;
+      if (metrics.n !== EXPECTED_N_PER_SEASON) {
+        return fail(
+          `benchmark_scorecards.by_season.${season}.${model}.n (${metrics.n}) is not ` +
+            `${EXPECTED_N_PER_SEASON}`,
+        );
+      }
+      seasonMetrics.push(metrics);
+    }
+    // Both seasons carry equal weight (380 fixtures each), so "overall" must be exactly
+    // the simple average of the two seasons for every score — a fabricated overall
+    // figure that disagrees with its own by-season breakdown is rejected here.
+    for (const metric of ["log_loss", "brier", "rps"] as const) {
+      const expectedOverall = (seasonMetrics[0][metric] + seasonMetrics[1][metric]) / 2;
+      if (Math.abs(overallMetrics[metric] - expectedOverall) > METRIC_RECONCILE_TOLERANCE) {
+        return fail(
+          `benchmark_scorecards.overall.${model}.${metric} (${overallMetrics[metric]}) disagrees ` +
+            `with the average of its own by-season values (${expectedOverall})`,
+        );
+      }
+    }
+    // team_goal_poisson is also published per-fixture (as the dataset's own fixtures
+    // array) — cross-check its benchmark entry against the independently reconciled
+    // season_scorecards computed earlier in this same validation pass.
+    if (model === EXPECTED_MODEL_NAME) {
+      for (const season of SUPPORTED_SEASONS) {
+        const perSeason = benchmarkBySeason[season] as Record<string, unknown>;
+        const metrics = perSeason[model] as BenchmarkModelMetrics;
+        const publishedScorecard = scorecards[season] as SeasonScorecard;
+        for (const metric of ["log_loss", "brier", "rps"] as const) {
+          if (Math.abs(metrics[metric] - publishedScorecard[metric]) > METRIC_RECONCILE_TOLERANCE) {
+            return fail(
+              `benchmark_scorecards.by_season.${season}.${model}.${metric} (${metrics[metric]}) ` +
+                `disagrees with season_scorecards.${season}.${metric} (${publishedScorecard[metric]})`,
+            );
+          }
+        }
       }
     }
   }

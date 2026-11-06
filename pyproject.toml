@@ -1,11 +1,12 @@
 [project]
 name = "matchweek-intelligence"
 version = "0.1.0"
-description = "Transparent, source-verified football matchweek intelligence. Private early research."
+description = "A transparent, source-verified historical Premier League forecasting replay (Matchweek Replay Lab)."
 readme = "README.md"
 authors = [
     { name = "Aiden Poswell" }
 ]
+license = "MIT"
 requires-python = ">=3.11"
 dependencies = [
     "requests>=2.32.3",

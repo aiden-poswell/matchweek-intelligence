@@ -146,10 +146,13 @@ function makeFillerFixture(season: "2024-25" | "2025-26", index: number): Fixtur
     p_away: 0.3,
     training_n: index,
     latest_training_match_date: index === 0 ? "" : prevDate,
-    home_team_exposure: 0,
-    away_team_exposure: 0,
-    home_team_cold_start: false,
-    away_team_cold_start: false,
+    // Cold-start is defined (build_attribution_backtest._exposure) as exactly
+    // exposure === 0 — keep these filler rows self-consistent with that rule so
+    // the S08 cold-start/exposure cross-check in validateReplayDataset accepts them.
+    home_team_exposure: index,
+    away_team_exposure: index,
+    home_team_cold_start: index === 0,
+    away_team_cold_start: index === 0,
   };
 }
 
@@ -180,6 +183,58 @@ function recomputeScorecard(seasonFixtures: Fixture[]) {
       mean_predicted_pct: meanPredictedPct,
       observed_pct: observedPct,
       gap_pct_points_observed_minus_predicted: observedPct - meanPredictedPct,
+    },
+  };
+}
+
+function makeBenchmarkScorecards(
+  fixtures2425: Fixture[],
+  fixtures2526: Fixture[],
+): ReplayDataset["benchmark_scorecards"] {
+  const teamGoalPoisson2425 = recomputeScorecard(fixtures2425);
+  const teamGoalPoisson2526 = recomputeScorecard(fixtures2526);
+  // Synthetic, deliberately-identical-across-seasons placeholder figures for the two
+  // non-adopted baselines — their exact values don't matter for these UI/App tests
+  // (no real per-fixture rows exist for them in this synthetic fixture set), only that
+  // they are internally self-consistent: n=380/season, 760 overall, and overall equal
+  // to the equal-weight average of the two (identical) season values.
+  const expandingLeaguePrior = { n: 380, log_loss: 1.09, brier: 0.66, rps: 0.235 };
+  const leagueOnlyPoisson = { n: 380, log_loss: 1.08, brier: 0.655, rps: 0.232 };
+  return {
+    models: ["expanding_league_prior", "league_only_poisson", "team_goal_poisson"],
+    lower_is_better: true,
+    disclosure: "Lower is better. These are the same predeclared S03/S04 baselines.",
+    by_season: {
+      "2024-25": {
+        expanding_league_prior: expandingLeaguePrior,
+        league_only_poisson: leagueOnlyPoisson,
+        team_goal_poisson: {
+          n: teamGoalPoisson2425.n,
+          log_loss: teamGoalPoisson2425.log_loss,
+          brier: teamGoalPoisson2425.brier,
+          rps: teamGoalPoisson2425.rps,
+        },
+      },
+      "2025-26": {
+        expanding_league_prior: expandingLeaguePrior,
+        league_only_poisson: leagueOnlyPoisson,
+        team_goal_poisson: {
+          n: teamGoalPoisson2526.n,
+          log_loss: teamGoalPoisson2526.log_loss,
+          brier: teamGoalPoisson2526.brier,
+          rps: teamGoalPoisson2526.rps,
+        },
+      },
+    },
+    overall: {
+      expanding_league_prior: { ...expandingLeaguePrior, n: 760 },
+      league_only_poisson: { ...leagueOnlyPoisson, n: 760 },
+      team_goal_poisson: {
+        n: 760,
+        log_loss: (teamGoalPoisson2425.log_loss + teamGoalPoisson2526.log_loss) / 2,
+        brier: (teamGoalPoisson2425.brier + teamGoalPoisson2526.brier) / 2,
+        rps: (teamGoalPoisson2425.rps + teamGoalPoisson2526.rps) / 2,
+      },
     },
   };
 }
@@ -219,7 +274,7 @@ export function makeFullValidDataset(): ReplayDataset {
   const fixtures = [...fixtures2425, ...fixtures2526];
 
   return {
-    schema_version: "1.0.0",
+    schema_version: "1.1.0",
     model_name: "team_goal_poisson",
     retrospective: true,
     live_claim_allowed: false,
@@ -239,5 +294,6 @@ export function makeFullValidDataset(): ReplayDataset {
       "2024-25": recomputeScorecard(fixtures2425),
       "2025-26": recomputeScorecard(fixtures2526),
     },
+    benchmark_scorecards: makeBenchmarkScorecards(fixtures2425, fixtures2526),
   };
 }

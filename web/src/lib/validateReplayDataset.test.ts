@@ -168,6 +168,108 @@ describe("validateReplayDataset", () => {
     expect(result.data.fixtures).toHaveLength(760);
   });
 
+  describe("S08: closes the three reviewer-identified fail-open adversarial mutations", () => {
+    function loadRealDataset(): ReplayDataset {
+      const here = dirname(fileURLToPath(import.meta.url));
+      const realPath = resolve(here, "../../public/data/replays.json");
+      return JSON.parse(readFileSync(realPath, "utf-8")) as ReplayDataset;
+    }
+
+    it("accepts the untouched real dataset (control)", () => {
+      const result = validateReplayDataset(loadRealDataset());
+      expect(result.ok).toBe(true);
+    });
+
+    it("rejects a fabricated +999pp draw-calibration gap", () => {
+      const changedGap = loadRealDataset();
+      changedGap.season_scorecards["2024-25"].draw_calibration.gap_pct_points_observed_minus_predicted = 999;
+      const result = validateReplayDataset(changedGap);
+      expect(result.ok).toBe(false);
+      if (!result.ok) expect(result.error).toMatch(/gap_pct_points_observed_minus_predicted/);
+    });
+
+    it("rejects a cold_start flag flipped true alongside a nonzero exposure", () => {
+      const changedCold = loadRealDataset();
+      const fixture = changedCold.fixtures[0];
+      // Guard the premise: this only exercises the bug if the real fixture's own
+      // exposure is genuinely nonzero (i.e. cold_start is correctly false already).
+      expect(fixture.home_team_exposure).toBeGreaterThan(0);
+      expect(fixture.home_team_cold_start).toBe(false);
+      fixture.home_team_cold_start = true;
+      const result = validateReplayDataset(changedCold);
+      expect(result.ok).toBe(false);
+      if (!result.ok) expect(result.error).toMatch(/failed validation/);
+    });
+
+    it("rejects a fractional exposure count", () => {
+      const fractional = loadRealDataset();
+      fractional.fixtures[0].home_team_exposure = 3.25;
+      const result = validateReplayDataset(fractional);
+      expect(result.ok).toBe(false);
+      if (!result.ok) expect(result.error).toMatch(/failed validation/);
+    });
+  });
+
+  describe("S08: benchmark_scorecards validation", () => {
+    it("rejects a dataset missing benchmark_scorecards entirely", () => {
+      const dataset = clone(makeFullValidDataset()) as unknown as Record<string, unknown>;
+      delete dataset.benchmark_scorecards;
+      const result = validateReplayDataset(dataset);
+      expect(result.ok).toBe(false);
+      if (!result.ok) expect(result.error).toMatch(/missing benchmark_scorecards/);
+    });
+
+    it("rejects an unexpected benchmark model list or order", () => {
+      const dataset = clone(makeFullValidDataset());
+      dataset.benchmark_scorecards!.models = ["team_goal_poisson", "league_only_poisson", "expanding_league_prior"];
+      const result = validateReplayDataset(dataset);
+      expect(result.ok).toBe(false);
+      if (!result.ok) expect(result.error).toMatch(/unexpected benchmark_scorecards\.models/);
+    });
+
+    it("rejects an overall benchmark figure that disagrees with the average of its own by-season values", () => {
+      const dataset = clone(makeFullValidDataset());
+      dataset.benchmark_scorecards!.overall.expanding_league_prior.log_loss = 999;
+      const result = validateReplayDataset(dataset);
+      expect(result.ok).toBe(false);
+      if (!result.ok) expect(result.error).toMatch(/disagrees with the average of its own by-season values/);
+    });
+
+    it("rejects a team_goal_poisson benchmark entry that disagrees with season_scorecards", () => {
+      const dataset = clone(makeFullValidDataset());
+      const benchmark = dataset.benchmark_scorecards!;
+      const other = benchmark.by_season["2025-26"].team_goal_poisson.log_loss;
+      // Mutate BOTH the by-season figure and overall consistently (so the internal
+      // overall-equals-average self-check still passes) to isolate the cross-check
+      // against season_scorecards specifically.
+      benchmark.by_season["2024-25"].team_goal_poisson.log_loss = 999;
+      benchmark.overall.team_goal_poisson.log_loss = (999 + other) / 2;
+      const result = validateReplayDataset(dataset);
+      expect(result.ok).toBe(false);
+      if (!result.ok) expect(result.error).toMatch(/disagrees with season_scorecards/);
+    });
+
+    it("rejects a benchmark model's per-season n that is not 380", () => {
+      const dataset = clone(makeFullValidDataset());
+      dataset.benchmark_scorecards!.by_season["2024-25"].league_only_poisson.n = 1;
+      const result = validateReplayDataset(dataset);
+      expect(result.ok).toBe(false);
+      if (!result.ok) expect(result.error).toMatch(/is not 380/);
+    });
+
+    it("accepts the real dataset's benchmark_scorecards and its known S04 anchors", () => {
+      const here = dirname(fileURLToPath(import.meta.url));
+      const realPath = resolve(here, "../../public/data/replays.json");
+      const raw = JSON.parse(readFileSync(realPath, "utf-8")) as ReplayDataset;
+      const result = validateReplayDataset(raw);
+      if (!result.ok) throw new Error(`real dataset failed validation: ${result.error}`);
+      const overall = result.data.benchmark_scorecards!.overall;
+      expect(overall.expanding_league_prior.log_loss).toBeCloseTo(1.0832728193824843, 9);
+      expect(overall.league_only_poisson.log_loss).toBeCloseTo(1.081682047627812, 9);
+      expect(overall.team_goal_poisson.log_loss).toBeCloseTo(1.0147370772418645, 9);
+    });
+  });
+
   it("never mutates a bad row into a valid-looking one — the input is untouched on rejection", () => {
     const dataset = clone(makeFullValidDataset());
     const before = JSON.stringify(dataset);

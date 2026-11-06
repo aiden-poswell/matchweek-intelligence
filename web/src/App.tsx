@@ -150,6 +150,7 @@ export function App() {
             seasons={seasons}
             season={resolved.season}
             scorecards={dataset.season_scorecards}
+            benchmark={dataset.benchmark_scorecards}
             onSeasonChange={handleSeasonChange}
           />
         </>
@@ -181,8 +182,18 @@ function Shell({
         {children}
       </main>
       <footer className="site-footer">
-        Historical replay only. No current or upcoming match is forecast anywhere in this
-        product.
+        <p>
+          Historical replay only. No current or upcoming match is forecast anywhere in this
+          product.
+        </p>
+        {dataset && (
+          <p>
+            Fixture and score data: <code>{dataset.source.repo}</code> (
+            {dataset.source.license}). This project&rsquo;s own code: MIT. This
+            project&rsquo;s own derived research dataset: CC0-1.0. Three separate things,
+            three separate licences — see the Methodology page.
+          </p>
+        )}
       </footer>
     </div>
   );

@@ -1,0 +1,114 @@
+name: CI and GitHub Pages deploy
+
+# Builds and tests the Matchweek Replay Lab web app on every push/PR, and additionally
+# publishes it to GitHub Pages on pushes to main. The Python pipeline's own test suite runs
+# in a completely separate, non-gating job (see python-tests below) — it never blocks the
+# Pages deploy, since the Pages site only ever serves the already-generated, tracked
+# web/public/data/replays.json, never the Python pipeline itself.
+
+"on":
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch: {}
+
+# Only one Pages deployment in flight at a time; a newer push cancels an in-progress deploy
+# of an older commit rather than racing it.
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  web-ci:
+    name: Web — typecheck, lint, test, build, audit
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: web
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - name: Set up Node.js
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: "24"
+          cache: "npm"
+          cache-dependency-path: web/package-lock.json
+
+      - name: Install dependencies (clean, from lockfile)
+        run: npm ci
+
+      - name: Typecheck
+        run: npm run typecheck
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Test
+        run: npm run test
+
+      - name: Build (production bundle, relative base — works at any Pages subpath)
+        run: npm run build
+
+      # Fails only on high/critical. Moderate dev-tooling advisories with no non-breaking fix
+      # available do not block a release on their own, but nothing above "moderate" is ever
+      # silently accepted — a fresh moderate-or-above finding should be triaged, not ignored.
+      - name: Dependency audit
+        run: npm audit --audit-level=high
+
+      - name: Upload build artifact (consumed by the deploy job)
+        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+        uses: actions/upload-pages-artifact@fc324d3547104276b827a68afc52ff2a11cc49c9 # v5.0.0
+        with:
+          path: web/dist
+
+  python-tests:
+    name: Python — pytest (honest, cache-free; does not gate deployment)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@68559e99cc807c1eb7e9238fd43a15bba460eec2 # v10.3.3
+        with:
+          enable-cache: true
+
+      - name: uv lock --check
+        run: uv lock --check
+
+      - name: ruff check
+        run: uv run ruff check .
+
+      - name: ruff format --check
+        run: uv run ruff format --check .
+
+      # No pinned-commit raw cache exists on a fresh CI checkout (it's gitignored) — every
+      # real-cache-only test skips honestly, by design; see tests/*.py's own
+      # requires_real_cache markers. This is expected, not a failure.
+      - name: pytest (cache-free)
+        run: uv run pytest -q -rs
+
+  deploy:
+    name: Deploy to GitHub Pages
+    needs: web-ci
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Configure Pages
+        uses: actions/configure-pages@45bfe0192ca1faeb007ade9deae92b16b8254a0d # v6.0.0
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@368f82528645a54fb793d4d04e342629a3f51346 # v5.0.1

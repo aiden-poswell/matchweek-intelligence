@@ -12,12 +12,16 @@ import pytest
 
 from matchweek_intelligence.build_attribution_backtest import AttributionPredictionRow
 from matchweek_intelligence.build_public_replay_data import (
+    BENCHMARK_MODELS,
     PublicReplayDataError,
     _fixture_dict,
     _reconcile_against_frozen_reports,
+    _reconcile_benchmark_against_frozen_reports,
     _validate_and_filter_public_rows,
+    build_benchmark_scorecards,
     build_public_replay_dataset,
     build_season_scorecards,
+    load_all_attribution_rows,
     load_public_replay_rows,
     write_audit_reports,
     write_replays_json,
@@ -489,3 +493,107 @@ def test_write_audit_reports_runs_without_raising(tmp_path):
     quality = json.loads((tmp_path / "audit.json").read_text(encoding="utf-8"))
     assert quality["fixture_count"] == 760
     assert quality["live_claim_allowed"] is False
+
+
+# --- S08 Stage C: benchmark_scorecards (additive, schema_version 1.1.0) --------------
+
+
+def test_build_benchmark_scorecards_shape_and_values_from_synthetic_rows():
+    all_rows = _two_fixture_four_model_rows()
+    benchmark = build_benchmark_scorecards(all_rows)
+    assert benchmark["models"] == list(BENCHMARK_MODELS)
+    assert benchmark["lower_is_better"] is True
+    assert isinstance(benchmark["disclosure"], str) and benchmark["disclosure"]
+    assert set(benchmark["by_season"].keys()) == {"2024-25", "2025-26"}
+    for season in ("2024-25", "2025-26"):
+        for model in BENCHMARK_MODELS:
+            entry = benchmark["by_season"][season][model]
+            assert entry["n"] == 1
+            assert isinstance(entry["log_loss"], float)
+    for model in BENCHMARK_MODELS:
+        overall = benchmark["overall"][model]
+        assert overall["n"] == 2
+
+
+def test_build_benchmark_scorecards_rejects_a_model_with_no_rows():
+    all_rows = [r for r in _two_fixture_four_model_rows() if r.model_name != "league_only_poisson"]
+    with pytest.raises(PublicReplayDataError, match="no benchmark rows"):
+        build_benchmark_scorecards(all_rows)
+
+
+def test_benchmark_reconciliation_rejects_a_mismatch(tmp_path):
+    all_rows = _two_fixture_four_model_rows()
+    benchmark = build_benchmark_scorecards(all_rows)
+
+    fake_s04_metrics = {
+        "models": {
+            "overall": {
+                model: {**benchmark["overall"][model], "log_loss": 999.0}
+                for model in BENCHMARK_MODELS
+            },
+            "by_season": {
+                season: {model: benchmark["by_season"][season][model] for model in BENCHMARK_MODELS}
+                for season in ("2024-25", "2025-26")
+            },
+        }
+    }
+    metrics_path = tmp_path / "s04_attribution_metrics.json"
+    metrics_path.write_text(json.dumps(fake_s04_metrics), encoding="utf-8")
+
+    with pytest.raises(PublicReplayDataError, match="benchmark reconciliation mismatch"):
+        _reconcile_benchmark_against_frozen_reports(benchmark, s04_metrics_path=metrics_path)
+
+
+def test_benchmark_reconciliation_passes_when_frozen_numbers_genuinely_match(tmp_path):
+    all_rows = _two_fixture_four_model_rows()
+    benchmark = build_benchmark_scorecards(all_rows)
+
+    fake_s04_metrics = {
+        "models": {
+            "overall": {model: benchmark["overall"][model] for model in BENCHMARK_MODELS},
+            "by_season": {
+                season: {model: benchmark["by_season"][season][model] for model in BENCHMARK_MODELS}
+                for season in ("2024-25", "2025-26")
+            },
+        }
+    }
+    metrics_path = tmp_path / "s04_attribution_metrics.json"
+    metrics_path.write_text(json.dumps(fake_s04_metrics), encoding="utf-8")
+
+    result = _reconcile_benchmark_against_frozen_reports(benchmark, s04_metrics_path=metrics_path)
+    assert len(result) == 3 * 4 * 3  # 3 models x 4 metrics x (1 overall + 2 seasons)
+
+
+@requires_real_cache
+def test_real_pipeline_benchmark_scorecards_reconcile_and_match_known_anchors():
+    all_rows = load_all_attribution_rows()
+    public_rows = load_public_replay_rows(all_rows=all_rows)
+    dataset, reconciliation = build_public_replay_dataset(rows=public_rows, all_rows=all_rows)
+
+    assert dataset["schema_version"] == "1.1.0"
+    benchmark = dataset["benchmark_scorecards"]
+    assert benchmark["models"] == list(BENCHMARK_MODELS)
+    assert benchmark["overall"]["team_goal_poisson"]["n"] == 760
+    assert any(label.startswith("benchmark ") for label in reconciliation)
+
+    # The brief's own frozen anchors (reports/s04_attribution_metrics.json, S04):
+    overall = benchmark["overall"]
+    assert overall["expanding_league_prior"]["log_loss"] == pytest.approx(
+        1.0832728193824843, abs=1e-9
+    )
+    assert overall["league_only_poisson"]["log_loss"] == pytest.approx(1.081682047627812, abs=1e-9)
+    assert overall["team_goal_poisson"]["log_loss"] == pytest.approx(1.0147370772418645, abs=1e-9)
+
+
+@requires_real_cache
+def test_real_pipeline_fixtures_and_season_scorecards_unchanged_by_benchmark_addition():
+    all_rows = load_all_attribution_rows()
+    public_rows = load_public_replay_rows(all_rows=all_rows)
+    dataset_without, _ = build_public_replay_dataset(rows=public_rows)
+    dataset_with, _ = build_public_replay_dataset(rows=public_rows, all_rows=all_rows)
+
+    assert dataset_without["fixtures"] == dataset_with["fixtures"]
+    assert dataset_without["season_scorecards"] == dataset_with["season_scorecards"]
+    assert dataset_without["schema_version"] == dataset_with["schema_version"] == "1.1.0"
+    assert "benchmark_scorecards" not in dataset_without
+    assert "benchmark_scorecards" in dataset_with

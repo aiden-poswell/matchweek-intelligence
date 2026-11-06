@@ -35,7 +35,9 @@ export function FixtureView({ fixture }: { fixture: Fixture }) {
         </div>
       </div>
 
-      <h3 className="section-label">Pre-match forecast (computed before this result existed)</h3>
+      <h3 className="section-label">
+        Historical forecast replay (calculated after the match, using only earlier results)
+      </h3>
       <ProbabilityBars
         pHome={fixture.p_home}
         pDraw={fixture.p_draw}

@@ -1,14 +1,21 @@
-import type { Season, SeasonScorecard as SeasonScorecardType } from "../types";
+import type { BenchmarkScorecards, Season, SeasonScorecard as SeasonScorecardType } from "../types";
 import { seasonLabel } from "../lib/format";
 
 interface Props {
   seasons: Season[];
   season: Season;
   scorecards: Record<Season, SeasonScorecardType>;
+  benchmark?: BenchmarkScorecards;
   onSeasonChange: (season: Season) => void;
 }
 
-export function SeasonScorecard({ seasons, season, scorecards, onSeasonChange }: Props) {
+const MODEL_LABEL: Record<string, string> = {
+  expanding_league_prior: "Expanding league prior",
+  league_only_poisson: "League-only Poisson",
+  team_goal_poisson: "Team-goal Poisson",
+};
+
+export function SeasonScorecard({ seasons, season, scorecards, benchmark, onSeasonChange }: Props) {
   const card = scorecards[season];
 
   return (
@@ -87,6 +94,49 @@ export function SeasonScorecard({ seasons, season, scorecards, onSeasonChange }:
         See Methodology for the full discussion, including the evaluated-but-not-adopted
         Dixon-Coles challenger.
       </p>
+
+      {benchmark && (
+        <>
+          <h3 className="section-label" style={{ marginTop: "1.5rem" }}>
+            Why team-goal Poisson
+          </h3>
+          <table className="draw-calibration-table" aria-describedby="benchmark-disclosure">
+            <thead>
+              <tr>
+                <th scope="col">Baseline</th>
+                <th scope="col">Log loss</th>
+                <th scope="col">Brier</th>
+                <th scope="col">RPS</th>
+              </tr>
+            </thead>
+            <tbody>
+              {benchmark.models.map((model) => {
+                const m = benchmark.by_season[season][model];
+                const isAdopted = model === "team_goal_poisson";
+                return (
+                  <tr key={model} aria-current={isAdopted ? "true" : undefined}>
+                    <td>
+                      {MODEL_LABEL[model] ?? model}
+                      {isAdopted ? " (adopted default)" : ""}
+                    </td>
+                    <td className="num">{m.log_loss.toFixed(4)}</td>
+                    <td className="num">{m.brier.toFixed(4)}</td>
+                    <td className="num">{m.rps.toFixed(4)}</td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+          <p className="fixture-count-note" id="benchmark-disclosure" style={{ marginTop: "0.5rem" }}>
+            {seasonLabel(season)} only, N = {benchmark.by_season[season].team_goal_poisson.n}.
+            Overall across both evaluated seasons (N = {benchmark.overall.team_goal_poisson.n}),
+            team-goal Poisson log loss is {benchmark.overall.team_goal_poisson.log_loss.toFixed(4)}
+            {" "}vs. {benchmark.overall.league_only_poisson.log_loss.toFixed(4)} (league-only
+            Poisson) and {benchmark.overall.expanding_league_prior.log_loss.toFixed(4)} (expanding
+            league prior). {benchmark.disclosure}
+          </p>
+        </>
+      )}
     </section>
   );
 }
