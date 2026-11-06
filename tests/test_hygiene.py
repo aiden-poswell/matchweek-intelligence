@@ -94,11 +94,22 @@ def test_no_sibling_project_names_appear_in_tracked_files():
 
 
 @requires_git_repo
-def test_no_remote_is_configured():
+def test_remote_if_configured_points_only_at_the_expected_public_repo():
+    """Before the public launch, this test asserted NO remote was ever configured — a
+    safety net for the private-development phase, to catch an accidental premature push.
+    That phase is over: this project was deliberately published to
+    https://github.com/aiden-poswell/matchweek-intelligence with the owner's explicit
+    go-live approval. The invariant this guards is now narrower but still real: whatever
+    remote(s) exist must point at that same expected repository, never an unexpected host
+    or a different owner/repo added by accident or by a local clone under another name."""
     result = subprocess.run(
         ["git", "remote", "-v"], cwd=REPO_ROOT, capture_output=True, text=True, check=True
     )
-    assert result.stdout.strip() == ""
+    lines = [line for line in result.stdout.splitlines() if line.strip()]
+    for line in lines:
+        assert "github.com/aiden-poswell/matchweek-intelligence" in line, (
+            f"unexpected remote configured: {line!r}"
+        )
 
 
 def test_source_rights_doc_states_an_explicit_decision_for_every_candidate_source():
